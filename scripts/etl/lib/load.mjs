@@ -304,13 +304,18 @@ export async function loadCatalog(admin, { merged, validated, fitmentByParent, d
     const rep = rows[0];
     const slug = productSlug({ parent_id: parentId, parent_name: rep.parent_name });
     slugByParent.set(parentId, slug);
+    // products.name is NOT NULL. A handful of parents have no Parent Name in the
+    // source (2 of 10,263 today). Fall back to their most-specific category, then
+    // L1, then the parent_id — so they still load and render a meaningful title.
+    const productName =
+      rep.parent_name ?? rep.subcategory_l2 ?? rep.section_l1 ?? `Product ${parentId}`;
     // first variant with a non-null OEM / prop65 is the representative
     const oem = rows.find((x) => x.oem_number != null)?.oem_number ?? null;
     const prop65 = rows.some((x) => x.prop65 === true);
     const fit = fitmentByParent.get(parentId) ?? null;
     productRows.push({
       category_id: resolveCategoryId(rep),
-      name: rep.parent_name,
+      name: productName,
       slug,
       description: rep.description ?? null,
       oem_number: oem,

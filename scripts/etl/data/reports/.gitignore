@@ -1,0 +1,5 @@
+# Generated reconciliation reports are runtime artifacts (timestamped per run).
+# Keep the directory under version control, ignore the generated files.
+*.md
+*.csv
+!.gitignore

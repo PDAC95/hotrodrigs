@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "test:rls": "node --env-file=.env.local scripts/rls-isolation-test.mjs",
-    "check:leak": "bash scripts/check-service-role-leak.sh"
+    "check:leak": "bash scripts/check-service-role-leak.sh",
+    "etl": "node --env-file=.env.local scripts/etl/import-catalog.mjs",
+    "etl:dry": "node --env-file=.env.local scripts/etl/import-catalog.mjs --dry-run"
   },
   "dependencies": {
     "@babel/runtime": "^7.26.0",
