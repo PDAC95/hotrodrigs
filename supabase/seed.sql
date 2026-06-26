@@ -41,7 +41,17 @@ with seeded_users as (
     raw_app_meta_data,
     raw_user_meta_data,
     is_sso_user,
-    is_anonymous
+    is_anonymous,
+    -- GoTrue scans these token columns as non-nullable strings; NULL trips a
+    -- "converting NULL to string is unsupported" 500 on sign-in. Seed '' .
+    confirmation_token,
+    recovery_token,
+    email_change_token_new,
+    email_change,
+    email_change_token_current,
+    phone_change,
+    phone_change_token,
+    reauthentication_token
   )
   values
     (
@@ -57,7 +67,8 @@ with seeded_users as (
       '{"provider":"email","providers":["email"]}'::jsonb,
       '{}'::jsonb,
       false,
-      false
+      false,
+      '', '', '', '', '', '', '', ''
     ),
     (
       '00000000-0000-0000-0000-000000000000',
@@ -72,7 +83,8 @@ with seeded_users as (
       '{"provider":"email","providers":["email"]}'::jsonb,
       '{}'::jsonb,
       false,
-      false
+      false,
+      '', '', '', '', '', '', '', ''
     )
   returning id, email
 )
