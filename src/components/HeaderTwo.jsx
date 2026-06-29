@@ -128,7 +128,7 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
               type='text'
               name='q'
               className='form-control py-16 px-24 text-xl rounded-pill pe-64'
-              placeholder='Busca una parte, marca o número OEM'
+              placeholder='Search for a part, brand, or OEM number'
             />
             <button
               type='submit'
@@ -660,7 +660,7 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                       type='text'
                       name='q'
                       className='search-form__input common-input py-13 ps-16 pe-18 rounded-0 border-0'
-                      placeholder='Busca una parte, marca o número OEM'
+                      placeholder='Search for a part, brand, or OEM number'
                     />
                   </div>
                   <button

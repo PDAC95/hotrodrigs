@@ -14,7 +14,7 @@ const ProductGrid = ({ products = [], truckActive = false, emptyState = null }) 
     return (
       emptyState ?? (
         <div className='text-center py-80 text-gray-500'>
-          No hay productos en esta categoría.
+          No products in this category.
         </div>
       )
     );

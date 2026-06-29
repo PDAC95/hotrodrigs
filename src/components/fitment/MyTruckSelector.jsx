@@ -172,24 +172,24 @@ const MyTruckSelector = ({ makes: makesProp = null }) => {
 
   const label =
     hydrated && modelId && makeName && modelName
-      ? `Mi camión: ${makeName} ${modelName}`
+      ? `My Truck: ${makeName} ${modelName}`
       : null;
 
   return (
     <div className='my-truck-selector flex-align flex-wrap gap-8'>
       <span className='text-sm fw-medium text-heading d-none d-md-flex flex-align gap-4'>
         <i className='ph ph-truck' />
-        Mi camión:
+        My Truck:
       </span>
 
       <select
         className='form-select form-select-sm w-auto'
-        aria-label='Marca del camión'
+        aria-label='Truck make'
         value={makeId}
         onChange={handleMakeChange}
         suppressHydrationWarning
       >
-        <option value=''>Marca</option>
+        <option value=''>Make</option>
         {makes.map((m) => (
           <option key={m.id} value={m.id}>
             {m.name}
@@ -199,13 +199,13 @@ const MyTruckSelector = ({ makes: makesProp = null }) => {
 
       <select
         className='form-select form-select-sm w-auto'
-        aria-label='Modelo del camión'
+        aria-label='Truck model'
         value={modelId}
         onChange={handleModelChange}
         disabled={!makeId || models.length === 0}
         suppressHydrationWarning
       >
-        <option value=''>Modelo</option>
+        <option value=''>Model</option>
         {models.map((m) => (
           <option key={m.id} value={m.id}>
             {m.name}
@@ -218,8 +218,8 @@ const MyTruckSelector = ({ makes: makesProp = null }) => {
           type='button'
           onClick={handleClear}
           className='btn btn-sm text-gray-500 hover-text-main-600 p-0 flex-align gap-4'
-          aria-label='Quitar mi camión'
-          title='Quitar mi camión'
+          aria-label='Clear my truck'
+          title='Clear my truck'
         >
           <i className='ph ph-x-circle' />
         </button>

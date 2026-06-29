@@ -77,13 +77,13 @@ const PlpPage = async ({ params, searchParams }) => {
   const emptyState = truckActive ? (
     <div className='text-center py-80'>
       <p className='text-gray-700 text-lg mb-16'>
-        No hay partes para tu camión en esta categoría.
+        No parts for your truck in this category.
       </p>
       <Link
         href={clearTruckHref}
         className='btn bg-main-600 text-white hover-bg-main-700 py-12 px-24 rounded-8'
       >
-        Ver todas las partes
+        View all parts
       </Link>
     </div>
   ) : null;
@@ -101,7 +101,7 @@ const PlpPage = async ({ params, searchParams }) => {
             <ul className='flex-align gap-8 flex-wrap text-sm text-gray-500'>
               <li>
                 <Link href='/' className='hover-text-main-600'>
-                  Inicio
+                  Home
                 </Link>
               </li>
               {breadcrumb.map((crumb, i) => (
@@ -138,7 +138,7 @@ const PlpPage = async ({ params, searchParams }) => {
                 <div>
                   <h4 className='mb-4'>{category.name}</h4>
                   <span className='text-gray-900 text-sm'>
-                    {total} resultado{total === 1 ? "" : "s"}
+                    {total} result{total === 1 ? "" : "s"}
                   </span>
                 </div>
                 <SortSelect defaultSort={useSearch ? "relevance" : "featured"} />

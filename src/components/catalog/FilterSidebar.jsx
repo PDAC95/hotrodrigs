@@ -15,7 +15,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
  * in the global MyTruckSelector). The URL ?truck_model is the source of truth
  * here: the sidebar surfaces the active truck label and a clear button.
  *
- * On mobile the whole stack collapses to a "Filtros" toggle (Bootstrap collapse).
+ * On mobile the whole stack collapses to a "Filters" toggle (Bootstrap collapse).
  *
  * Props:
  *   categories   — getCategoryTree(): [{ id, name, slug, children: [...] }]
@@ -130,14 +130,14 @@ const FilterSidebar = ({ categories = [], activeFilters = {} }) => {
       {/* Category facet */}
       <div className='shop-sidebar__box border border-gray-100 rounded-8 p-24 mb-24'>
         <div className='flex-between mb-16'>
-          <h6 className='text-lg mb-0'>Categorías</h6>
+          <h6 className='text-lg mb-0'>Categories</h6>
           {activeCategory ? (
             <button
               type='button'
               onClick={() => setParam("category", "")}
               className='btn btn-sm text-gray-500 hover-text-main-600 p-0 text-sm'
             >
-              Limpiar
+              Clear
             </button>
           ) : null}
         </div>
@@ -151,7 +151,7 @@ const FilterSidebar = ({ categories = [], activeFilters = {} }) => {
 
       {/* Price facet */}
       <div className='shop-sidebar__box border border-gray-100 rounded-8 p-24 mb-24'>
-        <h6 className='text-lg mb-16'>Precio</h6>
+        <h6 className='text-lg mb-16'>Price</h6>
         <form onSubmit={handlePriceSubmit} className='flex-align gap-8 mb-12'>
           <input
             type='number'
@@ -159,8 +159,8 @@ const FilterSidebar = ({ categories = [], activeFilters = {} }) => {
             step='0.01'
             value={priceMin}
             onChange={(e) => setPriceMin(e.target.value)}
-            placeholder='Mín'
-            aria-label='Precio mínimo'
+            placeholder='Min'
+            aria-label='Minimum price'
             className='form-control common-input py-8 px-12 rounded-6'
           />
           <span className='text-gray-400'>–</span>
@@ -170,8 +170,8 @@ const FilterSidebar = ({ categories = [], activeFilters = {} }) => {
             step='0.01'
             value={priceMax}
             onChange={(e) => setPriceMax(e.target.value)}
-            placeholder='Máx'
-            aria-label='Precio máximo'
+            placeholder='Max'
+            aria-label='Maximum price'
             className='form-control common-input py-8 px-12 rounded-6'
           />
         </form>
@@ -181,7 +181,7 @@ const FilterSidebar = ({ categories = [], activeFilters = {} }) => {
             onClick={handlePriceSubmit}
             className='btn bg-main-600 text-white hover-bg-main-700 py-8 px-20 rounded-6 text-sm'
           >
-            Aplicar
+            Apply
           </button>
           {activeFilters.price_min || activeFilters.price_max ? (
             <button
@@ -189,7 +189,7 @@ const FilterSidebar = ({ categories = [], activeFilters = {} }) => {
               onClick={clearPrice}
               className='btn text-gray-500 hover-text-main-600 p-0 text-sm'
             >
-              Limpiar
+              Clear
             </button>
           ) : null}
         </div>
@@ -199,12 +199,12 @@ const FilterSidebar = ({ categories = [], activeFilters = {} }) => {
       <div className='shop-sidebar__box border border-gray-100 rounded-8 p-24 mb-24'>
         <h6 className='text-lg mb-12 flex-align gap-8'>
           <i className='ph ph-truck' />
-          Mi camión
+          My Truck
         </h6>
         {activeTruckModel ? (
           <div className='flex-align gap-12'>
             <span className='text-sm text-main-600 fw-medium'>
-              Filtrando por tu camión
+              Filtering by your truck
             </span>
             <button
               type='button'
@@ -212,13 +212,12 @@ const FilterSidebar = ({ categories = [], activeFilters = {} }) => {
               className='btn btn-sm text-gray-500 hover-text-main-600 p-0 text-sm flex-align gap-4'
             >
               <i className='ph ph-x-circle' />
-              Quitar
+              Clear
             </button>
           </div>
         ) : (
           <p className='text-sm text-gray-500 mb-0'>
-            Elige tu camión en la parte superior para ver solo las partes que le
-            quedan.
+            Choose your truck above to see only the parts that fit it.
           </p>
         )}
       </div>
@@ -227,7 +226,7 @@ const FilterSidebar = ({ categories = [], activeFilters = {} }) => {
 
   return (
     <>
-      {/* Mobile "Filtros" toggle (collapses the stack below lg). */}
+      {/* Mobile "Filters" toggle (collapses the stack below lg). */}
       <div className='d-lg-none mb-24'>
         <button
           type='button'
@@ -237,7 +236,7 @@ const FilterSidebar = ({ categories = [], activeFilters = {} }) => {
         >
           <span className='flex-align gap-8'>
             <i className='ph ph-funnel' />
-            Filtros
+            Filters
           </span>
           <i className={`ph ${open ? "ph-caret-up" : "ph-caret-down"}`} />
         </button>

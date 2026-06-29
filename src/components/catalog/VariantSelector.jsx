@@ -75,16 +75,16 @@ const VariantSelector = ({ variants = [], priceMin, priceMax }) => {
         {match ? (
           inStock ? (
             <span className='px-12 py-6 text-sm rounded-8 bg-success-50 text-success-600 fw-medium'>
-              En stock
+              In stock
             </span>
           ) : (
             <span className='px-12 py-6 text-sm rounded-8 bg-gray-100 text-gray-500 fw-medium'>
-              Agotado
+              Out of stock
             </span>
           )
         ) : (
           <span className='px-12 py-6 text-sm rounded-8 bg-gray-100 text-gray-500 fw-medium'>
-            Selecciona una combinación
+            Select a combination
           </span>
         )}
       </div>

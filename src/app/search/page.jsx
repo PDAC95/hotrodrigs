@@ -63,20 +63,20 @@ const SearchPage = async ({ searchParams }) => {
     truckActive ? (
       <div className='text-center py-80'>
         <p className='text-gray-700 text-lg mb-16'>
-          No hay partes para tu camión en esta búsqueda.
+          No parts for your truck in this search.
         </p>
         <Link
           href={clearTruckHref}
           className='btn bg-main-600 text-white hover-bg-main-700 py-12 px-24 rounded-8'
         >
-          Ver todas las partes
+          View all parts
         </Link>
       </div>
     ) : (
       <div className='text-center py-80 text-gray-500'>
         {q
-          ? `No encontramos resultados para "${q}".`
-          : "No hay resultados para esta búsqueda."}
+          ? `No results found for "${q}".`
+          : "No results for this search."}
       </div>
     );
 
@@ -92,12 +92,12 @@ const SearchPage = async ({ searchParams }) => {
             <ul className='flex-align gap-8 flex-wrap text-sm text-gray-500'>
               <li>
                 <Link href='/' className='hover-text-main-600'>
-                  Inicio
+                  Home
                 </Link>
               </li>
               <li className='flex-align gap-8'>
                 <i className='ph ph-caret-right' />
-                <span className='text-gray-900'>Búsqueda</span>
+                <span className='text-gray-900'>Search</span>
               </li>
             </ul>
           </nav>
@@ -115,10 +115,10 @@ const SearchPage = async ({ searchParams }) => {
               <div className='flex-between gap-16 flex-wrap mb-40'>
                 <div>
                   <h4 className='mb-4'>
-                    {q ? `Resultados para "${q}"` : "Resultados"}
+                    {q ? `Results for "${q}"` : "Results"}
                   </h4>
                   <span className='text-gray-900 text-sm'>
-                    {total} resultado{total === 1 ? "" : "s"}
+                    {total} result{total === 1 ? "" : "s"}
                   </span>
                 </div>
                 <SortSelect defaultSort='relevance' />

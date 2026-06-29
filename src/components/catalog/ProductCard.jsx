@@ -68,7 +68,7 @@ const ProductCard = ({ product, truckActive = false, badge = undefined }) => {
           className='product-card__cart btn bg-gray-50 text-heading hover-bg-main-600 hover-text-white py-11 px-24 rounded-8 flex-center gap-8 fw-medium'
           tabIndex={0}
         >
-          Ver producto <i className='ph ph-arrow-right' />
+          View product <i className='ph ph-arrow-right' />
         </Link>
       </div>
     </div>

@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 /**
  * Sort selector (client island, SRCH/BRWS).
  *
- * A native <select> "Ordenar por" that pushes ?sort= to the URL preserving all
+ * A native <select> "Sort by" that pushes ?sort= to the URL preserving all
  * other params. The server page re-queries with the new sort — no client-side
  * list reordering. Resets page to 1 on any sort change.
  *
@@ -38,12 +38,12 @@ const SortSelect = ({ defaultSort = "relevance" }) => {
   );
 
   const firstLabel =
-    defaultSort === "relevance" ? "Más relevante" : "Destacados";
+    defaultSort === "relevance" ? "Most relevant" : "Featured";
 
   return (
     <div className='position-relative text-gray-500 flex-align gap-8 text-14'>
       <label htmlFor='sorting' className='text-inherit flex-shrink-0'>
-        Ordenar por:
+        Sort by:
       </label>
       <select
         value={current}
@@ -52,9 +52,9 @@ const SortSelect = ({ defaultSort = "relevance" }) => {
         id='sorting'
       >
         <option value={defaultSort}>{firstLabel}</option>
-        <option value='price_asc'>Precio: menor a mayor</option>
-        <option value='price_desc'>Precio: mayor a menor</option>
-        <option value='name'>Nombre A-Z</option>
+        <option value='price_asc'>Price: low to high</option>
+        <option value='price_desc'>Price: high to low</option>
+        <option value='name'>Name A-Z</option>
       </select>
     </div>
   );

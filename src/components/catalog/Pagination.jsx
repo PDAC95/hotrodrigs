@@ -68,14 +68,14 @@ const Pagination = ({ page, total, pageSize, basePath, searchParams }) => {
   }
 
   return (
-    <nav aria-label='Paginación' className='mt-48'>
+    <nav aria-label='Pagination' className='mt-48'>
       <ul className='pagination flex-center flex-wrap gap-16'>
         {current > 1 && (
           <li className='page-item'>
             <Link
               href={buildHref(basePath, searchParams, current - 1)}
               className='page-link h-44 w-44 flex-center text-md rounded-8 border border-gray-100 text-neutral-600'
-              aria-label='Anterior'
+              aria-label='Previous'
             >
               <i className='ph ph-caret-left' />
             </Link>
@@ -87,7 +87,7 @@ const Pagination = ({ page, total, pageSize, basePath, searchParams }) => {
             <Link
               href={buildHref(basePath, searchParams, current + 1)}
               className='page-link h-44 w-44 flex-center text-md rounded-8 border border-gray-100 text-neutral-600'
-              aria-label='Siguiente'
+              aria-label='Next'
             >
               <i className='ph ph-caret-right' />
             </Link>

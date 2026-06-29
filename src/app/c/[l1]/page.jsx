@@ -40,7 +40,7 @@ const SectionPage = async ({ params }) => {
             <ul className='flex-align gap-8 flex-wrap text-sm text-gray-500'>
               <li>
                 <Link href='/' className='hover-text-main-600'>
-                  Inicio
+                  Home
                 </Link>
               </li>
               {breadcrumb.map((crumb, i) => (
@@ -65,7 +65,7 @@ const SectionPage = async ({ params }) => {
 
           {children.length === 0 ? (
             <p className='text-gray-500'>
-              No hay subcategorías en esta sección.
+              No subcategories in this section.
             </p>
           ) : (
             <div className='row gy-4'>
