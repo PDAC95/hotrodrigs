@@ -1,4 +1,5 @@
 import Link from "next/link";
+import FitsBadge from "@/components/fitment/FitsBadge";
 
 // Format a parent price range from the denormalized price_min/price_max aggregates.
 // Single price when both ends match; an en-dash range otherwise. Null prices -> "—".
@@ -15,14 +16,28 @@ function formatRange(min, max) {
   return `${fmt(min)} – ${fmt(max)}`;
 }
 
+// Fitment badge rule (03-05): a product flagged fits_all is "universal" everywhere;
+// otherwise, when a truck is active every listed row is a fit (search_products already
+// filtered by p_truck_model), so it shows "fits". No truck active -> no badge.
+function badgeKind(product, truckActive) {
+  if (!product) return null;
+  if (product.fits_all) return "universal";
+  if (truckActive) return "fits";
+  return null;
+}
+
 /**
  * Parent product card (server component). Reuses MarketPro design-2 card markup,
- * fed by real catalog data. `badge` is a slot for the Fits/Universal badge wired
- * in 03-04 (kept fitment-agnostic here).
+ * fed by real catalog data. Computes the Fits/Universal badge from `truckActive`
+ * (03-05); an explicit `badge` node still overrides for any custom slot use.
  */
-const ProductCard = ({ product, badge = null }) => {
+const ProductCard = ({ product, truckActive = false, badge = undefined }) => {
   if (!product) return null;
   const href = `/product/${product.slug}`;
+  const resolvedBadge =
+    badge !== undefined ? badge : (
+      <FitsBadge kind={badgeKind(product, truckActive)} />
+    );
 
   return (
     <div className='product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
@@ -30,7 +45,7 @@ const ProductCard = ({ product, badge = null }) => {
         href={href}
         className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'
       >
-        {badge}
+        {resolvedBadge}
         <img
           src={product.cover_image_url}
           alt={product.name}

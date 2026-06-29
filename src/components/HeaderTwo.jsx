@@ -63,6 +63,34 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
     setActiveSearch(!activeSearch);
   };
 
+  // Active truck for search context. Read from the URL after mount (no
+  // useSearchParams here — that would force the whole header into a Suspense
+  // boundary; the truck param is only needed when the customer submits a search).
+  const [activeTruckModel, setActiveTruckModel] = useState("");
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    setActiveTruckModel(params.get("truck_model") ?? "");
+  }, [pathname]);
+
+  // Submit either search form to /search?q=..., preserving the active truck so
+  // results respect the customer's current My-Truck selection (SRCH-01/03).
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    const input = e.currentTarget.querySelector('input[name="q"]');
+    const q = input ? input.value.trim() : "";
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    // Re-read the truck param live (it may have changed since mount).
+    const live =
+      typeof window !== "undefined"
+        ? new URLSearchParams(window.location.search).get("truck_model")
+        : activeTruckModel;
+    if (live) params.set("truck_model", live);
+    const qs = params.toString();
+    window.location.href = qs ? `/search?${qs}` : "/search";
+  };
+
   // category control support
   const [activeCategory, setActiveCategory] = useState(false);
   const handleCategoryToggle = () => {
@@ -81,7 +109,12 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
       />
       {/* ==================== Search Box Start Here ==================== */}
 
-      <form action='#' className={`search-box ${activeSearch && "active"}`}>
+      <form
+        action='/search'
+        method='get'
+        onSubmit={handleSearchSubmit}
+        className={`search-box ${activeSearch && "active"}`}
+      >
         <button
           onClick={handleSearchToggle}
           type='button'
@@ -93,8 +126,9 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
           <div className='position-relative'>
             <input
               type='text'
+              name='q'
               className='form-control py-16 px-24 text-xl rounded-pill pe-64'
-              placeholder='Search for a product or brand'
+              placeholder='Busca una parte, marca o número OEM'
             />
             <button
               type='submit'
@@ -598,7 +632,9 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                 {/* Dropdown Select End */}
               </div>
               <form
-                action='#'
+                action='/search'
+                method='get'
+                onSubmit={handleSearchSubmit}
                 className='flex-align flex-wrap form-location-wrapper'
               >
                 <div className='search-category style-two d-flex h-48 search-form d-sm-flex d-none'>
@@ -622,8 +658,9 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                   <div className='search-form__wrapper position-relative'>
                     <input
                       type='text'
+                      name='q'
                       className='search-form__input common-input py-13 ps-16 pe-18 rounded-0 border-0'
-                      placeholder='Search for a product or brand'
+                      placeholder='Busca una parte, marca o número OEM'
                     />
                   </div>
                   <button
