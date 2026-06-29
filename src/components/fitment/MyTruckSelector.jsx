@@ -99,6 +99,17 @@ const MyTruckSelector = ({ makes: makesProp = null }) => {
           );
           if (fm) setModelName(fm.name);
         }
+
+        // The truck came from localStorage (the URL had no ?truck_model): reflect
+        // it on the URL so server-rendered listing/search pages filter + badge
+        // deterministically. replace() (not push) keeps it out of history.
+        if (!urlModel && seedModelId) {
+          const params = new URLSearchParams(searchParams.toString());
+          params.set("truck_model", String(seedModelId));
+          if (seedMakeId) params.set("truck_make", String(seedMakeId));
+          const qs = params.toString();
+          router.replace(qs ? `${pathname}?${qs}` : pathname);
+        }
       }
       setHydrated(true);
     }
