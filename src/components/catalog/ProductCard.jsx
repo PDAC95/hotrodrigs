@@ -43,7 +43,7 @@ const ProductCard = ({ product, truckActive = false, badge = undefined }) => {
     <div className='product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
       <Link
         href={href}
-        className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'
+        className='product-card__thumb flex-center rounded-8 position-relative'
       >
         {resolvedBadge}
         <img
