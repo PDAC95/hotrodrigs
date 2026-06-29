@@ -1,9 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import query from "jquery";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import "select2/dist/css/select2.min.css";
+import MyTruckSelector from "@/components/fitment/MyTruckSelector";
 const HeaderTwo = ({ category }) => {
   let pathname = usePathname();
   const [scroll, setScroll] = useState(false);
@@ -632,6 +633,10 @@ const HeaderTwo = ({ category }) => {
                   </button>
                 </div>
               </form>
+              {/* My Truck selector — global, persistent fitment context (SRCH-03) */}
+              <Suspense fallback={null}>
+                <MyTruckSelector />
+              </Suspense>
             </div>
             {/* form Category start */}
             {/* Header Middle Right start */}
