@@ -49,7 +49,7 @@ const ProductCard = ({ product, truckActive = false, badge = undefined }) => {
         <img
           src={product.cover_image_url}
           alt={product.name}
-          className='w-auto max-w-unset'
+          style={{ maxWidth: "100%", maxHeight: "200px" }}
         />
       </Link>
       <div className='product-card__content mt-16'>

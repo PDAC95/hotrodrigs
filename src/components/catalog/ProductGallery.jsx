@@ -41,7 +41,12 @@ const ProductGallery = ({ images = [] }) => {
       <div className='product-details__thumb-slider border border-gray-100 rounded-16'>
         <div className=''>
           <div className='product-details__thumb flex-center h-100'>
-            <img src={mainImage} alt='Main Product' onError={handleImgError} />
+            <img
+              src={mainImage}
+              alt='Main Product'
+              onError={handleImgError}
+              style={{ maxWidth: "100%", maxHeight: "100%" }}
+            />
           </div>
         </div>
       </div>
