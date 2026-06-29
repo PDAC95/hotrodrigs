@@ -44,7 +44,7 @@ const page = async () => {
       <HeaderTwo category={false} categoryTree={categoryTree} />
 
       {/* BannerTwo */}
-      <BannerTwo />
+      <BannerTwo categoryTree={categoryTree} />
 
       {/* PromotionalTwo */}
       <PromotionalTwo />
