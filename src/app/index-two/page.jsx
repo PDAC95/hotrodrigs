@@ -19,6 +19,7 @@ import TrendingOne from "@/components/TrendingOne";
 import ColorInit from "@/helper/ColorInit";
 import Preloader from "@/helper/Preloader";
 import ScrollToTopInit from "@/helper/ScrollToTopInit";
+import { getCategoryTree } from "@/lib/catalog/categories";
 
 export const metadata = {
   title: "MarketPro - E-commerce Next JS Template",
@@ -26,7 +27,8 @@ export const metadata = {
     "MarketPro is a comprehensive and versatile Next JS template designed for e-commerce platforms, specifically tailored for multi vendor marketplaces. With its modern design and extensive feature set, MarketPro provides everything you need to create a robust and user-friendly online marketplace..",
 };
 
-const page = () => {
+const page = async () => {
+  const categoryTree = await getCategoryTree();
   return (
     <>
       {/* ColorInit */}
@@ -39,7 +41,7 @@ const page = () => {
       <Preloader />
 
       {/* HeaderTwo */}
-      <HeaderTwo category={false} />
+      <HeaderTwo category={false} categoryTree={categoryTree} />
 
       {/* BannerTwo */}
       <BannerTwo />
