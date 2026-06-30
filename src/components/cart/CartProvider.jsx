@@ -51,7 +51,6 @@ import {
 import {
   getCartAction,
   getGuestCartAction,
-  mergeGuestCartAction,
 } from "@/lib/cart/actions";
 
 const CartContext = createContext(null);
@@ -151,31 +150,18 @@ const CartProvider = ({ children }) => {
       setIsLoggedIn(loggedIn);
 
       if (loggedIn) {
-        // PRECEDENCE: when the cart_merged signal is present OR the guard is set,
-        // the server already folded the guest cart in at login and the dedicated
-        // cart_merged effect owns the clear + resync — the mount effect MUST NOT
-        // call mergeGuestCartAction (prevents a hard-reload double-merge race).
-        const alreadyHandled =
-          hasCartMergedParam() ||
-          (typeof window !== "undefined" &&
-            sessionStorage.getItem(MERGE_HANDLED_KEY) === "1");
-
-        // MERGE-ON-LOGIN fallback: a non-empty guest store folds into the DB cart
-        // once. Only runs when the server-side merge did NOT already handle it.
+        // CART-03 (Option A): the guest→server merge runs SERVER-SIDE inside the
+        // signIn Server Action. A logged-in user never writes to the guest store
+        // (AddToCartButton uses the server action when authed), so any leftover
+        // guest cart seen here was ALREADY folded into the DB cart at login.
+        // Re-merging it client-side double-counts on every reload (the 04-05
+        // defect: badge/total grew by the guest line on each F5). So when logged
+        // in we NEVER merge client-side — we just drop the stale guest copy and
+        // sync the badge + lines from the authoritative server cart.
         const guestLines = getGuestCart();
-        if (!alreadyHandled && guestLines.length > 0 && !mergedRef.current) {
-          mergedRef.current = true;
-          try {
-            const { lines: merged, count: mergedCount } =
-              await mergeGuestCartAction(guestLines);
-            clearGuestCart();
-            if (cancelled) return;
-            setLines(merged ?? []);
-            setCount(mergedCount ?? 0);
-            return;
-          } catch {
-            // fall through to a plain logged-in refresh
-          }
+        if (guestLines.length > 0) {
+          clearGuestCart();
+          if (cancelled) return;
         }
         await refreshLoggedIn();
       } else {
