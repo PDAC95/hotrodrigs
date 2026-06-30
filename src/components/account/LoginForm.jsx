@@ -19,6 +19,18 @@ const LoginForm = ({ error }) => {
     }
   };
 
+  // Google OAuth can't carry the localStorage guest cart through the server
+  // action + OAuth round-trip (signIn never runs, so the server-side merge does
+  // not fire). Flag a one-shot pending merge so CartProvider folds the guest cart
+  // into the server cart exactly once when the user returns authenticated.
+  const onGoogleSubmit = () => {
+    try {
+      if (getGuestCart().length > 0) {
+        sessionStorage.setItem("hrr.oauth_merge_pending", "1");
+      }
+    } catch {}
+  };
+
   return (
     <div className='border border-gray-100 hover-border-main-600 transition-1 rounded-16 px-24 py-40 h-100'>
       <h6 className='text-xl mb-32'>Login</h6>
@@ -89,7 +101,7 @@ const LoginForm = ({ error }) => {
       </form>
 
       <div className='mt-32'>
-        <form action={signInWithGoogle}>
+        <form action={signInWithGoogle} onSubmit={onGoogleSubmit}>
           <button
             type='submit'
             className='btn btn-outline-main py-18 px-40 w-100 flex-center gap-8'

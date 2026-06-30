@@ -51,6 +51,7 @@ import {
 import {
   getCartAction,
   getGuestCartAction,
+  mergeGuestCartAction,
 } from "@/lib/cart/actions";
 
 const CartContext = createContext(null);
@@ -58,6 +59,11 @@ const CartContext = createContext(null);
 // Cross-mount idempotency guard for a SINGLE login (reset on every logged-out
 // transition so repeated logins in one tab re-sync).
 const MERGE_HANDLED_KEY = "hrr.cart_merged_handled";
+
+// One-shot flag set by LoginForm right before a Google OAuth redirect. On the
+// OAuth path signIn never runs, so the guest cart is NOT merged server-side;
+// this flag tells the mount effect to fold it in exactly once on return.
+const OAUTH_MERGE_PENDING_KEY = "hrr.oauth_merge_pending";
 
 // True when the current URL still carries the post-login soft-nav signal.
 function hasCartMergedParam() {
@@ -150,25 +156,41 @@ const CartProvider = ({ children }) => {
       setIsLoggedIn(loggedIn);
 
       if (loggedIn) {
-        // CART-03 (Option A): the guest→server merge runs SERVER-SIDE inside the
-        // signIn Server Action. A logged-in user never writes to the guest store
-        // (AddToCartButton uses the server action when authed), so any leftover
-        // guest cart seen here was ALREADY folded into the DB cart at login.
-        // Re-merging it client-side double-counts on every reload (the 04-05
-        // defect: badge/total grew by the guest line on each F5). So when logged
-        // in we NEVER merge client-side — we just drop the stale guest copy and
-        // sync the badge + lines from the authoritative server cart.
+        // CART-03 merge reconciliation. Two login paths land here:
+        //  - email+password: signIn already merged the guest cart SERVER-SIDE, so
+        //    any leftover localStorage copy is ALREADY folded in. Re-merging it
+        //    client-side double-counts on every reload (the 04-05 defect: badge/
+        //    total grew by the guest line on each F5) — so we just drop the copy.
+        //  - Google OAuth: signIn never ran (the server can't read localStorage),
+        //    so the guest cart is NOT yet merged. LoginForm set a one-shot
+        //    `hrr.oauth_merge_pending` flag before the redirect; consume it here
+        //    to fold the guest cart in exactly once, then clear it. The flag is
+        //    removed after use, so a refresh cannot double-merge.
         const guestLines = getGuestCart();
-        if (guestLines.length > 0) {
+        const oauthMergePending =
+          typeof window !== "undefined" &&
+          sessionStorage.getItem(OAUTH_MERGE_PENDING_KEY) === "1";
+
+        if (oauthMergePending && guestLines.length > 0) {
+          try {
+            await mergeGuestCartAction(guestLines);
+          } catch {}
           clearGuestCart();
-          if (cancelled) return;
+        } else if (guestLines.length > 0) {
+          clearGuestCart();
         }
+        if (typeof window !== "undefined") {
+          sessionStorage.removeItem(OAUTH_MERGE_PENDING_KEY);
+        }
+        if (cancelled) return;
         await refreshLoggedIn();
       } else {
         // GUARD RESET (canonical no-user point): becoming logged out clears the
-        // per-login guard so the next login's cart_merged effect re-syncs.
+        // per-login guard so the next login's cart_merged effect re-syncs, and
+        // drops any stale OAuth-merge flag (e.g. a cancelled Google sign-in).
         if (typeof window !== "undefined") {
           sessionStorage.removeItem(MERGE_HANDLED_KEY);
+          sessionStorage.removeItem(OAUTH_MERGE_PENDING_KEY);
         }
         await refreshGuest();
       }
