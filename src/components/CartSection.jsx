@@ -1,10 +1,158 @@
 "use client";
 
-import React from "react";
+/**
+ * CartSection — the /cart page body. Replaces the hardcoded 4-row template table
+ * with real, server-derived cart lines (CART-04: price/stock re-derived from
+ * product_variants; the client holds only {variant_id, quantity}).
+ *
+ * Source selection on mount:
+ *   - logged-in: getCartAction()
+ *   - guest:     getGuestCartAction(getGuestCart())
+ * Re-loads on every `hrr-cart-changed` event (guest mutations) and after each
+ * logged-in mutation. Qty/remove route through the right layer per source.
+ *
+ * Totals: Subtotal = sum of line_subtotal (the read already zeroes out-of-stock
+ * lines, so they are excluded — CONTEXT). Shipping (Phase 5) and tax (Phase 6)
+ * are NOT computed here. Total = Subtotal.
+ *
+ * Checkout (Phase 6) is gated for guests: the button routes to /login with the
+ * cart preserved in localStorage (CONTEXT).
+ *
+ * Empty state: friendly message + CTA to the store (no product suggestions).
+ */
+
+import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import QuantityControl from "../helper/QuantityControl";
+
+import { createClient } from "@/lib/supabase/client";
+import {
+  getCartAction,
+  getGuestCartAction,
+  updateCartItemAction,
+  removeCartItemAction,
+} from "@/lib/cart/actions";
+import {
+  getGuestCart,
+  updateGuestItem,
+  removeGuestItem,
+} from "@/lib/cart/guest-store";
+import { useCart } from "@/components/cart/CartProvider";
+import CartLine from "@/components/cart/CartLine";
+
+function formatPrice(value) {
+  return `$${Number(value || 0).toFixed(2)}`;
+}
 
 const CartSection = () => {
+  const { setCount, setLines: setProviderLines } = useCart();
+
+  const [lines, setLines] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // Load cart lines from the correct source.
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      const loggedIn = !!user;
+      setIsLoggedIn(loggedIn);
+
+      if (loggedIn) {
+        const { lines: srvLines, count } = await getCartAction();
+        setLines(srvLines ?? []);
+        setProviderLines(srvLines ?? []);
+        setCount(count ?? 0);
+      } else {
+        const guest = getGuestCart();
+        const { lines: derived } = await getGuestCartAction(guest);
+        setLines(derived ?? []);
+        setProviderLines(derived ?? []);
+      }
+    } catch {
+      setLines([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [setCount, setProviderLines]);
+
+  useEffect(() => {
+    load();
+    if (typeof window === "undefined") return;
+    const onChange = () => load();
+    window.addEventListener("hrr-cart-changed", onChange);
+    return () => window.removeEventListener("hrr-cart-changed", onChange);
+  }, [load]);
+
+  // Quantity change — qty 0 removes (handled by the underlying layer).
+  const handleUpdateQty = useCallback(
+    async (variantId, qty) => {
+      if (isLoggedIn) {
+        const { lines: srvLines, count } = await updateCartItemAction(
+          variantId,
+          qty
+        );
+        setLines(srvLines ?? []);
+        setProviderLines(srvLines ?? []);
+        setCount(count ?? 0);
+      } else {
+        const newGuest = updateGuestItem(variantId, qty);
+        const { lines: derived } = await getGuestCartAction(newGuest);
+        setLines(derived ?? []);
+        setProviderLines(derived ?? []);
+        // guest-store emits hrr-cart-changed → provider recomputes the badge.
+      }
+    },
+    [isLoggedIn, setCount, setProviderLines]
+  );
+
+  const handleRemove = useCallback(
+    async (variantId) => {
+      if (isLoggedIn) {
+        const { lines: srvLines, count } = await removeCartItemAction(variantId);
+        setLines(srvLines ?? []);
+        setProviderLines(srvLines ?? []);
+        setCount(count ?? 0);
+      } else {
+        const newGuest = removeGuestItem(variantId);
+        const { lines: derived } = await getGuestCartAction(newGuest);
+        setLines(derived ?? []);
+        setProviderLines(derived ?? []);
+      }
+    },
+    [isLoggedIn, setCount, setProviderLines]
+  );
+
+  // Subtotal excludes out-of-stock lines (their line_subtotal is already 0).
+  const subtotal = lines.reduce(
+    (sum, l) => sum + Number(l.line_subtotal || 0),
+    0
+  );
+
+  // Empty state.
+  if (!loading && lines.length === 0) {
+    return (
+      <section className='cart py-80'>
+        <div className='container container-lg'>
+          <div className='text-center py-80'>
+            <i className='ph ph-shopping-cart text-6xl text-gray-300 d-block mb-24' />
+            <h5 className='mb-12'>Your cart is empty</h5>
+            <p className='text-gray-500 mb-32'>
+              Browse our heavy-duty truck parts and add the ones that fit your
+              rig.
+            </p>
+            <Link href='/' className='btn btn-main rounded-8 px-40 py-16'>
+              Browse parts
+            </Link>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className='cart py-80'>
       <div className='container container-lg'>
@@ -23,341 +171,25 @@ const CartSection = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>
-                        <button
-                          type='button'
-                          className='remove-tr-btn flex-align gap-12 hover-text-danger-600'
-                        >
-                          <i className='ph ph-x-circle text-2xl d-flex' />
-                          Remove
-                        </button>
-                      </td>
-                      <td>
-                        <div className='table-product d-flex align-items-center gap-24'>
-                          <Link
-                            href='/product-details-two'
-                            className='table-product__thumb border border-gray-100 rounded-8 flex-center '
-                          >
-                            <img
-                              src='assets/images/thumbs/product-two-img1.png'
-                              alt=''
-                            />
-                          </Link>
-                          <div className='table-product__content text-start'>
-                            <h6 className='title text-lg fw-semibold mb-8'>
-                              <Link
-                                href='/product-details'
-                                className='link text-line-2'
-                                tabIndex={0}
-                              >
-                                Taylor Farms Broccoli Florets Vegetables
-                              </Link>
-                            </h6>
-                            <div className='flex-align gap-16 mb-16'>
-                              <div className='flex-align gap-6'>
-                                <span className='text-md fw-medium text-warning-600 d-flex'>
-                                  <i className='ph-fill ph-star' />
-                                </span>
-                                <span className='text-md fw-semibold text-gray-900'>
-                                  4.8
-                                </span>
-                              </div>
-                              <span className='text-sm fw-medium text-gray-200'>
-                                |
-                              </span>
-                              <span className='text-neutral-600 text-sm'>
-                                128 Reviews
-                              </span>
-                            </div>
-                            <div className='flex-align gap-16'>
-                              <Link
-                                href='/cart'
-                                className='product-card__cart btn bg-gray-50 text-heading text-sm hover-bg-main-600 hover-text-white py-7 px-8 rounded-8 flex-center gap-8 fw-medium'
-                              >
-                                Camera
-                              </Link>
-                              <Link
-                                href='/cart'
-                                className='product-card__cart btn bg-gray-50 text-heading text-sm hover-bg-main-600 hover-text-white py-7 px-8 rounded-8 flex-center gap-8 fw-medium'
-                              >
-                                Videos
-                              </Link>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <span className='text-lg h6 mb-0 fw-semibold'>
-                          $125.00
-                        </span>
-                      </td>
-                      <td>
-                        <QuantityControl initialQuantity={1} />
-                      </td>
-                      <td>
-                        <span className='text-lg h6 mb-0 fw-semibold'>
-                          $125.00
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <button
-                          type='button'
-                          className='remove-tr-btn flex-align gap-12 hover-text-danger-600'
-                        >
-                          <i className='ph ph-x-circle text-2xl d-flex' />
-                          Remove
-                        </button>
-                      </td>
-                      <td>
-                        <div className='table-product d-flex align-items-center gap-24'>
-                          <Link
-                            href='/product-details-two'
-                            className='table-product__thumb border border-gray-100 rounded-8 flex-center '
-                          >
-                            <img
-                              src='assets/images/thumbs/product-two-img2.png'
-                              alt=''
-                            />
-                          </Link>
-                          <div className='table-product__content text-start'>
-                            <h6 className='title text-lg fw-semibold mb-8'>
-                              <Link
-                                href='/product-details'
-                                className='link text-line-2'
-                                tabIndex={0}
-                              >
-                                Taylor Farms Broccoli Florets Vegetables
-                              </Link>
-                            </h6>
-                            <div className='flex-align gap-16 mb-16'>
-                              <div className='flex-align gap-6'>
-                                <span className='text-md fw-medium text-warning-600 d-flex'>
-                                  <i className='ph-fill ph-star' />
-                                </span>
-                                <span className='text-md fw-semibold text-gray-900'>
-                                  4.8
-                                </span>
-                              </div>
-                              <span className='text-sm fw-medium text-gray-200'>
-                                |
-                              </span>
-                              <span className='text-neutral-600 text-sm'>
-                                128 Reviews
-                              </span>
-                            </div>
-                            <div className='flex-align gap-16'>
-                              <Link
-                                href='/cart'
-                                className='product-card__cart btn bg-gray-50 text-heading text-sm hover-bg-main-600 hover-text-white py-7 px-8 rounded-8 flex-center gap-8 fw-medium'
-                              >
-                                Camera
-                              </Link>
-                              <Link
-                                href='/cart'
-                                className='product-card__cart btn bg-gray-50 text-heading text-sm hover-bg-main-600 hover-text-white py-7 px-8 rounded-8 flex-center gap-8 fw-medium'
-                              >
-                                Videos
-                              </Link>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <span className='text-lg h6 mb-0 fw-semibold'>
-                          $125.00
-                        </span>
-                      </td>
-                      <td>
-                        <QuantityControl initialQuantity={1} />
-                      </td>
-                      <td>
-                        <span className='text-lg h6 mb-0 fw-semibold'>
-                          $125.00
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <button
-                          type='button'
-                          className='remove-tr-btn flex-align gap-12 hover-text-danger-600'
-                        >
-                          <i className='ph ph-x-circle text-2xl d-flex' />
-                          Remove
-                        </button>
-                      </td>
-                      <td>
-                        <div className='table-product d-flex align-items-center gap-24'>
-                          <Link
-                            href='/product-details-two'
-                            className='table-product__thumb border border-gray-100 rounded-8 flex-center '
-                          >
-                            <img
-                              src='assets/images/thumbs/product-two-img3.png'
-                              alt=''
-                            />
-                          </Link>
-                          <div className='table-product__content text-start'>
-                            <h6 className='title text-lg fw-semibold mb-8'>
-                              <Link
-                                href='/product-details'
-                                className='link text-line-2'
-                                tabIndex={0}
-                              >
-                                Taylor Farms Broccoli Florets Vegetables
-                              </Link>
-                            </h6>
-                            <div className='flex-align gap-16 mb-16'>
-                              <div className='flex-align gap-6'>
-                                <span className='text-md fw-medium text-warning-600 d-flex'>
-                                  <i className='ph-fill ph-star' />
-                                </span>
-                                <span className='text-md fw-semibold text-gray-900'>
-                                  4.8
-                                </span>
-                              </div>
-                              <span className='text-sm fw-medium text-gray-200'>
-                                |
-                              </span>
-                              <span className='text-neutral-600 text-sm'>
-                                128 Reviews
-                              </span>
-                            </div>
-                            <div className='flex-align gap-16'>
-                              <Link
-                                href='/cart'
-                                className='product-card__cart btn bg-gray-50 text-heading text-sm hover-bg-main-600 hover-text-white py-7 px-8 rounded-8 flex-center gap-8 fw-medium'
-                              >
-                                Camera
-                              </Link>
-                              <Link
-                                href='/cart'
-                                className='product-card__cart btn bg-gray-50 text-heading text-sm hover-bg-main-600 hover-text-white py-7 px-8 rounded-8 flex-center gap-8 fw-medium'
-                              >
-                                Videos
-                              </Link>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <span className='text-lg h6 mb-0 fw-semibold'>
-                          $125.00
-                        </span>
-                      </td>
-                      <td>
-                        <QuantityControl initialQuantity={1} />
-                      </td>
-                      <td>
-                        <span className='text-lg h6 mb-0 fw-semibold'>
-                          $125.00
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <button
-                          type='button'
-                          className='remove-tr-btn flex-align gap-12 hover-text-danger-600'
-                        >
-                          <i className='ph ph-x-circle text-2xl d-flex' />
-                          Remove
-                        </button>
-                      </td>
-                      <td>
-                        <div className='table-product d-flex align-items-center gap-24'>
-                          <Link
-                            href='/product-details-two'
-                            className='table-product__thumb border border-gray-100 rounded-8 flex-center '
-                          >
-                            <img
-                              src='assets/images/thumbs/product-two-img4.png'
-                              alt=''
-                            />
-                          </Link>
-                          <div className='table-product__content text-start'>
-                            <h6 className='title text-lg fw-semibold mb-8'>
-                              <Link
-                                href='/product-details'
-                                className='link text-line-2'
-                                tabIndex={0}
-                              >
-                                Taylor Farms Broccoli Florets Vegetables
-                              </Link>
-                            </h6>
-                            <div className='flex-align gap-16 mb-16'>
-                              <div className='flex-align gap-6'>
-                                <span className='text-md fw-medium text-warning-600 d-flex'>
-                                  <i className='ph-fill ph-star' />
-                                </span>
-                                <span className='text-md fw-semibold text-gray-900'>
-                                  4.8
-                                </span>
-                              </div>
-                              <span className='text-sm fw-medium text-gray-200'>
-                                |
-                              </span>
-                              <span className='text-neutral-600 text-sm'>
-                                128 Reviews
-                              </span>
-                            </div>
-                            <div className='flex-align gap-16'>
-                              <Link
-                                href='/cart'
-                                className='product-card__cart btn bg-gray-50 text-heading text-sm hover-bg-main-600 hover-text-white py-7 px-8 rounded-8 flex-center gap-8 fw-medium'
-                              >
-                                Camera
-                              </Link>
-                              <Link
-                                href='/cart'
-                                className='product-card__cart btn bg-gray-50 text-heading text-sm hover-bg-main-600 hover-text-white py-7 px-8 rounded-8 flex-center gap-8 fw-medium'
-                              >
-                                Videos
-                              </Link>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <span className='text-lg h6 mb-0 fw-semibold'>
-                          $125.00
-                        </span>
-                      </td>
-                      <td>
-                        <QuantityControl initialQuantity={1} />
-                      </td>
-                      <td>
-                        <span className='text-lg h6 mb-0 fw-semibold'>
-                          $125.00
-                        </span>
-                      </td>
-                    </tr>
+                    {loading && lines.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className='text-center text-gray-500 py-32'>
+                          Loading your cart…
+                        </td>
+                      </tr>
+                    ) : (
+                      lines.map((line) => (
+                        <tr key={line.variant_id}>
+                          <CartLine
+                            line={line}
+                            onUpdateQty={handleUpdateQty}
+                            onRemove={handleRemove}
+                          />
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
-              </div>
-              <div className='flex-between flex-wrap gap-16 mt-16'>
-                <div className='flex-align gap-16'>
-                  <input
-                    type='text'
-                    className='common-input'
-                    placeholder='Coupon Code'
-                  />
-                  <button
-                    type='submit'
-                    className='btn btn-main py-18 w-100 rounded-8'
-                  >
-                    Apply Coupon
-                  </button>
-                </div>
-                <button
-                  type='submit'
-                  className='text-lg text-gray-500 hover-text-main-600'
-                >
-                  Update Cart
-                </button>
               </div>
             </div>
           </div>
@@ -365,23 +197,13 @@ const CartSection = () => {
             <div className='cart-sidebar border border-gray-100 rounded-8 px-24 py-40'>
               <h6 className='text-xl mb-32'>Cart Totals</h6>
               <div className='bg-color-three rounded-8 p-24'>
-                <div className='mb-32 flex-between gap-8'>
+                <div className='mb-0 flex-between gap-8'>
                   <span className='text-gray-900 font-heading-two'>
                     Subtotal
                   </span>
-                  <span className='text-gray-900 fw-semibold'>$250.00</span>
-                </div>
-                <div className='mb-32 flex-between gap-8'>
-                  <span className='text-gray-900 font-heading-two'>
-                    Extimated Delivery
+                  <span className='text-gray-900 fw-semibold'>
+                    {formatPrice(subtotal)}
                   </span>
-                  <span className='text-gray-900 fw-semibold'>Free</span>
-                </div>
-                <div className='mb-0 flex-between gap-8'>
-                  <span className='text-gray-900 font-heading-two'>
-                    Extimated Taxs
-                  </span>
-                  <span className='text-gray-900 fw-semibold'>USD 10.00</span>
                 </div>
               </div>
               <div className='bg-color-three rounded-8 p-24 mt-24'>
@@ -390,16 +212,34 @@ const CartSection = () => {
                     Total
                   </span>
                   <span className='text-gray-900 text-xl fw-semibold'>
-                    $250.00
+                    {formatPrice(subtotal)}
                   </span>
                 </div>
               </div>
-              <Link
-                href='/checkout'
-                className='btn btn-main mt-40 py-18 w-100 rounded-8'
-              >
-                Proceed to checkout
-              </Link>
+              <span className='text-sm text-gray-500 d-block mt-16'>
+                Shipping and taxes are calculated at checkout.
+              </span>
+
+              {isLoggedIn ? (
+                <Link
+                  href='/checkout'
+                  className='btn btn-main mt-32 py-18 w-100 rounded-8'
+                >
+                  Proceed to checkout
+                </Link>
+              ) : (
+                <>
+                  <Link
+                    href='/login'
+                    className='btn btn-main mt-32 py-18 w-100 rounded-8'
+                  >
+                    Log in to check out
+                  </Link>
+                  <span className='text-sm text-gray-500 d-block mt-12 text-center'>
+                    Your cart is saved.
+                  </span>
+                </>
+              )}
             </div>
           </div>
         </div>
