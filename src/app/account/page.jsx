@@ -1,50 +1,67 @@
-import Account from "@/components/Account";
+import HeaderTwo from "@/components/HeaderTwo";
+import FooterTwo from "@/components/FooterTwo";
 import BottomFooter from "@/components/BottomFooter";
 import Breadcrumb from "@/components/Breadcrumb";
-import FooterTwo from "@/components/FooterTwo";
-import HeaderTwo from "@/components/HeaderTwo";
 import ShippingOne from "@/components/ShippingOne";
 import ColorInit from "@/helper/ColorInit";
-import Preloader from "@/helper/Preloader";
 import ScrollToTopInit from "@/helper/ScrollToTopInit";
+import LoginForm from "@/components/account/LoginForm";
+import RegisterForm from "@/components/account/RegisterForm";
+import AccountDashboard from "@/components/account/AccountDashboard";
+import { createClient } from "@/lib/supabase/server";
 
 export const metadata = {
-  title: "MarketPro - E-commerce Next JS Template",
-  description:
-    "MarketPro is a comprehensive and versatile Next JS template designed for e-commerce platforms, specifically tailored for multi vendor marketplaces. With its modern design and extensive feature set, MarketPro provides everything you need to create a robust and user-friendly online marketplace..",
+  title: "Account - Hot Rod Rigs",
 };
 
-const page = () => {
+// Session-gated account page (async Server Component). Uses getUser (NOT
+// getSession) so the user is verified against the auth server, not just a
+// possibly-stale cookie. Signed out -> login + register cards; signed in ->
+// AccountDashboard (with logout).
+const AccountPage = async ({ searchParams }) => {
+  const sp = (await searchParams) ?? {};
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <>
-      {/* ColorInit */}
       <ColorInit color={true} />
-
-      {/* ScrollToTop */}
       <ScrollToTopInit color='#FA6400' />
-
-      {/* Preloader */}
-      <Preloader />
-
-      {/* HeaderTwo */}
       <HeaderTwo category={true} />
-
-      {/* Breadcrumb */}
       <Breadcrumb title={"Account"} />
 
-      {/* Account */}
-      <Account />
+      <section className='account py-80'>
+        <div className='container container-lg'>
+          {user ? (
+            <div className='row gy-4 justify-content-center'>
+              <div className='col-xl-6 col-lg-8'>
+                <AccountDashboard email={user.email} />
+              </div>
+            </div>
+          ) : (
+            <div className='row gy-4'>
+              <div className='col-xl-6 pe-xl-5'>
+                <LoginForm error={sp.error} />
+              </div>
+              <div className='col-xl-6'>
+                <RegisterForm
+                  error={sp.register_error}
+                  checkEmail={sp.check_email === "1"}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
 
-      {/* ShippingOne */}
       <ShippingOne />
-
-      {/* FooterTwo */}
       <FooterTwo />
-
-      {/* BottomFooter */}
       <BottomFooter />
     </>
   );
 };
 
-export default page;
+export default AccountPage;
