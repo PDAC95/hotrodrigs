@@ -3,6 +3,8 @@ import RouteScrollToTop from "@/helper/RouteScrollToTop";
 import "./font.css";
 import "./globals.scss";
 import PhosphorIconInit from "@/helper/PhosphorIconInit";
+import CartProvider from "@/components/cart/CartProvider";
+import MiniCartDrawer from "@/components/cart/MiniCartDrawer";
 
 export const metadata = {
   title: "Digital Market Place NEXT Js Template",
@@ -17,7 +19,13 @@ export default function RootLayout({ children }) {
         <BootstrapInit />
         <PhosphorIconInit />
         <RouteScrollToTop />
-        {children}
+        {/* CartProvider wraps the app so HeaderTwo (badge), the PDP add button,
+            and the /cart page share count/lines/drawer state. The mini-cart
+            drawer is mounted once, globally. */}
+        <CartProvider>
+          {children}
+          <MiniCartDrawer />
+        </CartProvider>
       </body>
     </html>
   );

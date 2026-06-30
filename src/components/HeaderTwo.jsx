@@ -6,8 +6,13 @@ import { usePathname } from "next/navigation";
 import "select2/dist/css/select2.min.css";
 import MyTruckSelector from "@/components/fitment/MyTruckSelector";
 import MegaMenuList from "@/components/nav/MegaMenuList";
+import { useCart } from "@/components/cart/CartProvider";
 const HeaderTwo = ({ category, categoryTree = [] }) => {
   let pathname = usePathname();
+  // Real cart badge (CART-03). Hydration-safe: render nothing until mounted so
+  // SSR (no localStorage / no auth) and the first client paint agree.
+  const { count, mounted } = useCart();
+  const cartBadge = mounted ? count : "";
   const [scroll, setScroll] = useState(false);
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -733,8 +738,11 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                 >
                   <span className='text-2xl text-white d-flex position-relative me-6 mt-6 item-hover__text'>
                     <i className='ph ph-shopping-cart-simple' />
-                    <span className='w-16 h-16 flex-center rounded-circle bg-main-two-600 text-white text-xs position-absolute top-n6 end-n4'>
-                      2
+                    <span
+                      suppressHydrationWarning
+                      className='w-16 h-16 flex-center rounded-circle bg-main-two-600 text-white text-xs position-absolute top-n6 end-n4'
+                    >
+                      {cartBadge}
                     </span>
                   </span>
                   <span className='text-md text-white item-hover__text d-none d-lg-flex'>
@@ -1340,8 +1348,11 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                   >
                     <span className='text-2xl text-white d-flex position-relative me-6 mt-6 item-hover__text'>
                       <i className='ph ph-shopping-cart-simple' />
-                      <span className='w-16 h-16 flex-center rounded-circle bg-main-two-600 text-white text-xs position-absolute top-n6 end-n4'>
-                        2
+                      <span
+                        suppressHydrationWarning
+                        className='w-16 h-16 flex-center rounded-circle bg-main-two-600 text-white text-xs position-absolute top-n6 end-n4'
+                      >
+                        {cartBadge}
                       </span>
                     </span>
                     <span className='text-md text-white item-hover__text d-none d-lg-flex'>
