@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { mergeGuestCart } from "@/lib/cart/server";
 
 // All auth mutations run server-side on the RLS-enforced cookie client
 // (createClient) — never the service-role admin client. Cookie-setting stays
@@ -13,6 +14,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 export async function signIn(formData) {
   const email = formData.get("email");
   const password = formData.get("password");
+  const guestCartRaw = formData.get("guest_cart");
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -21,8 +23,31 @@ export async function signIn(formData) {
     redirect("/login?error=" + encodeURIComponent(error.message));
   }
 
+  // MERGE-ON-LOGIN (Option A — server-side): the browser Supabase client never
+  // emits SIGNED_IN for a session created in this Server Action, so the only
+  // reliable place to fire the verified mergeGuestCart is here, with the
+  // cookie-bound RLS client. LoginForm forwarded the localStorage guest cart as
+  // a hidden `guest_cart` JSON field.
+  let guestLines = [];
+  try {
+    const parsed = JSON.parse(guestCartRaw || "[]");
+    if (Array.isArray(parsed)) guestLines = parsed;
+  } catch {}
+
+  let merged = false;
+  if (guestLines.length > 0) {
+    try {
+      // mergeGuestCart already caps at live stock and is additive — do NOT change it.
+      // Swallow merge errors: a login must still succeed even if the merge hiccups.
+      await mergeGuestCart(guestLines);
+      merged = true;
+    } catch {}
+  }
+
   revalidatePath("/", "layout");
-  redirect("/account");
+  // The cart_merged flag is the soft-nav signal CartProvider consumes to clear
+  // the guest localStorage cart and re-sync the badge + lines without a reload.
+  redirect(merged ? "/account?cart_merged=1" : "/account");
 }
 
 export async function signUp(formData) {

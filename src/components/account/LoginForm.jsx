@@ -1,12 +1,24 @@
 "use client";
 
 import Link from "next/link";
+import { useRef } from "react";
 import { signIn, signInWithGoogle } from "@/lib/auth/actions";
+import { getGuestCart } from "@/lib/cart/guest-store";
 
 // Login card (markup reused from Account.jsx). Real form posting to the signIn
 // Server Action — inputs MUST be name="email" / name="password" (the action
 // reads FormData by those keys). A second form drives "Continue with Google".
 const LoginForm = ({ error }) => {
+  // Forward the localStorage guest cart to the signIn action so the server-side
+  // merge fires on a real login. React Server-Action forms still run onSubmit
+  // before the action, so we stamp the current guest cart into a hidden field.
+  const guestCartRef = useRef(null);
+  const onSubmit = () => {
+    if (guestCartRef.current) {
+      guestCartRef.current.value = JSON.stringify(getGuestCart());
+    }
+  };
+
   return (
     <div className='border border-gray-100 hover-border-main-600 transition-1 rounded-16 px-24 py-40 h-100'>
       <h6 className='text-xl mb-32'>Login</h6>
@@ -17,7 +29,8 @@ const LoginForm = ({ error }) => {
         </div>
       ) : null}
 
-      <form action={signIn}>
+      <form action={signIn} onSubmit={onSubmit}>
+        <input type='hidden' name='guest_cart' ref={guestCartRef} />
         <div className='mb-24'>
           <label
             htmlFor='email'
