@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 // Variant Matrix (RESEARCH.md Pattern 3): the PDP loads ALL variants once on the server
 // and hands them in as props. Selection is pure client-side derivation — zero network
@@ -15,7 +15,7 @@ function formatPrice(value) {
   return `$${Number(value).toFixed(2)}`;
 }
 
-const VariantSelector = ({ variants = [], priceMin, priceMax }) => {
+const VariantSelector = ({ variants = [], priceMin, priceMax, onVariantChange }) => {
   // Normalize once.
   const rows = useMemo(
     () => variants.map((v) => ({ ...v, size: norm(v.size), pack: norm(v.pack) })),
@@ -59,6 +59,15 @@ const VariantSelector = ({ variants = [], priceMin, priceMax }) => {
     rows.some((v) => v.size === s && (!hasPack || v.pack === pack));
   const packEnabled = (p) =>
     rows.some((v) => v.pack === p && (!hasSize || v.size === size));
+
+  // Lift the selected variant row to the parent (PdpPurchasePanel) so the
+  // Add-To-Cart button knows the variant_id + live stock. UX-only — the server
+  // re-validates price/stock on every write (CART-04).
+  useEffect(() => {
+    if (typeof onVariantChange === "function") {
+      onVariantChange(match ?? null);
+    }
+  }, [match, onVariantChange]);
 
   const inStock = match && (match.stock ?? 0) > 0;
   const priceText = match

@@ -10,8 +10,8 @@ import ShippingOne from "@/components/ShippingOne";
 import NewsletterOne from "@/components/NewsletterOne";
 
 import ProductGallery from "@/components/catalog/ProductGallery";
-import VariantSelector from "@/components/catalog/VariantSelector";
 import Prop65Warning from "@/components/catalog/Prop65Warning";
+import PdpPurchasePanel from "@/components/cart/PdpPurchasePanel";
 
 import ColorInit from "@/helper/ColorInit";
 import Preloader from "@/helper/Preloader";
@@ -100,27 +100,14 @@ const page = async ({ params }) => {
                     {/* Prop 65 warning — visible block near the price/add area */}
                     <Prop65Warning show={product.prop65_warning} />
 
-                    {/* Variant selector — price + availability update client-side */}
-                    <VariantSelector
+                    {/* Variant selector + wired Add-To-Cart (client island).
+                        The selected variant drives price/availability AND the
+                        add button + qty cap. */}
+                    <PdpPurchasePanel
                       variants={variants}
                       priceMin={product.price_min}
                       priceMax={product.price_max}
                     />
-
-                    <span className='mt-32 pt-32 text-gray-700 border-top border-gray-100 d-block' />
-
-                    {/* Add to cart — INERT placeholder. Cart logic lands in Phase 4.
-                        HOOK POINT: wire this button to the cart action here. */}
-                    <button
-                      type='button'
-                      className='btn btn-main flex-center gap-8 rounded-8 py-16 fw-normal mt-32 w-100'
-                      disabled
-                      aria-disabled='true'
-                      title='Cart coming soon'
-                    >
-                      <i className='ph ph-shopping-cart-simple text-lg' />
-                      Add To Cart
-                    </button>
                   </div>
                 </div>
               </div>
