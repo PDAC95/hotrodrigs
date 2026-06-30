@@ -14,19 +14,17 @@
 --     the 10K ETL-loaded catalog, which lives only in the DB, not in seed.sql).
 --
 -- Real stock arrives in a later catalog refresh / admin tooling (Phase 7).
--- `published` lives on public.products (added by the ETL columns migration).
+-- `published` (and price/stock) live on public.product_variants, not on
+-- public.products — so the eligibility filter is variant-local.
 
 update public.product_variants v
 set stock = 25
-from public.products p
-where v.product_id = p.id
-  and p.published = true
+where v.published = true
   and v.price is not null
   and v.id in (
     select v2.id
     from public.product_variants v2
-    join public.products p2 on p2.id = v2.product_id
-    where p2.published = true
+    where v2.published = true
       and v2.price is not null
     order by v2.id
     limit 200
