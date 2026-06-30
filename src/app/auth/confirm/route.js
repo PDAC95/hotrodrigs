@@ -13,7 +13,14 @@ export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const token_hash = searchParams.get("token_hash");
   const type = searchParams.get("type");
-  const next = searchParams.get("next") ?? "/account";
+
+  // Only allow same-origin relative paths to prevent open-redirect via `next`
+  // (mirrors the validation in /auth/callback). Reject protocol-relative (//)
+  // and backslash-based (/\) bypasses.
+  let next = searchParams.get("next") ?? "/account";
+  if (!next.startsWith("/") || next.startsWith("//") || next.startsWith("/\\")) {
+    next = "/account";
+  }
 
   if (token_hash && type) {
     const supabase = await createClient();
