@@ -14,9 +14,20 @@
  * `mounted` flag flips in useEffect, otherwise SSR (no localStorage) and the
  * client first paint disagree. Consumers read `mounted` + suppressHydrationWarning.
  *
- * Merge-on-login (RESEARCH Pattern 7): once a freshly authenticated session is
- * detected AND a non-empty guest store exists, call mergeGuestCartAction once,
- * then clearGuestCart(). Guarded by a ref so it runs a single time per login.
+ * Merge-on-login (RESEARCH Pattern 7): the guest→server merge runs SERVER-SIDE
+ * inside the signIn Server Action (the browser client never emits SIGNED_IN for
+ * a server-created session). signIn then soft-navigates to /account?cart_merged=1.
+ * This provider consumes that soft-nav signal — read from window.location.search,
+ * NOT useSearchParams (the latter without a Suspense boundary de-opts EVERY route
+ * to client-side rendering in Next 15, since this provider wraps the whole app) —
+ * to clear the guest localStorage cart, mark the session logged-in, refresh the
+ * badge + lines once, and strip the param, all without a full reload.
+ *
+ * Double-merge guard: a sessionStorage key `hrr.cart_merged_handled` is the
+ * cross-mount idempotency guard for a SINGLE login; it is RESET on every
+ * logged-out transition so a second login in the same tab re-syncs. The mount
+ * effect's in-mount merge is skipped whenever cart_merged is present OR the guard
+ * is set, so a hard reload of /account?cart_merged=1 never double-merges.
  */
 
 import React, {
@@ -27,6 +38,8 @@ import React, {
   useRef,
   useState,
 } from "react";
+
+import { usePathname } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/client";
 import {
@@ -42,6 +55,18 @@ import {
 } from "@/lib/cart/actions";
 
 const CartContext = createContext(null);
+
+// Cross-mount idempotency guard for a SINGLE login (reset on every logged-out
+// transition so repeated logins in one tab re-sync).
+const MERGE_HANDLED_KEY = "hrr.cart_merged_handled";
+
+// True when the current URL still carries the post-login soft-nav signal.
+function hasCartMergedParam() {
+  return (
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("cart_merged") === "1"
+  );
+}
 
 export function useCart() {
   const ctx = useContext(CartContext);
@@ -70,6 +95,7 @@ const CartProvider = ({ children }) => {
   const [lines, setLines] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
+  const pathname = usePathname();
 
   // Once-per-login merge guard.
   const mergedRef = useRef(false);
@@ -125,9 +151,19 @@ const CartProvider = ({ children }) => {
       setIsLoggedIn(loggedIn);
 
       if (loggedIn) {
-        // MERGE-ON-LOGIN: a non-empty guest store folds into the DB cart once.
+        // PRECEDENCE: when the cart_merged signal is present OR the guard is set,
+        // the server already folded the guest cart in at login and the dedicated
+        // cart_merged effect owns the clear + resync — the mount effect MUST NOT
+        // call mergeGuestCartAction (prevents a hard-reload double-merge race).
+        const alreadyHandled =
+          hasCartMergedParam() ||
+          (typeof window !== "undefined" &&
+            sessionStorage.getItem(MERGE_HANDLED_KEY) === "1");
+
+        // MERGE-ON-LOGIN fallback: a non-empty guest store folds into the DB cart
+        // once. Only runs when the server-side merge did NOT already handle it.
         const guestLines = getGuestCart();
-        if (guestLines.length > 0 && !mergedRef.current) {
+        if (!alreadyHandled && guestLines.length > 0 && !mergedRef.current) {
           mergedRef.current = true;
           try {
             const { lines: merged, count: mergedCount } =
@@ -143,6 +179,11 @@ const CartProvider = ({ children }) => {
         }
         await refreshLoggedIn();
       } else {
+        // GUARD RESET (canonical no-user point): becoming logged out clears the
+        // per-login guard so the next login's cart_merged effect re-syncs.
+        if (typeof window !== "undefined") {
+          sessionStorage.removeItem(MERGE_HANDLED_KEY);
+        }
         await refreshGuest();
       }
     })();
@@ -151,6 +192,45 @@ const CartProvider = ({ children }) => {
       cancelled = true;
     };
   }, [refreshLoggedIn, refreshGuest]);
+
+  // POST-LOGIN RE-SYNC — consume the /account?cart_merged=1 soft-nav signal once.
+  // The server already merged the guest cart inside signIn; here we just sync the
+  // UI without a full reload. Param read from window.location.search (NOT
+  // useSearchParams — see header comment re Next 15 CSR bailout). Keyed on
+  // `mounted` + `pathname` so a soft navigation re-runs this effect.
+  useEffect(() => {
+    if (!mounted || typeof window === "undefined") return;
+
+    const justMerged = hasCartMergedParam();
+    if (!justMerged) return;
+    if (sessionStorage.getItem(MERGE_HANDLED_KEY) === "1") return;
+
+    // Set the guard BEFORE any await so a refresh/back to the same URL or a
+    // re-render cannot re-enter.
+    sessionStorage.setItem(MERGE_HANDLED_KEY, "1");
+    // Mark logged-in and flip the once-per-login ref BEFORE awaiting so the mount
+    // effect's in-mount merge cannot also fire.
+    setIsLoggedIn(true);
+    mergedRef.current = true;
+    // The server already folded these items in — drop the localStorage copy so a
+    // later login can't re-merge them.
+    clearGuestCart();
+
+    let cancelled = false;
+    (async () => {
+      await refreshLoggedIn();
+      if (cancelled) return;
+      // Strip the param via history.replaceState (NOT router.replace — avoids a
+      // re-render/refetch loop). The URL becomes /account with no param.
+      if (window.history?.replaceState) {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [mounted, pathname, refreshLoggedIn]);
 
   // React to guest-cart mutations from anywhere (add/update/remove/clear).
   useEffect(() => {
