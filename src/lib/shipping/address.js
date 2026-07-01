@@ -76,6 +76,24 @@ export function fromEasyPostSuggestion(addr) {
  */
 export async function verifyAddress(input) {
   const i = input || {};
+
+  // Graceful degradation (SHIP-04: checkout must never dead-end). When EasyPost
+  // is not configured (no EASYPOST_API_KEY), do NOT block checkout on address
+  // verification — there is no verifier and no suggestion to offer, so a hard
+  // `verified:false` would strand the customer at the shipping step forever.
+  // Instead accept the address as unverified and let the quote flow through to
+  // quoteCart, which returns the flat-rate ESTIMATED fallback. The money is still
+  // server-authoritative (create-intent recomputes shipping from that estimate).
+  if (!process.env.EASYPOST_API_KEY) {
+    return {
+      verified: true,
+      unverified: true,
+      errors: [],
+      suggestion: null,
+      address_id: null,
+    };
+  }
+
   try {
     const address = await easypost.Address.create({
       verify: ["delivery"],
