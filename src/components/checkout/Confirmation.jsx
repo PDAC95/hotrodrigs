@@ -102,9 +102,9 @@ const Confirmation = () => {
 
       // A fulfilled order row.
       setOrder(result);
-      // The email isn't a direct field on the order; pull it from the snapshot if
-      // present so the guest-account note can be personalized (falls back to generic).
-      setEmail(result.ship_to_snapshot?.email ?? result.email ?? null);
+      // The by-pi route now returns the real buyer email (from pending_orders) so
+      // the guest-account note personalizes when present, generic copy when absent.
+      setEmail(result.email ?? null);
       setPhase("receipt");
     });
 

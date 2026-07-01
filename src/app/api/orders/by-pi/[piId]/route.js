@@ -32,7 +32,16 @@ export async function GET(req, { params }) {
     .maybeSingle();
 
   if (order) {
-    return NextResponse.json(order);
+    // The orders table has no email column; the buyer email lives on the staged
+    // pending_orders row (create-intent step 9). Surface it so the confirmation
+    // receipt's guest-account note can personalize (FIX-01).
+    const pendingEmailRes = await admin
+      .from("pending_orders")
+      .select("email")
+      .eq("stripe_pi_id", piId)
+      .maybeSingle();
+
+    return NextResponse.json({ ...order, email: pendingEmailRes.data?.email ?? null });
   }
 
   // No order yet. Surface a needs_refund state so the page can show the refunded
