@@ -61,3 +61,76 @@ create policy "pending_orders_select_own" on public.pending_orders
 create policy "pending_orders_admin_all" on public.pending_orders
   for all to authenticated
   using ((select public.is_admin())) with check ((select public.is_admin()));
+
+-- ===========================================================================
+-- 4. fulfill_order RPC (RESEARCH Pattern 4) — the single transactional
+--    fulfillment path the webhook (06-03) calls.
+--    SECURITY DEFINER + set search_path = '' + fully-qualified objects
+--    (matches the Phase 1 03-01 RBAC-hook convention).
+-- ===========================================================================
+create or replace function public.fulfill_order(
+  p_stripe_pi_id       text,
+  p_order_number       text,
+  p_user_id            uuid,
+  p_ship_to            jsonb,
+  p_subtotal           numeric,
+  p_shipping           numeric,
+  p_tax                numeric,
+  p_total              numeric,
+  p_tax_calculation_id text,
+  p_notes              text,
+  p_lines              jsonb   -- [{variant_id, quantity, unit_price, sku, name}]
+) returns bigint
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_order_id bigint;
+  v_line     jsonb;
+  v_updated  integer;
+begin
+  -- Idempotent: a replayed PI hits the UNIQUE stripe_pi_id and returns the existing order.
+  insert into public.orders (stripe_pi_id, status, user_id, ship_to_snapshot,
+                             subtotal, shipping, tax, total, order_number, tax_calculation_id, notes)
+  values (p_stripe_pi_id, 'paid', p_user_id, p_ship_to,
+          p_subtotal, p_shipping, p_tax, p_total, p_order_number, p_tax_calculation_id, p_notes)
+  on conflict (stripe_pi_id) do nothing
+  returning id into v_order_id;
+
+  if v_order_id is null then
+    select id into v_order_id from public.orders where stripe_pi_id = p_stripe_pi_id;
+    -- Already fulfilled by a prior delivery of this event; do NOT re-decrement stock.
+    return v_order_id;
+  end if;
+
+  for v_line in select * from jsonb_array_elements(p_lines) loop
+    -- Atomic conditional decrement (CHK-05). Row is locked for the UPDATE; two
+    -- concurrent last-unit buys cannot both succeed.
+    update public.product_variants
+       set stock = stock - (v_line->>'quantity')::int
+     where id = (v_line->>'variant_id')::bigint
+       and stock >= (v_line->>'quantity')::int;
+    get diagnostics v_updated = row_count;
+    if v_updated = 0 then
+      -- Genuine oversell: raise so the whole transaction rolls back. The webhook
+      -- (06-03) catches insufficient_stock and refunds rather than looping
+      -- (RESEARCH Pitfall 4) — the RPC's job is only to guarantee atomicity.
+      raise exception 'insufficient_stock for variant %', v_line->>'variant_id';
+    end if;
+
+    insert into public.order_items (order_id, variant_id, sku_snapshot, name_snapshot, unit_price, quantity)
+    values (v_order_id, (v_line->>'variant_id')::bigint, v_line->>'sku', v_line->>'name',
+            (v_line->>'unit_price')::numeric, (v_line->>'quantity')::int);
+  end loop;
+
+  -- Mark the staging row fulfilled so the confirmation page can stop polling.
+  update public.pending_orders set status = 'fulfilled' where stripe_pi_id = p_stripe_pi_id;
+
+  return v_order_id;
+end;
+$$;
+
+-- Only the service-role (webhook) may call fulfill_order; never anon/authenticated.
+revoke all on function public.fulfill_order(text,text,uuid,jsonb,numeric,numeric,numeric,numeric,text,text,jsonb) from public;
+grant execute on function public.fulfill_order(text,text,uuid,jsonb,numeric,numeric,numeric,numeric,text,text,jsonb) to service_role;
