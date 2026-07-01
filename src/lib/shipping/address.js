@@ -109,14 +109,16 @@ export async function verifyAddress(input) {
     return {
       verified: !!v?.success,
       errors: v?.errors ?? [],
-      // Normalized fields EasyPost echoes back on the address itself.
+      // Normalized fields EasyPost echoes back on the address itself. EasyPost may
+      // normalize street/city/zip, but it must NOT downgrade the buyer's selected
+      // US/CA country — the caller input is authoritative for country (FIX-02).
       suggestion: {
         street1: address?.street1 ?? "",
         street2: address?.street2 ?? "",
         city: address?.city ?? "",
         state: address?.state ?? "",
         zip: address?.zip ?? "",
-        country: address?.country ?? i.country ?? "US",
+        country: i.country ?? address?.country ?? "US",
       },
       address_id: address?.id ?? null,
     };

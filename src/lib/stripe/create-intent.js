@@ -176,13 +176,17 @@ export async function createCheckoutIntent({
   });
 
   // 9. Stage the row the webhook + confirmation page read (service-role bypasses RLS).
+  // Build the snapshot explicitly and pin the country so it can never silently drop
+  // (FIX-02). address.country is the zod-validated US|CA — do NOT default to "US"
+  // here; a "US" default is exactly the CA->US reset bug.
+  const shipToSnapshot = { ...address, country: address.country };
   const { error: upsertErr } = await admin.from("pending_orders").upsert(
     {
       stripe_pi_id: pi.id,
       order_number: orderNumber,
       email,
       user_id: userId,
-      ship_to_snapshot: address,
+      ship_to_snapshot: shipToSnapshot,
       lines: lineSnapshot,
       subtotal: subtotalCents / 100,
       shipping: shippingCents / 100,
