@@ -260,11 +260,17 @@ const Confirmation = () => {
                 (CONTEXT: single visual source of truth). */}
             <OrderReceipt order={order} />
 
-            {/* Next actions */}
+            {/* Next actions — "View order" deep-links to the Plan 03 order-detail
+                page when we have an order number (always true in the receipt phase). */}
             <div className="d-flex flex-wrap justify-content-center gap-16">
-              <Link href="/account" className="btn btn-main py-18 px-40 rounded-8">
-                View order
-              </Link>
+              {order?.order_number && (
+                <Link
+                  href={`/account/orders/${order.order_number}`}
+                  className="btn btn-main py-18 px-40 rounded-8"
+                >
+                  View order
+                </Link>
+              )}
               <Link
                 href="/"
                 className="btn btn-outline-gray py-18 px-40 rounded-8"
