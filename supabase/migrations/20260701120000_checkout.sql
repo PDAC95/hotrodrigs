@@ -134,3 +134,24 @@ $$;
 -- Only the service-role (webhook) may call fulfill_order; never anon/authenticated.
 revoke all on function public.fulfill_order(text,text,uuid,jsonb,numeric,numeric,numeric,numeric,text,text,jsonb) from public;
 grant execute on function public.fulfill_order(text,text,uuid,jsonb,numeric,numeric,numeric,numeric,text,text,jsonb) to service_role;
+
+-- ===========================================================================
+-- 5. user_id_by_email helper (ACCT-03, added in 06-03) — O(1) account lookup.
+--    supabase-js cannot select auth.users through PostgREST, and
+--    auth.admin.listUsers scans/pages the whole user table. This SECURITY DEFINER
+--    helper resolves an existing account by email in one indexed query so the
+--    webhook can link a guest order to an existing account without a duplicate.
+--    Belongs with the other checkout DB objects (added here per 06-03 plan Task 1).
+-- ===========================================================================
+create or replace function public.user_id_by_email(p_email text)
+returns uuid
+language sql
+security definer
+set search_path = ''
+as $$
+  select id from auth.users where lower(email) = lower(p_email) limit 1;
+$$;
+
+-- Only the service-role (webhook) resolves accounts by email; never anon/authenticated.
+revoke all on function public.user_id_by_email(text) from public;
+grant execute on function public.user_id_by_email(text) to service_role;
