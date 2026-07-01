@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Háblale al usuario **en español**. Todo el código, comentarios, nombres y contenido del proyecto van **en inglés**.
 - Respuestas con ritmo conversacional: concisas, claras y puntuales, sin verbosidad.
 - Descompón cada tarea en pasos pequeños y resuélvelos uno por uno.
+- Cuando el usuario escribe `;` significa "hecho" / "ok" (confirmación para continuar).
 
 ## Project
 
