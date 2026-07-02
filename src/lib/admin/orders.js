@@ -27,14 +27,14 @@ import { createClient } from "@/lib/supabase/server";
  * admin-gated read and attach it as `email` so the list can show a Customer
  * column. Legacy rows with no order_number (early $0 test orders) simply get null.
  *
- * @returns {Promise<Array<{ id: number, order_number: string, status: string, total: number, created_at: string, user_id: string|null, email: string|null }>>}
+ * @returns {Promise<Array<{ id: number, order_number: string, status: string, total: number, created_at: string, user_id: string|null, email: string|null, name: string|null }>>}
  */
 export async function getAllOrders() {
   const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("orders")
-    .select("id, order_number, status, total, created_at, user_id")
+    .select("id, order_number, status, total, created_at, user_id, ship_to_snapshot")
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -66,6 +66,7 @@ export async function getAllOrders() {
   return orders.map((o) => ({
     ...o,
     email: emailByOrder.get(o.order_number) ?? null,
+    name: o.ship_to_snapshot?.name ?? null,
   }));
 }
 

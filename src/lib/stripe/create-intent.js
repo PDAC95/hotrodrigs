@@ -52,6 +52,7 @@ function hashString(str) {
  */
 export async function createCheckoutIntent({
   email,
+  customerName,
   address,
   selectedRateId,
   guestCart,
@@ -179,7 +180,11 @@ export async function createCheckoutIntent({
   // Build the snapshot explicitly and pin the country so it can never silently drop
   // (FIX-02). address.country is the zod-validated US|CA — do NOT default to "US"
   // here; a "US" default is exactly the CA->US reset bug.
-  const shipToSnapshot = { ...address, country: address.country };
+  const shipToSnapshot = {
+    ...address,
+    country: address.country,
+    name: customerName ?? null,
+  };
   const { error: upsertErr } = await admin.from("pending_orders").upsert(
     {
       stripe_pi_id: pi.id,

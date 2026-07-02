@@ -66,7 +66,14 @@ const AdminOrdersPage = async () => {
                     <td className='text-gray-700'>
                       {formatOrderDate(o.created_at)}
                     </td>
-                    <td className='text-gray-700'>{o.email ?? "—"}</td>
+                    <td className='text-gray-700'>
+                      {o.name ? (
+                        <span className='d-block text-gray-900 fw-medium'>
+                          {o.name}
+                        </span>
+                      ) : null}
+                      <span className='d-block text-sm'>{o.email ?? "—"}</span>
+                    </td>
                     <td className='text-gray-900 fw-semibold'>
                       {formatPrice(o.total)}
                     </td>

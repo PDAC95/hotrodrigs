@@ -50,11 +50,12 @@ function isValidEmail(email) {
 
 // Stable key for the (address + rate + email + cart) tuple. Any change refetches
 // a fresh clientSecret so a stale amount can never be charged (Pitfall 7).
-function intentKey(address, rateId, email, guestCart) {
+function intentKey(address, rateId, email, name, guestCart) {
   return JSON.stringify({
     a: address,
     r: rateId ?? null,
     e: email ?? "",
+    n: name ?? "",
     c: guestCart ?? null,
   });
 }
@@ -68,6 +69,7 @@ const Checkout = () => {
   const [suggestion, setSuggestion] = useState(null);
 
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [notes, setNotes] = useState("");
 
   // Server payment-intent state.
@@ -103,6 +105,7 @@ const Checkout = () => {
 
   const cartCount = (lines ?? []).length;
   const emailOk = isValidEmail(email);
+  const nameOk = name.trim().length > 0;
 
   // The tuple that drives the create-intent fetch. Guarded so it fires once per
   // real change and refetches on any input change.
@@ -110,10 +113,11 @@ const Checkout = () => {
     !!address &&
     !!selectedRate?.id &&
     emailOk &&
+    nameOk &&
     cartCount > 0;
 
   const key = readyToIntent
-    ? intentKey(address, selectedRate.id, email, guestCart)
+    ? intentKey(address, selectedRate.id, email, name, guestCart)
     : "";
 
   const abortRef = useRef(null);
@@ -146,6 +150,7 @@ const Checkout = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             email,
+            name,
             address,
             selected_rate_id: selectedRate.id,
             guest_cart: guestCart ?? undefined,
@@ -235,6 +240,20 @@ const Checkout = () => {
               <div className="border border-gray-100 rounded-8 px-30 py-30 mb-30">
                 <h6 className="text-lg mb-24">Contact</h6>
                 <div className="row gy-3">
+                  <div className="col-12">
+                    <input
+                      type="text"
+                      className="common-input border-gray-100"
+                      placeholder="Full name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                    {name && !nameOk && (
+                      <p className="text-danger-600 mt-8 mb-0">
+                        Enter the recipient&apos;s name.
+                      </p>
+                    )}
+                  </div>
                   <div className="col-12">
                     <input
                       type="email"

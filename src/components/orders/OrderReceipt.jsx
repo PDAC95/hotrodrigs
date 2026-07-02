@@ -94,6 +94,12 @@ const OrderReceipt = ({ order }) => {
       <div className="border border-gray-100 rounded-16 p-32 mb-40">
         <h6 className="mb-16 text-gray-900">Shipping to</h6>
         <p className="text-gray-700 mb-0">
+          {addr.name ? (
+            <>
+              <span className="fw-semibold text-gray-900">{addr.name}</span>
+              <br />
+            </>
+          ) : null}
           {addr.street1}
           {addr.street2 ? `, ${addr.street2}` : ""}
           <br />

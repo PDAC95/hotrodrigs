@@ -22,6 +22,9 @@ export const dynamic = "force-dynamic";
 // Locked geographic scope: US + CA (CONTEXT). country enum blocks anything else at 400.
 const bodySchema = z.object({
   email: z.string().email(),
+  // Recipient / customer name captured at checkout — persisted into the
+  // ship_to_snapshot so the admin can contact the buyer by name (not just email).
+  name: z.string().min(1).max(200),
   address: z.object({
     street1: z.string().min(1),
     street2: z.string().optional(),
@@ -55,7 +58,8 @@ export async function POST(req) {
     return NextResponse.json({ error: "bad_request" }, { status: 400 });
   }
 
-  const { email, address, selected_rate_id, guest_cart, notes } = parsed.data;
+  const { email, name, address, selected_rate_id, guest_cart, notes } =
+    parsed.data;
 
   // Never read a client amount/price/tax — none exist in the schema.
 
@@ -74,6 +78,7 @@ export async function POST(req) {
   try {
     const { clientSecret, orderNumber, breakdown } = await createCheckoutIntent({
       email,
+      customerName: name,
       address,
       selectedRateId: selected_rate_id,
       guestCart: guest_cart,
