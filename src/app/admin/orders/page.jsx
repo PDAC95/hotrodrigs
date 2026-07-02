@@ -51,7 +51,7 @@ const AdminOrdersPage = async () => {
                   o.order_number
                 )}`;
                 return (
-                  <tr key={o.order_number}>
+                  <tr key={o.id}>
                     <td>
                       <Link
                         href={href}

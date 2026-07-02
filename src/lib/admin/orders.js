@@ -22,14 +22,14 @@ import { createClient } from "@/lib/supabase/server";
  * Every order, most recent first — NOT owner-scoped (admin RLS returns all rows).
  * Returns [] on error.
  *
- * @returns {Promise<Array<{ order_number: string, status: string, total: number, created_at: string, user_id: string|null }>>}
+ * @returns {Promise<Array<{ id: number, order_number: string, status: string, total: number, created_at: string, user_id: string|null }>>}
  */
 export async function getAllOrders() {
   const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("orders")
-    .select("order_number, status, total, created_at, user_id")
+    .select("id, order_number, status, total, created_at, user_id")
     .order("created_at", { ascending: false });
 
   if (error) {
