@@ -10,9 +10,20 @@ import OrderDetail from "@/components/orders/OrderDetail";
 import { createClient } from "@/lib/supabase/server";
 import { getOrderByNumber } from "@/lib/orders/read";
 
+// The route segment carries a percent-encoded order_number (its leading "#" is a URL
+// fragment, so OrderList/Confirmation encode it). Decode defensively before use — a
+// no-op when Next already decoded, but required when it hands back the raw "%23…".
+function decodeOrderNumber(raw) {
+  try {
+    return decodeURIComponent(raw);
+  } catch {
+    return raw;
+  }
+}
+
 export async function generateMetadata({ params }) {
   const { order_number } = await params;
-  return { title: `Order ${order_number} - Hot Rod Rigs` };
+  return { title: `Order ${decodeOrderNumber(order_number)} - Hot Rod Rigs` };
 }
 
 // Order-detail route (ACCT-06). async Server Component: getUser-gated, then an
@@ -31,7 +42,7 @@ const OrderDetailPage = async ({ params }) => {
 
   if (!user) redirect("/account");
 
-  const order = await getOrderByNumber(order_number);
+  const order = await getOrderByNumber(decodeOrderNumber(order_number));
 
   return (
     <>

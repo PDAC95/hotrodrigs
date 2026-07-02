@@ -265,7 +265,7 @@ const Confirmation = () => {
             <div className="d-flex flex-wrap justify-content-center gap-16">
               {order?.order_number && (
                 <Link
-                  href={`/account/orders/${order.order_number}`}
+                  href={`/account/orders/${encodeURIComponent(order.order_number)}`}
                   className="btn btn-main py-18 px-40 rounded-8"
                 >
                   View order

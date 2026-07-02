@@ -59,7 +59,9 @@ const OrderList = ({ orders = [] }) => {
           </thead>
           <tbody>
             {orders.map((o) => {
-              const href = `/account/orders/${o.order_number}`;
+              // order_number carries a leading "#" (e.g. "#HRR-10004"); "#" is a URL
+              // fragment, so it MUST be percent-encoded or the row link never navigates.
+              const href = `/account/orders/${encodeURIComponent(o.order_number)}`;
               return (
                 <tr key={o.order_number} className='order-row'>
                   <td>
