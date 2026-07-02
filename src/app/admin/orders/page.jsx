@@ -31,6 +31,9 @@ const AdminOrdersPage = async () => {
                 Date
               </th>
               <th scope='col' className='text-gray-500 fw-medium text-sm'>
+                Customer
+              </th>
+              <th scope='col' className='text-gray-500 fw-medium text-sm'>
                 Total
               </th>
               <th scope='col' className='text-gray-500 fw-medium text-sm'>
@@ -41,7 +44,7 @@ const AdminOrdersPage = async () => {
           <tbody>
             {orders.length === 0 ? (
               <tr>
-                <td colSpan={4} className='text-center text-gray-500 py-40'>
+                <td colSpan={5} className='text-center text-gray-500 py-40'>
                   No orders yet
                 </td>
               </tr>
@@ -63,6 +66,7 @@ const AdminOrdersPage = async () => {
                     <td className='text-gray-700'>
                       {formatOrderDate(o.created_at)}
                     </td>
+                    <td className='text-gray-700'>{o.email ?? "—"}</td>
                     <td className='text-gray-900 fw-semibold'>
                       {formatPrice(o.total)}
                     </td>

@@ -22,7 +22,12 @@ import { createClient } from "@/lib/supabase/server";
  * Every order, most recent first — NOT owner-scoped (admin RLS returns all rows).
  * Returns [] on error.
  *
- * @returns {Promise<Array<{ id: number, order_number: string, status: string, total: number, created_at: string, user_id: string|null }>>}
+ * The buyer email is not stored on `orders` (Phase 7 FIX-01: it lives on
+ * `pending_orders`, keyed by the same order_number). We resolve it in a second
+ * admin-gated read and attach it as `email` so the list can show a Customer
+ * column. Legacy rows with no order_number (early $0 test orders) simply get null.
+ *
+ * @returns {Promise<Array<{ id: number, order_number: string, status: string, total: number, created_at: string, user_id: string|null, email: string|null }>>}
  */
 export async function getAllOrders() {
   const supabase = await createClient();
@@ -36,7 +41,32 @@ export async function getAllOrders() {
     console.error("[admin/orders] getAllOrders failed:", error);
     return [];
   }
-  return data ?? [];
+
+  const orders = data ?? [];
+  const orderNumbers = orders
+    .map((o) => o.order_number)
+    .filter((n) => n != null);
+
+  // Resolve buyer emails from pending_orders (admin RLS returns all rows).
+  const emailByOrder = new Map();
+  if (orderNumbers.length > 0) {
+    const { data: pending, error: pendingError } = await supabase
+      .from("pending_orders")
+      .select("order_number, email")
+      .in("order_number", orderNumbers);
+    if (pendingError) {
+      console.error("[admin/orders] email lookup failed:", pendingError);
+    } else {
+      for (const p of pending ?? []) {
+        if (p.order_number && p.email) emailByOrder.set(p.order_number, p.email);
+      }
+    }
+  }
+
+  return orders.map((o) => ({
+    ...o,
+    email: emailByOrder.get(o.order_number) ?? null,
+  }));
 }
 
 /**
