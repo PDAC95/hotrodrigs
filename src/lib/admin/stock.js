@@ -1,0 +1,101 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { createClient } from "@/lib/supabase/server";
+
+// Admin stock data layer (ADM-03).
+//
+// Writes go through the RLS admin-cookie client (createClient) — the admin JWT
+// carries the user_role claim, so the Phase 1 `product_variants_admin_write`
+// and `products_admin_write` policies (both `for all to authenticated using
+// ((select public.is_admin()))`) permit these writes. We NEVER use the
+// service-role client here; RLS is the real enforcement.
+//
+// STOREFRONT-REFRESH RULE: the storefront lists PARENTS using the denormalized
+// `products.in_stock` aggregate (Phase 3), NOT live variant stock. So every
+// stock mutation MUST recompute the owning product's in_stock as
+// `exists(published variant with stock > 0)` and write it back — otherwise
+// /c/**, /search, and cards keep the stale availability. This mirrors backfill
+// 5b in 20260629000000_storefront_read.sql, done for a single parent in JS.
+
+// Find variants for the management list, scoped by an admin search box.
+//
+// A large catalog (~10.8k variants) means we NEVER list them all — the search
+// box scopes the result set. `q` filters by SKU (the natural admin key) via
+// ilike. We join the parent product name/slug so the admin can identify each
+// variant. Ordered by id, capped at `limit`.
+export async function findVariants({ q = "", limit = 50 } = {}) {
+  const supabase = await createClient();
+
+  let query = supabase
+    .from("product_variants")
+    .select("id, sku, size, pack, stock, published, product_id, products(name, slug)")
+    .order("id", { ascending: true })
+    .limit(limit);
+
+  const term = (q ?? "").trim();
+  if (term) {
+    // SKU is the natural admin key — filter by it as the primary search.
+    query = query.ilike("sku", `%${term}%`);
+  }
+
+  const { data, error } = await query;
+  if (error) {
+    console.error("[admin/stock] findVariants failed:", error.message);
+    return [];
+  }
+  return data ?? [];
+}
+
+// Set a variant's stock quantity and refresh the storefront aggregate.
+//
+// Called as a form action from StockEditor. Validates input, updates
+// product_variants.stock via the RLS cookie client, then recomputes and writes
+// products.in_stock for the owning parent so the storefront reflects the change.
+export async function setVariantStock(formData) {
+  const variantId = Number(formData.get("variant_id"));
+  const rawStock = formData.get("stock");
+  const stock = Math.trunc(Number(rawStock));
+
+  // Validate: variantId a positive integer, stock a finite integer >= 0.
+  if (!Number.isInteger(variantId) || variantId <= 0) {
+    return { ok: false, error: "invalid_input" };
+  }
+  if (!Number.isFinite(stock) || stock < 0) {
+    return { ok: false, error: "invalid_input" };
+  }
+
+  const supabase = await createClient();
+
+  // Update the variant and read back its parent product_id in one call.
+  const { data: updated, error } = await supabase
+    .from("product_variants")
+    .update({ stock })
+    .eq("id", variantId)
+    .select("id, product_id")
+    .maybeSingle();
+
+  if (error || !updated) {
+    if (error) console.error("[admin/stock] setVariantStock update failed:", error.message);
+    return { ok: false, error: "update_failed" };
+  }
+
+  // STOREFRONT-REFRESH: recompute the parent's in_stock from its published
+  // variants (a published variant with stock > 0 exists) and write it back.
+  const { data: sib } = await supabase
+    .from("product_variants")
+    .select("stock")
+    .eq("product_id", updated.product_id)
+    .eq("published", true);
+
+  const inStock = (sib ?? []).some((v) => (v.stock ?? 0) > 0);
+
+  await supabase
+    .from("products")
+    .update({ in_stock: inStock })
+    .eq("id", updated.product_id);
+
+  revalidatePath("/admin/stock");
+
+  return { ok: true, stock };
+}
