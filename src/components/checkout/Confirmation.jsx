@@ -26,9 +26,12 @@
  * Bootstrap 5 markup matching the template. All copy English (CLAUDE.md).
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import OrderReceipt from "@/components/orders/OrderReceipt";
+import { useCart } from "@/components/cart/CartProvider";
+import { activateGuestAccount } from "@/lib/orders/activate-actions";
 
 const POLL_TRIES = 12;
 const POLL_DELAY_MS = 1500;
@@ -63,12 +66,14 @@ const Confirmation = () => {
   const [phase, setPhase] = useState("loading");
   const [order, setOrder] = useState(null);
   const [piId, setPiId] = useState(null);
+  const [clientSecret, setClientSecret] = useState(null);
   const [email, setEmail] = useState(null);
   const [attempt, setAttempt] = useState(0); // bump to retry after "waiting"
 
   useEffect(() => {
-    // Read the PaymentIntent id from the URL on mount (window, not useSearchParams
-    // — keeps the route static). Both onSuccess + Stripe redirect append these.
+    // Read the PaymentIntent id + client_secret from the URL on mount (window, not
+    // useSearchParams — keeps the route static). Both onSuccess + Stripe redirect
+    // append these; the client_secret proves purchase for guest activation.
     const params = new URLSearchParams(window.location.search);
     const pi = params.get("payment_intent");
 
@@ -77,6 +82,7 @@ const Confirmation = () => {
       return;
     }
     setPiId(pi);
+    setClientSecret(params.get("payment_intent_client_secret"));
 
     let cancelled = false;
     setPhase("loading");
@@ -110,6 +116,41 @@ const Confirmation = () => {
     // `attempt` re-runs the poll when the user hits "Refresh" in the waiting state.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [attempt]);
+
+  // Guest account activation (ACCT-03). Only a signed-out viewer sees the CTA; the
+  // server action re-verifies the purchase and only sets a password on an
+  // unactivated guest account. On success the buyer is signed in → their order.
+  const router = useRouter();
+  const { mounted, isLoggedIn } = useCart();
+  const [password, setPassword] = useState("");
+  const [activateError, setActivateError] = useState(null);
+  const [isActivating, startActivate] = useTransition();
+
+  const canActivate = mounted && !isLoggedIn;
+
+  function handleActivate(e) {
+    e.preventDefault();
+    setActivateError(null);
+    if (password.length < 8) {
+      setActivateError("Password must be at least 8 characters.");
+      return;
+    }
+    startActivate(async () => {
+      const res = await activateGuestAccount({ piId, clientSecret, password });
+      if (res?.ok) {
+        router.push(`/account/orders/${encodeURIComponent(res.orderNumber)}`);
+        return;
+      }
+      const map = {
+        registered: "This email already has an account — please log in instead.",
+        already_activated: "This account is already set up — please log in.",
+        weak_password: "Password must be at least 8 characters.",
+        invalid_request:
+          "We couldn't verify this purchase. Use the link in your receipt email.",
+      };
+      setActivateError(map[res?.error] || "Something went wrong — please try again.");
+    });
+  }
 
   // ---- Neutral "no order details" state (missing payment_intent param) ----
   if (phase === "no-order") {
@@ -241,20 +282,51 @@ const Confirmation = () => {
               )}
             </div>
 
-            {/* Guest-account note (ACCT-03 hint) */}
-            <div className="bg-color-three rounded-8 p-24 mb-32">
-              {email ? (
-                <p className="text-gray-700 mb-0">
-                  We&apos;ve created an account for <strong>{email}</strong> — check
-                  your inbox to set a password and track this order.
+            {/* Guest account activation (ACCT-03). Signed-out buyers set a password
+                here to activate the account we created for them and track the order.
+                Signed-in buyers already have it in their account — no CTA. */}
+            {canActivate && email && (
+              <div className="bg-color-three rounded-8 p-24 mb-32">
+                <h6 className="text-lg mb-8 text-gray-900">
+                  Create your account to track this order
+                </h6>
+                <p className="text-gray-700 mb-16">
+                  We&apos;ve set up an account for <strong>{email}</strong>. Choose a
+                  password to activate it and view your order any time.
                 </p>
-              ) : (
-                <p className="text-gray-700 mb-0">
-                  Check your inbox for a confirmation email — you can set a password
-                  there to track this order.
+                <form onSubmit={handleActivate} className="d-flex flex-column gap-12">
+                  <label htmlFor="activate-password" className="visually-hidden">
+                    Password
+                  </label>
+                  <input
+                    id="activate-password"
+                    type="password"
+                    className="common-input rounded-8"
+                    placeholder="Choose a password (min. 8 characters)"
+                    autoComplete="new-password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={isActivating}
+                  />
+                  {activateError && (
+                    <p className="text-danger-600 text-sm mb-0">{activateError}</p>
+                  )}
+                  <button
+                    type="submit"
+                    className="btn btn-main py-16 px-32 rounded-8"
+                    disabled={isActivating}
+                  >
+                    {isActivating ? "Activating…" : "Activate & view order"}
+                  </button>
+                </form>
+                <p className="text-sm text-gray-500 mb-0 mt-12">
+                  Already have an account?{" "}
+                  <Link href="/login" className="text-main-600">
+                    Log in
+                  </Link>
                 </p>
-              )}
-            </div>
+              </div>
+            )}
 
             {/* Receipt body — shared with the Plan 03 order-detail page
                 (CONTEXT: single visual source of truth). */}

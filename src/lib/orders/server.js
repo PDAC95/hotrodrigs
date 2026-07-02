@@ -6,8 +6,9 @@ import { createAdminClient } from "@/lib/supabase/admin";
  * ACCT-03 — resolve or create the buyer's account by email (service-role).
  *
  * - Existing email  -> return its user id (link the order, never a duplicate).
- * - New email       -> create a confirmed user + email them a recovery (set-password)
- *                      link so a guest can later sign in to see their order.
+ * - New email       -> create a confirmed user flagged guest_checkout; the buyer
+ *                      sets its password on the confirmation page (activateGuestAccount)
+ *                      to activate the account and sign in to see their order.
  *
  * Never blocks order creation: if account resolution genuinely fails, log and
  * return null so the order is still created with user_id null (a later sign-in
@@ -34,9 +35,16 @@ export async function resolveOrCreateUser(email) {
     if (lookupError) throw lookupError;
     if (existingId) return existingId;
 
-    // No account yet — create a confirmed user, then send a set-password link.
+    // No account yet — create a confirmed user, flagged as an unactivated guest
+    // account. The buyer sets its password from the confirmation page (ACCT-03,
+    // activateGuestAccount); the flag gates that activation so a proof-of-purchase
+    // can never reset a real, pre-existing account.
     const { data: created, error: createError } =
-      await admin.auth.admin.createUser({ email, email_confirm: true });
+      await admin.auth.admin.createUser({
+        email,
+        email_confirm: true,
+        app_metadata: { guest_checkout: true },
+      });
 
     if (createError) {
       // Race: another delivery/tab created the account between lookup and insert.
@@ -48,14 +56,6 @@ export async function resolveOrCreateUser(email) {
         return raceId ?? null;
       }
       throw createError;
-    }
-
-    // Guest gets a recovery link so they can set a password and access their order.
-    try {
-      await admin.auth.admin.generateLink({ type: "recovery", email });
-    } catch (linkError) {
-      // Non-fatal: the account exists; the link email is a convenience, not a gate.
-      console.error("[orders] generateLink failed (non-fatal):", linkError);
     }
 
     return created?.user?.id ?? null;

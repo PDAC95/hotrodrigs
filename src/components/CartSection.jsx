@@ -15,8 +15,10 @@
  * lines, so they are excluded — CONTEXT). Shipping (Phase 5) and tax (Phase 6)
  * are NOT computed here. Total = Subtotal.
  *
- * Checkout (Phase 6) is gated for guests: the button routes to /login with the
- * cart preserved in localStorage (CONTEXT).
+ * Checkout is open to guests (ACCT-03): the button routes guests straight to
+ * /checkout (cart preserved in localStorage as guest_cart); the webhook auto-creates
+ * an account from the guest email so the order can be claimed later. Logged-in users
+ * get "Proceed to checkout"; a "Log in" link stays available for returning customers.
  *
  * Empty state: friendly message + CTA to the store (no product suggestions).
  */
@@ -230,13 +232,17 @@ const CartSection = () => {
               ) : (
                 <>
                   <Link
-                    href='/login'
+                    href='/checkout'
                     className='btn btn-main mt-32 py-18 w-100 rounded-8'
                   >
-                    Log in to check out
+                    Check out as guest
                   </Link>
                   <span className='text-sm text-gray-500 d-block mt-12 text-center'>
-                    Your cart is saved.
+                    Have an account?{" "}
+                    <Link href='/login' className='text-main-600'>
+                      Log in
+                    </Link>{" "}
+                    — we&apos;ll create one for you at checkout either way.
                   </span>
                 </>
               )}
