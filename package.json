@@ -9,6 +9,7 @@
     "lint": "next lint",
     "test:rls": "node --env-file=.env.local scripts/rls-isolation-test.mjs",
     "check:leak": "bash scripts/check-service-role-leak.sh",
+    "check:assets": "node --env-file=.env.local scripts/check-asset-404.mjs",
     "etl": "node --env-file=.env.local scripts/etl/import-catalog.mjs",
     "etl:dry": "node --env-file=.env.local scripts/etl/import-catalog.mjs --dry-run"
   },
@@ -43,6 +44,7 @@
   "devDependencies": {
     "eslint": "^8.57.1",
     "eslint-config-next": "^15.5.19",
+    "playwright": "1.61.1",
     "sass": "^1.71.1",
     "webpack": "^5.90.3"
   }
