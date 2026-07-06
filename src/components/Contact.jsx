@@ -126,12 +126,12 @@ const Contact = () => {
                 <span className='w-40 h-40 flex-center rounded-circle border border-gray-100 text-main-two-600 text-2xl flex-shrink-0'>
                   <i className='ph-fill ph-envelope' />
                 </span>
-                <Link
-                  href='/mailto:support24@marketpro.com'
+                <a
+                  href='mailto:support@hotrodrigs.com'
                   className='text-md text-gray-900 hover-text-main-600'
                 >
-                  support24@marketpro.com
-                </Link>
+                  support@hotrodrigs.com
+                </a>
               </div>
               <div className='flex-align gap-16 mb-0'>
                 <span className='w-40 h-40 flex-center rounded-circle border border-gray-100 text-main-two-600 text-2xl flex-shrink-0'>

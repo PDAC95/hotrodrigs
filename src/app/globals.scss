@@ -1,9 +1,11 @@
-// Plugin CSS
-@import "/public/assets/css/slick.css";
-@import "/public/assets/css/animate.css";
-@import "/public/assets/css/aos.css";
-@import "/public/assets/css/select2.min.css";
-@import "/public/assets/css/jquery-ui.css";
+// Plugin CSS — plain-CSS @imports pass through to the browser verbatim, so they
+// must use the SERVED path (/assets/...), not the repo path (/public/assets/...)
+// which 404s on every route (fixed in 09-05, guarded by `npm run check:assets`).
+@import "/assets/css/slick.css";
+@import "/assets/css/animate.css";
+@import "/assets/css/aos.css";
+@import "/assets/css/select2.min.css";
+@import "/assets/css/jquery-ui.css";
 @import "~/public/assets/css/bootstrap.min.css";
 
 @import "~animate.css";

@@ -16,8 +16,8 @@ const FooterTwo = () => {
               </Link>
             </div>
             <p className='mb-24'>
-              Marketpro become the largest computer parts, gaming pc parts, and
-              other IT related products.
+              Hot Rod Rigs — quality truck parts and accessories, from bumpers
+              and lighting to interior upgrades for your rig.
             </p>
             <div className='flex-align gap-16 mb-16'>
               <span className='w-32 h-32 flex-center rounded-circle border border-gray-100 text-main-two-600 text-md flex-shrink-0'>
@@ -42,23 +42,11 @@ const FooterTwo = () => {
             </ul>
           </div>
           <div className='footer-item'>
-            <h6 className=''>Shop on The Go</h6>
-            <p className='mb-16'>Marketpro App is available. Get it now</p>
-            <div className='flex-align gap-8 my-32'>
-              <Link href='/https://www.apple.com/store' className=''>
-                <img src='/assets/images/thumbs/store-img1.png' alt='' />
-              </Link>
-              <Link
-                href='/https://play.google.com/store/apps?hl=en'
-                className=''
-              >
-                <img src='/assets/images/thumbs/store-img2.png' alt='' />
-              </Link>
-            </div>
+            <h6 className=''>Follow Us</h6>
             <ul className='flex-align gap-16'>
               <li>
                 <Link
-                  href='/https://www.facebook.com'
+                  href='https://www.facebook.com'
                   className='w-44 h-44 flex-center bg-main-two-50 text-main-two-600 text-xl rounded-8 hover-bg-main-two-600 hover-text-white'
                 >
                   <i className='ph-fill ph-facebook-logo' />
@@ -66,7 +54,7 @@ const FooterTwo = () => {
               </li>
               <li>
                 <Link
-                  href='/https://www.twitter.com'
+                  href='https://www.twitter.com'
                   className='w-44 h-44 flex-center bg-main-two-50 text-main-two-600 text-xl rounded-8 hover-bg-main-two-600 hover-text-white'
                 >
                   <i className='ph-fill ph-twitter-logo' />
@@ -74,7 +62,7 @@ const FooterTwo = () => {
               </li>
               <li>
                 <Link
-                  href='/https://www.linkedin.com'
+                  href='https://www.linkedin.com'
                   className='w-44 h-44 flex-center bg-main-two-50 text-main-two-600 text-xl rounded-8 hover-bg-main-two-600 hover-text-white'
                 >
                   <i className='ph-fill ph-instagram-logo' />
@@ -82,7 +70,7 @@ const FooterTwo = () => {
               </li>
               <li>
                 <Link
-                  href='/https://www.pinterest.com'
+                  href='https://www.pinterest.com'
                   className='w-44 h-44 flex-center bg-main-two-50 text-main-two-600 text-xl rounded-8 hover-bg-main-two-600 hover-text-white'
                 >
                   <i className='ph-fill ph-linkedin-logo' />
