@@ -31,6 +31,13 @@ const ProductForm = ({ mode = "create", product = null, categories = null }) => 
 
   const action = mode === "edit" ? updateProduct : createProduct;
 
+  // Signature of the server-side variant data. When a save + router.refresh()
+  // brings fresh values, this key changes so VariantRows remounts and re-seeds
+  // its inputs (they are uncontrolled, so a plain re-render keeps stale values).
+  const variantsKey = (product?.product_variants ?? [])
+    .map((v) => `${v.id}:${v.stock}:${v.price}:${v.size ?? ""}:${v.pack ?? ""}`)
+    .join("|");
+
   const onSubmit = (formData) => {
     setError("");
     setSaved(false);
@@ -142,7 +149,7 @@ const ProductForm = ({ mode = "create", product = null, categories = null }) => 
         </div>
       </div>
 
-      <VariantRows initialRows={product?.product_variants ?? []} />
+      <VariantRows key={variantsKey} initialRows={product?.product_variants ?? []} />
 
       <div className='mt-24'>
         <button
