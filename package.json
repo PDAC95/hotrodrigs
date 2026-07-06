@@ -41,6 +41,8 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^15.5.19",
     "sass": "^1.71.1",
     "webpack": "^5.90.3"
   }
