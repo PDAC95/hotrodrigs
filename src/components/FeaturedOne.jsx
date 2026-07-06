@@ -61,12 +61,6 @@ const FeaturedOne = () => {
                 <div className='flex-between flex-wrap gap-8'>
                   <h5 className='mb-0'>Featured Products </h5>
                   <div className='flex-align mr-point gap-16'>
-                    <Link
-                      href='/shop'
-                      className='text-sm fw-medium text-gray-700 hover-text-main-600 hover-text-decoration-underline'
-                    >
-                      View All Deals
-                    </Link>
                   </div>
                 </div>
               </div>
@@ -76,11 +70,7 @@ const FeaturedOne = () => {
                     <div className='featured-products__sliders'>
                       <div className=''>
                         <div className='mt-24 product-card d-flex gap-16 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                          <Link
-                            href='/product-details-two'
-                            className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'
-                            tabIndex={0}
-                          >
+                          <span className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'>
                             <span className='product-card__badge bg-danger-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0'>
                               Sale 50%{" "}
                             </span>
@@ -89,16 +79,12 @@ const FeaturedOne = () => {
                               alt='marketpro'
                               className='w-auto max-w-unset'
                             />
-                          </Link>
+                          </span>
                           <div className='product-card__content my-20 flex-grow-1'>
                             <h6 className='title text-lg fw-semibold mb-12'>
-                              <Link
-                                href='/product-details-two'
-                                className='link text-line-2'
-                                tabIndex={0}
-                              >
+                              <span className='link text-line-2'>
                                 iPhone 15 Pro Warp Charge 30W Power Adapter
-                              </Link>
+                              </span>
                             </h6>
                             <div className='flex-align gap-6 mb-12'>
                               <span className='text-xs fw-medium text-gray-500'>
@@ -142,11 +128,7 @@ const FeaturedOne = () => {
                       </div>
                       <div className=''>
                         <div className='mt-24 product-card d-flex gap-16 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                          <Link
-                            href='/product-details-two'
-                            className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'
-                            tabIndex={0}
-                          >
+                          <span className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'>
                             <span className='product-card__badge bg-tertiary-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0'>
                               Best seller
                             </span>
@@ -155,16 +137,12 @@ const FeaturedOne = () => {
                               alt='marketpro'
                               className='w-auto max-w-unset'
                             />
-                          </Link>
+                          </span>
                           <div className='product-card__content my-20 flex-grow-1'>
                             <h6 className='title text-lg fw-semibold mb-12'>
-                              <Link
-                                href='/product-details-two'
-                                className='link text-line-2'
-                                tabIndex={0}
-                              >
+                              <span className='link text-line-2'>
                                 iPhone 15 Pro Warp Charge 30W Power Adapter
-                              </Link>
+                              </span>
                             </h6>
                             <div className='flex-align gap-6 mb-12'>
                               <span className='text-xs fw-medium text-gray-500'>
@@ -212,11 +190,7 @@ const FeaturedOne = () => {
                     <div className='featured-products__sliders'>
                       <div className=''>
                         <div className='mt-24 product-card d-flex gap-16 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                          <Link
-                            href='/product-details-two'
-                            className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'
-                            tabIndex={0}
-                          >
+                          <span className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'>
                             <span className='product-card__badge bg-primary-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0'>
                               Best Sale
                             </span>
@@ -225,16 +199,12 @@ const FeaturedOne = () => {
                               alt='marketpro'
                               className='w-auto max-w-unset'
                             />
-                          </Link>
+                          </span>
                           <div className='product-card__content my-20 flex-grow-1'>
                             <h6 className='title text-lg fw-semibold mb-12'>
-                              <Link
-                                href='/product-details-two'
-                                className='link text-line-2'
-                                tabIndex={0}
-                              >
+                              <span className='link text-line-2'>
                                 iPhone 15 Pro Warp Charge 30W Power Adapter
-                              </Link>
+                              </span>
                             </h6>
                             <div className='flex-align gap-6 mb-12'>
                               <span className='text-xs fw-medium text-gray-500'>
@@ -278,11 +248,7 @@ const FeaturedOne = () => {
                       </div>
                       <div className=''>
                         <div className='mt-24 product-card d-flex gap-16 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                          <Link
-                            href='/product-details-two'
-                            className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'
-                            tabIndex={0}
-                          >
+                          <span className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'>
                             <span className='product-card__badge bg-warning-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0'>
                               New
                             </span>
@@ -291,16 +257,12 @@ const FeaturedOne = () => {
                               alt='marketpro'
                               className='w-auto max-w-unset'
                             />
-                          </Link>
+                          </span>
                           <div className='product-card__content my-20 flex-grow-1'>
                             <h6 className='title text-lg fw-semibold mb-12'>
-                              <Link
-                                href='/product-details-two'
-                                className='link text-line-2'
-                                tabIndex={0}
-                              >
+                              <span className='link text-line-2'>
                                 iPhone 15 Pro Warp Charge 30W Power Adapter
-                              </Link>
+                              </span>
                             </h6>
                             <div className='flex-align gap-6 mb-12'>
                               <span className='text-xs fw-medium text-gray-500'>
@@ -348,11 +310,7 @@ const FeaturedOne = () => {
                     <div className='featured-products__sliders'>
                       <div className=''>
                         <div className='mt-24 product-card d-flex gap-16 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                          <Link
-                            href='/product-details-two'
-                            className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'
-                            tabIndex={0}
-                          >
+                          <span className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'>
                             <span className='product-card__badge bg-danger-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0'>
                               Sale 50%{" "}
                             </span>
@@ -361,16 +319,12 @@ const FeaturedOne = () => {
                               alt='marketpro'
                               className='w-auto max-w-unset'
                             />
-                          </Link>
+                          </span>
                           <div className='product-card__content my-20 flex-grow-1'>
                             <h6 className='title text-lg fw-semibold mb-12'>
-                              <Link
-                                href='/product-details-two'
-                                className='link text-line-2'
-                                tabIndex={0}
-                              >
+                              <span className='link text-line-2'>
                                 iPhone 15 Pro Warp Charge 30W Power Adapter
-                              </Link>
+                              </span>
                             </h6>
                             <div className='flex-align gap-6 mb-12'>
                               <span className='text-xs fw-medium text-gray-500'>
@@ -414,11 +368,7 @@ const FeaturedOne = () => {
                       </div>
                       <div className=''>
                         <div className='mt-24 product-card d-flex gap-16 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                          <Link
-                            href='/product-details-two'
-                            className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'
-                            tabIndex={0}
-                          >
+                          <span className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'>
                             <span className='product-card__badge bg-tertiary-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0'>
                               Best seller
                             </span>
@@ -427,16 +377,12 @@ const FeaturedOne = () => {
                               alt='marketpro'
                               className='w-auto max-w-unset'
                             />
-                          </Link>
+                          </span>
                           <div className='product-card__content my-20 flex-grow-1'>
                             <h6 className='title text-lg fw-semibold mb-12'>
-                              <Link
-                                href='/product-details-two'
-                                className='link text-line-2'
-                                tabIndex={0}
-                              >
+                              <span className='link text-line-2'>
                                 iPhone 15 Pro Warp Charge 30W Power Adapter
-                              </Link>
+                              </span>
                             </h6>
                             <div className='flex-align gap-6 mb-12'>
                               <span className='text-xs fw-medium text-gray-500'>
@@ -502,16 +448,6 @@ const FeaturedOne = () => {
                     20% off
                   </span>
                 </div>
-                <Link
-                  href='/shop'
-                  className='mt-16 mb-24 btn btn-main-two fw-medium d-inline-flex align-items-center rounded-pill gap-8'
-                  tabIndex={0}
-                >
-                  Shop Now
-                  <span className='icon text-xl d-flex'>
-                    <i className='ph ph-arrow-right' />
-                  </span>
-                </Link>
               </div>
               <img
                 src='assets/images/thumbs/featured-product-img.png'

@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 
 const DiscountOne = () => {
   return (
@@ -23,13 +22,6 @@ const DiscountOne = () => {
                   <h6 className='mb-20'>
                     57" Odyssey Neo G9 Dual 4K UHD Quantum Mini-LED
                   </h6>
-                  <Link
-                    href='/shop'
-                    className='btn btn-outline-black rounded-pill gap-8'
-                    tabIndex={0}
-                  >
-                    Shop Now
-                  </Link>
                 </div>
                 <img
                   src='assets/images/thumbs/discount-img1.png'
@@ -54,13 +46,6 @@ const DiscountOne = () => {
                   <h6 className='mb-20'>
                     57" Odyssey Neo G9 Dual 4K UHD Quantum Mini-LED
                   </h6>
-                  <Link
-                    href='/shop'
-                    className='btn btn-outline-black rounded-pill gap-8'
-                    tabIndex={0}
-                  >
-                    Shop Now
-                  </Link>
                 </div>
                 <img
                   src='assets/images/thumbs/discount-img2.png'

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 
 const PopularProductsOne = () => {
   const [timeLeft, setTimeLeft] = useState({
@@ -31,12 +30,6 @@ const PopularProductsOne = () => {
             <div className='flex-between flex-wrap gap-8'>
               <h5 className='mb-0'>Popular Products</h5>
               <div className='flex-align gap-16'>
-                <Link
-                  href='/shop'
-                  className='text-sm fw-medium text-gray-700 hover-text-main-600 hover-text-decoration-underline'
-                >
-                  View All Products
-                </Link>
               </div>
             </div>
           </div>
@@ -82,26 +75,18 @@ const PopularProductsOne = () => {
           <div className='row gy-4'>
             <div className='col-xxl-3 col-xl-4 col-sm-6 col-xs-6'>
               <div className='product-card h-100 d-flex gap-16 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                <Link
-                  href='/product-details'
-                  className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'
-                  tabIndex={0}
-                >
+                <span className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'>
                   <img
                     src='assets/images/thumbs/popular-img1.png'
                     alt=''
                     className='w-auto max-w-unset'
                   />
-                </Link>
+                </span>
                 <div className='product-card__content flex-grow-1'>
                   <h6 className='title text-lg fw-semibold mb-12'>
-                    <Link
-                      href='/product-details'
-                      className='link text-line-2'
-                      tabIndex={0}
-                    >
+                    <span className='link text-line-2'>
                       Headphone &amp; Earphone
-                    </Link>
+                    </span>
                   </h6>
                   <span className='text-gray-600 text-sm mb-4'>
                     Wired Headphones
@@ -115,38 +100,23 @@ const PopularProductsOne = () => {
                   <span className='text-gray-600 text-sm mb-0'>
                     Earbud Headphone
                   </span>
-                  <Link
-                    href='/shop'
-                    className='text-tertiary-600 flex-align gap-8 mt-24'
-                  >
-                    All Categories
-                    <i className='ph ph-arrow-right d-flex' />
-                  </Link>
                 </div>
               </div>
             </div>
             <div className='col-xxl-3 col-xl-4 col-sm-6 col-xs-6'>
               <div className='product-card h-100 d-flex gap-16 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                <Link
-                  href='/product-details'
-                  className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'
-                  tabIndex={0}
-                >
+                <span className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'>
                   <img
                     src='assets/images/thumbs/popular-img2.png'
                     alt=''
                     className='w-auto max-w-unset'
                   />
-                </Link>
+                </span>
                 <div className='product-card__content flex-grow-1'>
                   <h6 className='title text-lg fw-semibold mb-12'>
-                    <Link
-                      href='/product-details'
-                      className='link text-line-2'
-                      tabIndex={0}
-                    >
+                    <span className='link text-line-2'>
                       TV &amp; Smart Home
-                    </Link>
+                    </span>
                   </h6>
                   <span className='text-gray-600 text-sm mb-4'>
                     Wired Headphones
@@ -160,38 +130,23 @@ const PopularProductsOne = () => {
                   <span className='text-gray-600 text-sm mb-0'>
                     Earbud Headphone
                   </span>
-                  <Link
-                    href='/shop'
-                    className='text-tertiary-600 flex-align gap-8 mt-24'
-                  >
-                    All Categories
-                    <i className='ph ph-arrow-right d-flex' />
-                  </Link>
                 </div>
               </div>
             </div>
             <div className='col-xxl-3 col-xl-4 col-sm-6 col-xs-6'>
               <div className='product-card h-100 d-flex gap-16 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                <Link
-                  href='/product-details'
-                  className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'
-                  tabIndex={0}
-                >
+                <span className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'>
                   <img
                     src='assets/images/thumbs/popular-img3.png'
                     alt=''
                     className='w-auto max-w-unset'
                   />
-                </Link>
+                </span>
                 <div className='product-card__content flex-grow-1'>
                   <h6 className='title text-lg fw-semibold mb-12'>
-                    <Link
-                      href='/product-details'
-                      className='link text-line-2'
-                      tabIndex={0}
-                    >
+                    <span className='link text-line-2'>
                       Video Games
-                    </Link>
+                    </span>
                   </h6>
                   <span className='text-gray-600 text-sm mb-4'>
                     Wired Headphones
@@ -205,38 +160,23 @@ const PopularProductsOne = () => {
                   <span className='text-gray-600 text-sm mb-0'>
                     Earbud Headphone
                   </span>
-                  <Link
-                    href='/shop'
-                    className='text-tertiary-600 flex-align gap-8 mt-24'
-                  >
-                    All Categories
-                    <i className='ph ph-arrow-right d-flex' />
-                  </Link>
                 </div>
               </div>
             </div>
             <div className='col-xxl-3 col-xl-4 col-sm-6 col-xs-6'>
               <div className='product-card h-100 d-flex gap-16 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                <Link
-                  href='/product-details'
-                  className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'
-                  tabIndex={0}
-                >
+                <span className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'>
                   <img
                     src='assets/images/thumbs/popular-img4.png'
                     alt=''
                     className='w-auto max-w-unset'
                   />
-                </Link>
+                </span>
                 <div className='product-card__content flex-grow-1'>
                   <h6 className='title text-lg fw-semibold mb-12'>
-                    <Link
-                      href='/product-details'
-                      className='link text-line-2'
-                      tabIndex={0}
-                    >
+                    <span className='link text-line-2'>
                       Computer &amp; Tablets
-                    </Link>
+                    </span>
                   </h6>
                   <span className='text-gray-600 text-sm mb-4'>
                     Wired Headphones
@@ -250,38 +190,23 @@ const PopularProductsOne = () => {
                   <span className='text-gray-600 text-sm mb-0'>
                     Earbud Headphone
                   </span>
-                  <Link
-                    href='/shop'
-                    className='text-tertiary-600 flex-align gap-8 mt-24'
-                  >
-                    All Categories
-                    <i className='ph ph-arrow-right d-flex' />
-                  </Link>
                 </div>
               </div>
             </div>
             <div className='col-xxl-3 col-xl-4 col-sm-6 col-xs-6'>
               <div className='product-card h-100 d-flex gap-16 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                <Link
-                  href='/product-details'
-                  className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'
-                  tabIndex={0}
-                >
+                <span className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'>
                   <img
                     src='assets/images/thumbs/popular-img5.png'
                     alt=''
                     className='w-auto max-w-unset'
                   />
-                </Link>
+                </span>
                 <div className='product-card__content flex-grow-1'>
                   <h6 className='title text-lg fw-semibold mb-12'>
-                    <Link
-                      href='/product-details'
-                      className='link text-line-2'
-                      tabIndex={0}
-                    >
+                    <span className='link text-line-2'>
                       Car &amp; GPS
-                    </Link>
+                    </span>
                   </h6>
                   <span className='text-gray-600 text-sm mb-4'>
                     Wired Headphones
@@ -295,38 +220,23 @@ const PopularProductsOne = () => {
                   <span className='text-gray-600 text-sm mb-0'>
                     Earbud Headphone
                   </span>
-                  <Link
-                    href='/shop'
-                    className='text-tertiary-600 flex-align gap-8 mt-24'
-                  >
-                    All Categories
-                    <i className='ph ph-arrow-right d-flex' />
-                  </Link>
                 </div>
               </div>
             </div>
             <div className='col-xxl-3 col-xl-4 col-sm-6 col-xs-6'>
               <div className='product-card h-100 d-flex gap-16 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                <Link
-                  href='/product-details'
-                  className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'
-                  tabIndex={0}
-                >
+                <span className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'>
                   <img
                     src='assets/images/thumbs/popular-img6.png'
                     alt=''
                     className='w-auto max-w-unset'
                   />
-                </Link>
+                </span>
                 <div className='product-card__content flex-grow-1'>
                   <h6 className='title text-lg fw-semibold mb-12'>
-                    <Link
-                      href='/product-details'
-                      className='link text-line-2'
-                      tabIndex={0}
-                    >
+                    <span className='link text-line-2'>
                       Camera &amp; Video
-                    </Link>
+                    </span>
                   </h6>
                   <span className='text-gray-600 text-sm mb-4'>
                     Wired Headphones
@@ -340,38 +250,23 @@ const PopularProductsOne = () => {
                   <span className='text-gray-600 text-sm mb-0'>
                     Earbud Headphone
                   </span>
-                  <Link
-                    href='/shop'
-                    className='text-tertiary-600 flex-align gap-8 mt-24'
-                  >
-                    All Categories
-                    <i className='ph ph-arrow-right d-flex' />
-                  </Link>
                 </div>
               </div>
             </div>
             <div className='col-xxl-3 col-xl-4 col-sm-6 col-xs-6'>
               <div className='product-card h-100 d-flex gap-16 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                <Link
-                  href='/product-details'
-                  className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'
-                  tabIndex={0}
-                >
+                <span className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'>
                   <img
                     src='assets/images/thumbs/popular-img7.png'
                     alt=''
                     className='w-auto max-w-unset'
                   />
-                </Link>
+                </span>
                 <div className='product-card__content flex-grow-1'>
                   <h6 className='title text-lg fw-semibold mb-12'>
-                    <Link
-                      href='/product-details'
-                      className='link text-line-2'
-                      tabIndex={0}
-                    >
+                    <span className='link text-line-2'>
                       Kitchen Appliance
-                    </Link>
+                    </span>
                   </h6>
                   <span className='text-gray-600 text-sm mb-4'>
                     Wired Headphones
@@ -385,38 +280,23 @@ const PopularProductsOne = () => {
                   <span className='text-gray-600 text-sm mb-0'>
                     Earbud Headphone
                   </span>
-                  <Link
-                    href='/shop'
-                    className='text-tertiary-600 flex-align gap-8 mt-24'
-                  >
-                    All Categories
-                    <i className='ph ph-arrow-right d-flex' />
-                  </Link>
                 </div>
               </div>
             </div>
             <div className='col-xxl-3 col-xl-4 col-sm-6 col-xs-6'>
               <div className='product-card h-100 d-flex gap-16 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                <Link
-                  href='/product-details'
-                  className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'
-                  tabIndex={0}
-                >
+                <span className='product-card__thumb flex-center h-unset rounded-8 bg-gray-50 position-relative w-unset flex-shrink-0 p-24'>
                   <img
                     src='assets/images/thumbs/popular-img8.png'
                     alt=''
                     className='w-auto max-w-unset'
                   />
-                </Link>
+                </span>
                 <div className='product-card__content flex-grow-1'>
                   <h6 className='title text-lg fw-semibold mb-12'>
-                    <Link
-                      href='/product-details'
-                      className='link text-line-2'
-                      tabIndex={0}
-                    >
+                    <span className='link text-line-2'>
                       Phone &amp; Accessories
-                    </Link>
+                    </span>
                   </h6>
                   <span className='text-gray-600 text-sm mb-4'>
                     Wired Headphones
@@ -430,13 +310,6 @@ const PopularProductsOne = () => {
                   <span className='text-gray-600 text-sm mb-0'>
                     Earbud Headphone
                   </span>
-                  <Link
-                    href='/shop'
-                    className='text-tertiary-600 flex-align gap-8 mt-24'
-                  >
-                    All Categories
-                    <i className='ph ph-arrow-right d-flex' />
-                  </Link>
                 </div>
               </div>
             </div>

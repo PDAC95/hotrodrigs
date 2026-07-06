@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import dynamic from "next/dynamic";
 const Slider = dynamic(() => import("react-slick"), { ssr: false });
 
@@ -51,12 +50,6 @@ const TopVendorsTwo = () => {
             <div className='flex-between flex-wrap gap-8'>
               <h5 className='mb-0'>Popular Products</h5>
               <div className='flex-align gap-16'>
-                <Link
-                  href='/shop'
-                  className='text-sm fw-medium text-gray-700 hover-text-main-600 hover-text-decoration-underline'
-                >
-                  View All Products
-                </Link>
               </div>
             </div>
           </div>

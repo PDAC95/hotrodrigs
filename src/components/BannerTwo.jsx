@@ -85,15 +85,6 @@ const BannerTwo = ({ categoryTree = [] }) => {
                     <h2 className='banner-item-two__title bounce text-white'>
                       Get The Sound You Love For Less
                     </h2>
-                    <Link
-                      href='/shop'
-                      className='btn btn-outline-white d-inline-flex align-items-center rounded-pill gap-8 mt-48'
-                    >
-                      Shop Now
-                      <span className='icon text-xl d-flex'>
-                        <i className='ph ph-shopping-cart-simple' />
-                      </span>
-                    </Link>
                   </div>
                   <div className='banner-item-two__thumb position-absolute bottom-0'>
                     <img src='assets/images/thumbs/banner-two-img.png' alt='' />
@@ -107,15 +98,6 @@ const BannerTwo = ({ categoryTree = [] }) => {
                     <h2 className='banner-item-two__title bounce text-white'>
                       Get The Sound You Love For Less
                     </h2>
-                    <Link
-                      href='/shop'
-                      className='btn btn-outline-white d-inline-flex align-items-center rounded-pill gap-8 mt-48'
-                    >
-                      Shop Now
-                      <span className='icon text-xl d-flex'>
-                        <i className='ph ph-shopping-cart-simple' />
-                      </span>
-                    </Link>
                   </div>
                   <div className='banner-item-two__thumb position-absolute bottom-0'>
                     <img

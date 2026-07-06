@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 
 const RecentlyViewedOne = () => {
   return (
@@ -12,22 +11,13 @@ const RecentlyViewedOne = () => {
             <div className='flex-between flex-wrap gap-8'>
               <h5 className='mb-0'>Recently Viewed Products</h5>
               <div className='flex-align gap-16'>
-                <Link
-                  href='/shop'
-                  className='text-sm fw-medium text-gray-700 hover-text-main-600 hover-text-decoration-underline'
-                >
-                  View All Products
-                </Link>
               </div>
             </div>
           </div>
           <div className='row g-12'>
             <div className='col-xxl-2 col-xl-3 col-lg-4 col-sm-6'>
               <div className='product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                <Link
-                  href='/product-details-two'
-                  className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'
-                >
+                <span className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'>
                   <span className='product-card__badge bg-tertiary-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0'>
                     Best Seller{" "}
                   </span>
@@ -36,19 +26,15 @@ const RecentlyViewedOne = () => {
                     alt='marketpro'
                     className='w-auto max-w-unset'
                   />
-                </Link>
+                </span>
                 <div className='product-card__content mt-16'>
                   <span className='text-main-600 bg-main-50 text-sm fw-medium py-4 px-8'>
                     19%OFF
                   </span>
                   <h6 className='title text-lg fw-semibold my-16'>
-                    <Link
-                      href='/product-details-two'
-                      className='link text-line-2'
-                      tabIndex={0}
-                    >
+                    <span className='link text-line-2'>
                       Instax Mini 12 Instant Film Camera - Green
-                    </Link>
+                    </span>
                   </h6>
                   <div className='flex-align gap-6'>
                     <div className='flex-align gap-8'>
@@ -93,10 +79,7 @@ const RecentlyViewedOne = () => {
             </div>
             <div className='col-xxl-2 col-xl-3 col-lg-4 col-sm-6'>
               <div className='product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                <Link
-                  href='/product-details-two'
-                  className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'
-                >
+                <span className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'>
                   <span className='product-card__badge bg-warning-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0'>
                     New
                   </span>
@@ -105,19 +88,15 @@ const RecentlyViewedOne = () => {
                     alt='marketpro'
                     className='w-auto max-w-unset'
                   />
-                </Link>
+                </span>
                 <div className='product-card__content mt-16'>
                   <span className='text-main-600 bg-main-50 text-sm fw-medium py-4 px-8'>
                     19%OFF
                   </span>
                   <h6 className='title text-lg fw-semibold my-16'>
-                    <Link
-                      href='/product-details-two'
-                      className='link text-line-2'
-                      tabIndex={0}
-                    >
+                    <span className='link text-line-2'>
                       Instax Mini 12 Instant Film Camera - Green
-                    </Link>
+                    </span>
                   </h6>
                   <div className='flex-align gap-6'>
                     <div className='flex-align gap-8'>
@@ -162,10 +141,7 @@ const RecentlyViewedOne = () => {
             </div>
             <div className='col-xxl-2 col-xl-3 col-lg-4 col-sm-6'>
               <div className='product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                <Link
-                  href='/product-details-two'
-                  className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'
-                >
+                <span className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'>
                   <span className='product-card__badge bg-danger-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0'>
                     Sale 50%
                   </span>
@@ -174,19 +150,15 @@ const RecentlyViewedOne = () => {
                     alt='marketpro'
                     className='w-auto max-w-unset'
                   />
-                </Link>
+                </span>
                 <div className='product-card__content mt-16'>
                   <span className='text-main-600 bg-main-50 text-sm fw-medium py-4 px-8'>
                     19%OFF
                   </span>
                   <h6 className='title text-lg fw-semibold my-16'>
-                    <Link
-                      href='/product-details-two'
-                      className='link text-line-2'
-                      tabIndex={0}
-                    >
+                    <span className='link text-line-2'>
                       Instax Mini 12 Instant Film Camera - Green
-                    </Link>
+                    </span>
                   </h6>
                   <div className='flex-align gap-6'>
                     <div className='flex-align gap-8'>
@@ -231,10 +203,7 @@ const RecentlyViewedOne = () => {
             </div>
             <div className='col-xxl-2 col-xl-3 col-lg-4 col-sm-6'>
               <div className='product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                <Link
-                  href='/product-details-two'
-                  className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'
-                >
+                <span className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'>
                   <span className='product-card__badge bg-success-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0'>
                     Sold
                   </span>
@@ -243,19 +212,15 @@ const RecentlyViewedOne = () => {
                     alt='marketpro'
                     className='w-auto max-w-unset'
                   />
-                </Link>
+                </span>
                 <div className='product-card__content mt-16'>
                   <span className='text-main-600 bg-main-50 text-sm fw-medium py-4 px-8'>
                     19%OFF
                   </span>
                   <h6 className='title text-lg fw-semibold my-16'>
-                    <Link
-                      href='/product-details-two'
-                      className='link text-line-2'
-                      tabIndex={0}
-                    >
+                    <span className='link text-line-2'>
                       Instax Mini 12 Instant Film Camera - Green
-                    </Link>
+                    </span>
                   </h6>
                   <div className='flex-align gap-6'>
                     <div className='flex-align gap-8'>
@@ -300,10 +265,7 @@ const RecentlyViewedOne = () => {
             </div>
             <div className='col-xxl-2 col-xl-3 col-lg-4 col-sm-6'>
               <div className='product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                <Link
-                  href='/product-details-two'
-                  className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'
-                >
+                <span className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'>
                   <span className='product-card__badge bg-tertiary-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0'>
                     Best Seller{" "}
                   </span>
@@ -312,19 +274,15 @@ const RecentlyViewedOne = () => {
                     alt='marketpro'
                     className='w-auto max-w-unset'
                   />
-                </Link>
+                </span>
                 <div className='product-card__content mt-16'>
                   <span className='text-main-600 bg-main-50 text-sm fw-medium py-4 px-8'>
                     19%OFF
                   </span>
                   <h6 className='title text-lg fw-semibold my-16'>
-                    <Link
-                      href='/product-details-two'
-                      className='link text-line-2'
-                      tabIndex={0}
-                    >
+                    <span className='link text-line-2'>
                       Instax Mini 12 Instant Film Camera - Green
-                    </Link>
+                    </span>
                   </h6>
                   <div className='flex-align gap-6'>
                     <div className='flex-align gap-8'>
@@ -369,10 +327,7 @@ const RecentlyViewedOne = () => {
             </div>
             <div className='col-xxl-2 col-xl-3 col-lg-4 col-sm-6'>
               <div className='product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                <Link
-                  href='/product-details-two'
-                  className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'
-                >
+                <span className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'>
                   <span className='product-card__badge bg-warning-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0'>
                     New
                   </span>
@@ -381,19 +336,15 @@ const RecentlyViewedOne = () => {
                     alt='marketpro'
                     className='w-auto max-w-unset'
                   />
-                </Link>
+                </span>
                 <div className='product-card__content mt-16'>
                   <span className='text-main-600 bg-main-50 text-sm fw-medium py-4 px-8'>
                     19%OFF
                   </span>
                   <h6 className='title text-lg fw-semibold my-16'>
-                    <Link
-                      href='/product-details-two'
-                      className='link text-line-2'
-                      tabIndex={0}
-                    >
+                    <span className='link text-line-2'>
                       Instax Mini 12 Instant Film Camera - Green
-                    </Link>
+                    </span>
                   </h6>
                   <div className='flex-align gap-6'>
                     <div className='flex-align gap-8'>

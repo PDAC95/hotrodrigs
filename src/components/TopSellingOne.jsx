@@ -71,12 +71,6 @@ const TopSellingOne = () => {
             <div className='flex-between flex-wrap gap-8'>
               <h5 className='mb-0'>Top Selling Products</h5>
               <div className='flex-align mr-point gap-16'>
-                <Link
-                  href='/shop'
-                  className='text-sm fw-medium text-gray-700 hover-text-main-600 hover-text-decoration-underline'
-                >
-                  View All Deals
-                </Link>
               </div>
             </div>
           </div>
@@ -112,10 +106,7 @@ const TopSellingOne = () => {
                 <Slider {...settings}>
                   <div>
                     <div className='product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                      <Link
-                        href='/product-details-two'
-                        className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'
-                      >
+                      <span className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'>
                         <span className='product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0'>
                           Sold
                         </span>
@@ -124,7 +115,7 @@ const TopSellingOne = () => {
                           alt=''
                           className='w-auto max-w-unset'
                         />
-                      </Link>
+                      </span>
                       <div className='product-card__content mt-16'>
                         <div className='flex-align gap-6'>
                           <span className='text-xs fw-medium text-gray-500'>
@@ -138,13 +129,9 @@ const TopSellingOne = () => {
                           </span>
                         </div>
                         <h6 className='title text-lg fw-semibold mt-12 mb-8'>
-                          <Link
-                            href='/product-details-two'
-                            className='link text-line-2'
-                            tabIndex={0}
-                          >
+                          <span className='link text-line-2'>
                             Taylor Farms Broccoli Florets Vegetables
-                          </Link>
+                          </span>
                         </h6>
                         <div className='flex-align gap-4'>
                           <span className='text-tertiary-600 text-md d-flex'>
@@ -195,10 +182,7 @@ const TopSellingOne = () => {
                   </div>
                   <div>
                     <div className='product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                      <Link
-                        href='/product-details-two'
-                        className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'
-                      >
+                      <span className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'>
                         <span className='product-card__badge bg-danger-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0'>
                           Sale 50%{" "}
                         </span>
@@ -207,7 +191,7 @@ const TopSellingOne = () => {
                           alt=''
                           className='w-auto max-w-unset'
                         />
-                      </Link>
+                      </span>
                       <div className='product-card__content mt-16'>
                         <div className='flex-align gap-6'>
                           <span className='text-xs fw-medium text-gray-500'>
@@ -221,13 +205,9 @@ const TopSellingOne = () => {
                           </span>
                         </div>
                         <h6 className='title text-lg fw-semibold mt-12 mb-8'>
-                          <Link
-                            href='/product-details-two'
-                            className='link text-line-2'
-                            tabIndex={0}
-                          >
+                          <span className='link text-line-2'>
                             Taylor Farms Broccoli Florets Vegetables
-                          </Link>
+                          </span>
                         </h6>
                         <div className='flex-align gap-4'>
                           <span className='text-tertiary-600 text-md d-flex'>
@@ -278,10 +258,7 @@ const TopSellingOne = () => {
                   </div>
                   <div>
                     <div className='product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                      <Link
-                        href='/product-details-two'
-                        className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'
-                      >
+                      <span className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'>
                         <span className='product-card__badge bg-warning-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0'>
                           New
                         </span>
@@ -290,7 +267,7 @@ const TopSellingOne = () => {
                           alt=''
                           className='w-auto max-w-unset'
                         />
-                      </Link>
+                      </span>
                       <div className='product-card__content mt-16'>
                         <div className='flex-align gap-6'>
                           <span className='text-xs fw-medium text-gray-500'>
@@ -304,13 +281,9 @@ const TopSellingOne = () => {
                           </span>
                         </div>
                         <h6 className='title text-lg fw-semibold mt-12 mb-8'>
-                          <Link
-                            href='/product-details-two'
-                            className='link text-line-2'
-                            tabIndex={0}
-                          >
+                          <span className='link text-line-2'>
                             Taylor Farms Broccoli Florets Vegetables
-                          </Link>
+                          </span>
                         </h6>
                         <div className='flex-align gap-4'>
                           <span className='text-tertiary-600 text-md d-flex'>
@@ -361,10 +334,7 @@ const TopSellingOne = () => {
                   </div>
                   <div>
                     <div className='product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                      <Link
-                        href='/product-details-two'
-                        className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'
-                      >
+                      <span className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'>
                         <span className='product-card__badge bg-tertiary-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0'>
                           Best seller
                         </span>
@@ -373,7 +343,7 @@ const TopSellingOne = () => {
                           alt=''
                           className='w-auto max-w-unset'
                         />
-                      </Link>
+                      </span>
                       <div className='product-card__content mt-16'>
                         <div className='flex-align gap-6'>
                           <span className='text-xs fw-medium text-gray-500'>
@@ -387,13 +357,9 @@ const TopSellingOne = () => {
                           </span>
                         </div>
                         <h6 className='title text-lg fw-semibold mt-12 mb-8'>
-                          <Link
-                            href='/product-details-two'
-                            className='link text-line-2'
-                            tabIndex={0}
-                          >
+                          <span className='link text-line-2'>
                             Taylor Farms Broccoli Florets Vegetables
-                          </Link>
+                          </span>
                         </h6>
                         <div className='flex-align gap-4'>
                           <span className='text-tertiary-600 text-md d-flex'>
@@ -444,10 +410,7 @@ const TopSellingOne = () => {
                   </div>
                   <div>
                     <div className='product-card h-100 p-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2'>
-                      <Link
-                        href='/product-details-two'
-                        className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'
-                      >
+                      <span className='product-card__thumb flex-center rounded-8 bg-gray-50 position-relative'>
                         <span className='product-card__badge bg-main-600 px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0'>
                           Best Seller{" "}
                         </span>
@@ -456,7 +419,7 @@ const TopSellingOne = () => {
                           alt=''
                           className='w-auto max-w-unset'
                         />
-                      </Link>
+                      </span>
                       <div className='product-card__content mt-16'>
                         <div className='flex-align gap-6'>
                           <span className='text-xs fw-medium text-gray-500'>
@@ -470,13 +433,9 @@ const TopSellingOne = () => {
                           </span>
                         </div>
                         <h6 className='title text-lg fw-semibold mt-12 mb-8'>
-                          <Link
-                            href='/product-details-two'
-                            className='link text-line-2'
-                            tabIndex={0}
-                          >
+                          <span className='link text-line-2'>
                             Taylor Farms Broccoli Florets Vegetables
-                          </Link>
+                          </span>
                         </h6>
                         <div className='flex-align gap-4'>
                           <span className='text-tertiary-600 text-md d-flex'>
