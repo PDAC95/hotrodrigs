@@ -102,12 +102,12 @@ const DealsOne = () => {
           </div>
           <div className='deal-week-box rounded-16 overflow-hidden flex-between position-relative z-1 mb-24'>
             <img
-              src='assets/images/bg/week-deal-bg.png'
+              src='/assets/images/bg/week-deal-bg.png'
               alt=''
               className='position-absolute inset-block-start-0 inset-block-start-0 w-100 h-100 z-n1 object-fit-cover'
             />
             <div className='d-lg-block d-none ps-32 flex-shrink-0'>
-              <img src='assets/images/thumbs/week-deal-img1.png' alt='' />
+              <img src='/assets/images/thumbs/week-deal-img1.png' alt='' />
             </div>
             <div className='deal-week-box__content px-sm-4 d-block w-100 text-center'>
               <h6 className='mb-20'>Apple AirPods Max, Over Ear Headphones</h6>
@@ -134,7 +134,7 @@ const DealsOne = () => {
             </div>
             <div className='d-lg-block d-none flex-shrink-0 pe-xl-5'>
               <div className='me-xxl-5'>
-                <img src='assets/images/thumbs/week-deal-img2.png' alt='' />
+                <img src='/assets/images/thumbs/week-deal-img2.png' alt='' />
               </div>
             </div>
           </div>
@@ -147,7 +147,7 @@ const DealsOne = () => {
                       Sold
                     </span>
                     <img
-                      src='assets/images/thumbs/product-two-img1.png'
+                      src='/assets/images/thumbs/product-two-img1.png'
                       alt=''
                       className='w-auto max-w-unset'
                     />
@@ -221,7 +221,7 @@ const DealsOne = () => {
                       Sale 50%{" "}
                     </span>
                     <img
-                      src='assets/images/thumbs/product-two-img2.png'
+                      src='/assets/images/thumbs/product-two-img2.png'
                       alt=''
                       className='w-auto max-w-unset'
                     />
@@ -295,7 +295,7 @@ const DealsOne = () => {
                       New
                     </span>
                     <img
-                      src='assets/images/thumbs/product-two-img3.png'
+                      src='/assets/images/thumbs/product-two-img3.png'
                       alt=''
                       className='w-auto max-w-unset'
                     />
@@ -369,7 +369,7 @@ const DealsOne = () => {
                       Best seller
                     </span>
                     <img
-                      src='assets/images/thumbs/product-two-img4.png'
+                      src='/assets/images/thumbs/product-two-img4.png'
                       alt=''
                       className='w-auto max-w-unset'
                     />
@@ -443,7 +443,7 @@ const DealsOne = () => {
                       Best Seller{" "}
                     </span>
                     <img
-                      src='assets/images/thumbs/product-two-img5.png'
+                      src='/assets/images/thumbs/product-two-img5.png'
                       alt=''
                       className='w-auto max-w-unset'
                     />
@@ -517,7 +517,7 @@ const DealsOne = () => {
                       Best seller
                     </span>
                     <img
-                      src='assets/images/thumbs/product-two-img6.png'
+                      src='/assets/images/thumbs/product-two-img6.png'
                       alt=''
                       className='w-auto max-w-unset'
                     />
@@ -591,7 +591,7 @@ const DealsOne = () => {
                       New
                     </span>
                     <img
-                      src='assets/images/thumbs/product-two-img9.png'
+                      src='/assets/images/thumbs/product-two-img9.png'
                       alt=''
                       className='w-auto max-w-unset'
                     />

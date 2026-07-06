@@ -117,7 +117,7 @@ const TrendingOne = () => {
           <div className='trending-products-box rounded-16 overflow-hidden flex-between position-relative mb-24'>
             <div className='d-md-block d-none ps-xxl-5 ps-md-4'>
               <img
-                src='assets/images/thumbs/trending-products-img1.png'
+                src='/assets/images/thumbs/trending-products-img1.png'
                 alt=''
               />
             </div>
@@ -129,7 +129,7 @@ const TrendingOne = () => {
             </div>
             <div className='d-md-block d-none pe-xxl-5 me-xxl-5 pe-md-4'>
               <img
-                src='assets/images/thumbs/trending-products-img2.png'
+                src='/assets/images/thumbs/trending-products-img2.png'
                 alt=''
               />
             </div>
@@ -150,7 +150,7 @@ const TrendingOne = () => {
                         Best Seller{" "}
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img1.png'
+                        src='/assets/images/thumbs/product-two-img1.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -215,7 +215,7 @@ const TrendingOne = () => {
                         New
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img2.png'
+                        src='/assets/images/thumbs/product-two-img2.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -280,7 +280,7 @@ const TrendingOne = () => {
                         Sale 50%
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img3.png'
+                        src='/assets/images/thumbs/product-two-img3.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -345,7 +345,7 @@ const TrendingOne = () => {
                         Sold
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img4.png'
+                        src='/assets/images/thumbs/product-two-img4.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -410,7 +410,7 @@ const TrendingOne = () => {
                         Best Seller{" "}
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img5.png'
+                        src='/assets/images/thumbs/product-two-img5.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -475,7 +475,7 @@ const TrendingOne = () => {
                         New
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img6.png'
+                        src='/assets/images/thumbs/product-two-img6.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -550,7 +550,7 @@ const TrendingOne = () => {
                         Best Seller{" "}
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img1.png'
+                        src='/assets/images/thumbs/product-two-img1.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -615,7 +615,7 @@ const TrendingOne = () => {
                         New
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img2.png'
+                        src='/assets/images/thumbs/product-two-img2.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -680,7 +680,7 @@ const TrendingOne = () => {
                         Sale 50%
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img3.png'
+                        src='/assets/images/thumbs/product-two-img3.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -745,7 +745,7 @@ const TrendingOne = () => {
                         Sold
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img4.png'
+                        src='/assets/images/thumbs/product-two-img4.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -810,7 +810,7 @@ const TrendingOne = () => {
                         Best Seller{" "}
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img5.png'
+                        src='/assets/images/thumbs/product-two-img5.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -875,7 +875,7 @@ const TrendingOne = () => {
                         New
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img6.png'
+                        src='/assets/images/thumbs/product-two-img6.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -950,7 +950,7 @@ const TrendingOne = () => {
                         Best Seller{" "}
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img1.png'
+                        src='/assets/images/thumbs/product-two-img1.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -1015,7 +1015,7 @@ const TrendingOne = () => {
                         New
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img2.png'
+                        src='/assets/images/thumbs/product-two-img2.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -1080,7 +1080,7 @@ const TrendingOne = () => {
                         Sale 50%
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img3.png'
+                        src='/assets/images/thumbs/product-two-img3.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -1145,7 +1145,7 @@ const TrendingOne = () => {
                         Sold
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img4.png'
+                        src='/assets/images/thumbs/product-two-img4.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -1210,7 +1210,7 @@ const TrendingOne = () => {
                         Best Seller{" "}
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img5.png'
+                        src='/assets/images/thumbs/product-two-img5.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -1275,7 +1275,7 @@ const TrendingOne = () => {
                         New
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img6.png'
+                        src='/assets/images/thumbs/product-two-img6.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -1350,7 +1350,7 @@ const TrendingOne = () => {
                         Best Seller{" "}
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img1.png'
+                        src='/assets/images/thumbs/product-two-img1.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -1415,7 +1415,7 @@ const TrendingOne = () => {
                         New
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img2.png'
+                        src='/assets/images/thumbs/product-two-img2.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -1480,7 +1480,7 @@ const TrendingOne = () => {
                         Sale 50%
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img3.png'
+                        src='/assets/images/thumbs/product-two-img3.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -1545,7 +1545,7 @@ const TrendingOne = () => {
                         Sold
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img4.png'
+                        src='/assets/images/thumbs/product-two-img4.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -1610,7 +1610,7 @@ const TrendingOne = () => {
                         Best Seller{" "}
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img5.png'
+                        src='/assets/images/thumbs/product-two-img5.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -1675,7 +1675,7 @@ const TrendingOne = () => {
                         New
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img6.png'
+                        src='/assets/images/thumbs/product-two-img6.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -1750,7 +1750,7 @@ const TrendingOne = () => {
                         Best Seller{" "}
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img1.png'
+                        src='/assets/images/thumbs/product-two-img1.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -1815,7 +1815,7 @@ const TrendingOne = () => {
                         New
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img2.png'
+                        src='/assets/images/thumbs/product-two-img2.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -1880,7 +1880,7 @@ const TrendingOne = () => {
                         Sale 50%
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img3.png'
+                        src='/assets/images/thumbs/product-two-img3.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -1945,7 +1945,7 @@ const TrendingOne = () => {
                         Sold
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img4.png'
+                        src='/assets/images/thumbs/product-two-img4.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -2010,7 +2010,7 @@ const TrendingOne = () => {
                         Best Seller{" "}
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img5.png'
+                        src='/assets/images/thumbs/product-two-img5.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -2075,7 +2075,7 @@ const TrendingOne = () => {
                         New
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img6.png'
+                        src='/assets/images/thumbs/product-two-img6.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -2150,7 +2150,7 @@ const TrendingOne = () => {
                         Best Seller{" "}
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img1.png'
+                        src='/assets/images/thumbs/product-two-img1.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -2215,7 +2215,7 @@ const TrendingOne = () => {
                         New
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img2.png'
+                        src='/assets/images/thumbs/product-two-img2.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -2280,7 +2280,7 @@ const TrendingOne = () => {
                         Sale 50%
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img3.png'
+                        src='/assets/images/thumbs/product-two-img3.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -2345,7 +2345,7 @@ const TrendingOne = () => {
                         Sold
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img4.png'
+                        src='/assets/images/thumbs/product-two-img4.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -2410,7 +2410,7 @@ const TrendingOne = () => {
                         Best Seller{" "}
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img5.png'
+                        src='/assets/images/thumbs/product-two-img5.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -2475,7 +2475,7 @@ const TrendingOne = () => {
                         New
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img6.png'
+                        src='/assets/images/thumbs/product-two-img6.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -2550,7 +2550,7 @@ const TrendingOne = () => {
                         Best Seller{" "}
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img1.png'
+                        src='/assets/images/thumbs/product-two-img1.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -2615,7 +2615,7 @@ const TrendingOne = () => {
                         New
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img2.png'
+                        src='/assets/images/thumbs/product-two-img2.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -2680,7 +2680,7 @@ const TrendingOne = () => {
                         Sale 50%
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img3.png'
+                        src='/assets/images/thumbs/product-two-img3.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -2745,7 +2745,7 @@ const TrendingOne = () => {
                         Sold
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img4.png'
+                        src='/assets/images/thumbs/product-two-img4.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -2810,7 +2810,7 @@ const TrendingOne = () => {
                         Best Seller{" "}
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img5.png'
+                        src='/assets/images/thumbs/product-two-img5.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />
@@ -2875,7 +2875,7 @@ const TrendingOne = () => {
                         New
                       </span>
                       <img
-                        src='assets/images/thumbs/product-two-img6.png'
+                        src='/assets/images/thumbs/product-two-img6.png'
                         alt=''
                         className='w-auto max-w-unset'
                       />

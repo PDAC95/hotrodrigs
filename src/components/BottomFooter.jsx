@@ -11,7 +11,7 @@ const BottomFooter = () => {
           <div className='flex-align gap-8 flex-wrap'>
             <span className='text-heading text-sm'>We Are Acepting</span>
             <img
-              src='assets/images/thumbs/payment-method.png'
+              src='/assets/images/thumbs/payment-method.png'
               alt='marketpro'
             />
           </div>

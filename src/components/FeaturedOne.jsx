@@ -75,7 +75,7 @@ const FeaturedOne = () => {
                               Sale 50%{" "}
                             </span>
                             <img
-                              src='assets/images/thumbs/product-two-img2.png'
+                              src='/assets/images/thumbs/product-two-img2.png'
                               alt='marketpro'
                               className='w-auto max-w-unset'
                             />
@@ -133,7 +133,7 @@ const FeaturedOne = () => {
                               Best seller
                             </span>
                             <img
-                              src='assets/images/thumbs/product-two-img3.png'
+                              src='/assets/images/thumbs/product-two-img3.png'
                               alt='marketpro'
                               className='w-auto max-w-unset'
                             />
@@ -195,7 +195,7 @@ const FeaturedOne = () => {
                               Best Sale
                             </span>
                             <img
-                              src='assets/images/thumbs/product-two-img4.png'
+                              src='/assets/images/thumbs/product-two-img4.png'
                               alt='marketpro'
                               className='w-auto max-w-unset'
                             />
@@ -253,7 +253,7 @@ const FeaturedOne = () => {
                               New
                             </span>
                             <img
-                              src='assets/images/thumbs/product-two-img4.png'
+                              src='/assets/images/thumbs/product-two-img4.png'
                               alt='marketpro'
                               className='w-auto max-w-unset'
                             />
@@ -315,7 +315,7 @@ const FeaturedOne = () => {
                               Sale 50%{" "}
                             </span>
                             <img
-                              src='assets/images/thumbs/product-two-img2.png'
+                              src='/assets/images/thumbs/product-two-img2.png'
                               alt='marketpro'
                               className='w-auto max-w-unset'
                             />
@@ -373,7 +373,7 @@ const FeaturedOne = () => {
                               Best seller
                             </span>
                             <img
-                              src='assets/images/thumbs/product-two-img3.png'
+                              src='/assets/images/thumbs/product-two-img3.png'
                               alt='marketpro'
                               className='w-auto max-w-unset'
                             />
@@ -433,7 +433,7 @@ const FeaturedOne = () => {
           <div className='col-xxl-4'>
             <div className='position-relative rounded-16 bg-light-purple overflow-hidden p-28 pb-0 z-1 text-center h-100'>
               <img
-                src='assets/images/bg/featured-product-bg.png'
+                src='/assets/images/bg/featured-product-bg.png'
                 alt='marketpro'
                 className='position-absolute inset-block-start-0 inset-inline-start-0 z-n1 w-100 h-100 cover-img'
               />
@@ -450,7 +450,7 @@ const FeaturedOne = () => {
                 </div>
               </div>
               <img
-                src='assets/images/thumbs/featured-product-img.png'
+                src='/assets/images/thumbs/featured-product-img.png'
                 alt='marketpro'
                 className='d-xxl-inline-flex d-none'
               />

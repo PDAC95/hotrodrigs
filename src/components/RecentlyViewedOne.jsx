@@ -22,7 +22,7 @@ const RecentlyViewedOne = () => {
                     Best Seller{" "}
                   </span>
                   <img
-                    src='assets/images/thumbs/product-two-img1.png'
+                    src='/assets/images/thumbs/product-two-img1.png'
                     alt='marketpro'
                     className='w-auto max-w-unset'
                   />
@@ -84,7 +84,7 @@ const RecentlyViewedOne = () => {
                     New
                   </span>
                   <img
-                    src='assets/images/thumbs/product-two-img2.png'
+                    src='/assets/images/thumbs/product-two-img2.png'
                     alt='marketpro'
                     className='w-auto max-w-unset'
                   />
@@ -146,7 +146,7 @@ const RecentlyViewedOne = () => {
                     Sale 50%
                   </span>
                   <img
-                    src='assets/images/thumbs/product-two-img3.png'
+                    src='/assets/images/thumbs/product-two-img3.png'
                     alt='marketpro'
                     className='w-auto max-w-unset'
                   />
@@ -208,7 +208,7 @@ const RecentlyViewedOne = () => {
                     Sold
                   </span>
                   <img
-                    src='assets/images/thumbs/product-two-img4.png'
+                    src='/assets/images/thumbs/product-two-img4.png'
                     alt='marketpro'
                     className='w-auto max-w-unset'
                   />
@@ -270,7 +270,7 @@ const RecentlyViewedOne = () => {
                     Best Seller{" "}
                   </span>
                   <img
-                    src='assets/images/thumbs/product-two-img5.png'
+                    src='/assets/images/thumbs/product-two-img5.png'
                     alt='marketpro'
                     className='w-auto max-w-unset'
                   />
@@ -332,7 +332,7 @@ const RecentlyViewedOne = () => {
                     New
                   </span>
                   <img
-                    src='assets/images/thumbs/product-two-img6.png'
+                    src='/assets/images/thumbs/product-two-img6.png'
                     alt='marketpro'
                     className='w-auto max-w-unset'
                   />

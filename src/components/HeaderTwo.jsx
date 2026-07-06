@@ -151,7 +151,7 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
         </button>
         <div className='mobile-menu__inner'>
           <Link href='/' className='mobile-menu__logo'>
-            <img src='assets/images/logo/logo.png' alt='Logo' />
+            <img src='/assets/images/logo/logo.png' alt='Logo' />
           </Link>
           <div className='mobile-menu__menu'>
             {/* Nav Menu Start */}
@@ -227,7 +227,7 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
             {/* Logo Start */}
             <div className='logo'>
               <Link href='/' className='link'>
-                <img src='assets/images/logo/logo-two.png' alt='Logo' />
+                <img src='/assets/images/logo/logo-two.png' alt='Logo' />
               </Link>
             </div>
             {/* Logo End  */}
@@ -370,7 +370,7 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                   </button>
                   <div className='logo px-16 d-lg-none d-block'>
                     <Link href='/' className='link'>
-                      <img src='assets/images/logo/logo.png' alt='Logo' />
+                      <img src='/assets/images/logo/logo.png' alt='Logo' />
                     </Link>
                   </div>
                   <MegaMenuList tree={categoryTree} />
@@ -402,7 +402,7 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                   </button>
                   <div className='logo px-16 d-lg-none d-block'>
                     <Link href='/' className='link'>
-                      <img src='assets/images/logo/logo.png' alt='Logo' />
+                      <img src='/assets/images/logo/logo.png' alt='Logo' />
                     </Link>
                   </div>
                   <MegaMenuList tree={categoryTree} />
