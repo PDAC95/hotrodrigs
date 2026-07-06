@@ -40,18 +40,6 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
     }
   }, []);
 
-  // Set the default language
-  const [selectedLanguage, setSelectedLanguage] = useState("Eng");
-  const handleLanguageChange = (language) => {
-    setSelectedLanguage(language);
-  };
-
-  // Set the default currency
-  const [selectedCurrency, setSelectedCurrency] = useState("USD");
-  const handleCurrencyChange = (currency) => {
-    setSelectedCurrency(currency);
-  };
-
   // Mobile menu support
   const [menuActive, setMenuActive] = useState(false);
   const [activeIndex, setActiveIndex] = useState(null);
@@ -168,6 +156,15 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
           <div className='mobile-menu__menu'>
             {/* Nav Menu Start */}
             <ul className='nav-menu flex-align nav-menu--mobile'>
+              <li className='nav-menu__item'>
+                <Link
+                  onClick={() => setActiveIndex(null)}
+                  href='/'
+                  className='nav-menu__link'
+                >
+                  Home
+                </Link>
+              </li>
               <li
                 onClick={() => handleMenuClick(0)}
                 className={`on-hover-item nav-menu__item has-submenu ${
@@ -175,106 +172,11 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                 }`}
               >
                 <Link href='#' className='nav-menu__link'>
-                  Home
-                </Link>
-                <ul
-                  className={`on-hover-dropdown common-dropdown nav-submenu scroll-sm ${
-                    activeIndex === 0 ? "open" : ""
-                  }`}
-                >
-                  <li className='common-dropdown__item nav-submenu__item'>
-                    <Link
-                      onClick={() => setActiveIndex(null)}
-                      href='/'
-                      className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
-                    >
-                      {" "}
-                      Home Grocery
-                    </Link>
-                  </li>
-                  <li className='common-dropdown__item nav-submenu__item'>
-                    <Link
-                      onClick={() => setActiveIndex(null)}
-                      href='/index-two'
-                      className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
-                    >
-                      {" "}
-                      Home Electronics
-                    </Link>
-                  </li>
-                  <li className='common-dropdown__item nav-submenu__item'>
-                    <Link
-                      onClick={() => setActiveIndex(null)}
-                      href='/index-three'
-                      className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
-                    >
-                      {" "}
-                      Home Fashion
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-              <li
-                onClick={() => handleMenuClick(1)}
-                className={`on-hover-item nav-menu__item has-submenu ${
-                  activeIndex === 1 ? "d-block" : ""
-                }`}
-              >
-                <Link href='#' className='nav-menu__link'>
-                  Shop
-                </Link>
-                <ul
-                  className={`on-hover-dropdown common-dropdown nav-submenu scroll-sm ${
-                    activeIndex === 1 ? "open" : ""
-                  }`}
-                >
-                  <li className='common-dropdown__item nav-submenu__item'>
-                    <Link
-                      onClick={() => setActiveIndex(null)}
-                      href='/shop'
-                      className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
-                    >
-                      {" "}
-                      Shop
-                    </Link>
-                  </li>
-                  <li className='common-dropdown__item nav-submenu__item'>
-                    <Link
-                      onClick={() => setActiveIndex(null)}
-                      href='/product-details'
-                      className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
-                    >
-                      {" "}
-                      Shop Details
-                    </Link>
-                  </li>
-                  <li className='common-dropdown__item nav-submenu__item'>
-                    <Link
-                      onClick={() => setActiveIndex(null)}
-                      href='/product-details-two'
-                      className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
-                    >
-                      {" "}
-                      Shop Details Two
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-              <li
-                onClick={() => handleMenuClick(2)}
-                className={`on-hover-item nav-menu__item has-submenu ${
-                  activeIndex === 2 ? "d-block" : ""
-                }`}
-              >
-                <span className='badge-notification bg-warning-600 text-white text-sm py-2 px-8 rounded-4'>
-                  New
-                </span>
-                <Link href='#' className='nav-menu__link'>
                   Pages
                 </Link>
                 <ul
                   className={`on-hover-dropdown common-dropdown nav-submenu scroll-sm ${
-                    activeIndex === 2 ? "open" : ""
+                    activeIndex === 0 ? "open" : ""
                   }`}
                 >
                   <li className='common-dropdown__item nav-submenu__item'>
@@ -290,15 +192,6 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                   <li className='common-dropdown__item nav-submenu__item'>
                     <Link
                       onClick={() => setActiveIndex(null)}
-                      href='/wishlist'
-                      className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
-                    >
-                      Wishlist
-                    </Link>
-                  </li>
-                  <li className='common-dropdown__item nav-submenu__item'>
-                    <Link
-                      onClick={() => setActiveIndex(null)}
                       href='/checkout'
                       className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                     >
@@ -308,110 +201,10 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                   <li className='common-dropdown__item nav-submenu__item'>
                     <Link
                       onClick={() => setActiveIndex(null)}
-                      href='/become-seller'
-                      className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
-                    >
-                      Become Seller
-                    </Link>
-                  </li>
-                  <li className='common-dropdown__item nav-submenu__item'>
-                    <Link
-                      onClick={() => setActiveIndex(null)}
                       href='/account'
                       className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                     >
                       Account
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-              <li
-                onClick={() => handleMenuClick(3)}
-                className={`on-hover-item nav-menu__item has-submenu ${
-                  activeIndex === 3 ? "d-block" : ""
-                }`}
-              >
-                <span className='badge-notification bg-tertiary-600 text-white text-sm py-2 px-8 rounded-4'>
-                  New
-                </span>
-                <Link href='#' className='nav-menu__link'>
-                  Vendors
-                </Link>
-                <ul
-                  className={`on-hover-dropdown common-dropdown nav-submenu scroll-sm ${
-                    activeIndex === 3 ? "open" : ""
-                  }`}
-                >
-                  <li className='common-dropdown__item nav-submenu__item'>
-                    <Link
-                      onClick={() => setActiveIndex(null)}
-                      href='/vendor'
-                      className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
-                    >
-                      Vendors
-                    </Link>
-                  </li>
-                  <li className='common-dropdown__item nav-submenu__item'>
-                    <Link
-                      onClick={() => setActiveIndex(null)}
-                      href='/vendor-details'
-                      className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
-                    >
-                      Vendor Details
-                    </Link>
-                  </li>
-                  <li className='common-dropdown__item nav-submenu__item'>
-                    <Link
-                      onClick={() => setActiveIndex(null)}
-                      href='/vendor-two'
-                      className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
-                    >
-                      Vendors Two
-                    </Link>
-                  </li>
-                  <li className='common-dropdown__item nav-submenu__item'>
-                    <Link
-                      onClick={() => setActiveIndex(null)}
-                      href='/vendor-two-details'
-                      className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
-                    >
-                      Vendors Two Details
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-              <li
-                onClick={() => handleMenuClick(4)}
-                className={`on-hover-item nav-menu__item has-submenu ${
-                  activeIndex === 4 ? "d-block" : ""
-                }`}
-              >
-                <Link href='#' className='nav-menu__link'>
-                  Blog
-                </Link>
-                <ul
-                  className={`on-hover-dropdown common-dropdown nav-submenu scroll-sm ${
-                    activeIndex === 4 ? "open" : ""
-                  }`}
-                >
-                  <li className='common-dropdown__item nav-submenu__item'>
-                    <Link
-                      onClick={() => setActiveIndex(null)}
-                      href='/blog'
-                      className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
-                    >
-                      {" "}
-                      Blog
-                    </Link>
-                  </li>
-                  <li className='common-dropdown__item nav-submenu__item'>
-                    <Link
-                      onClick={() => setActiveIndex(null)}
-                      href='/blog-details'
-                      className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
-                    >
-                      {" "}
-                      Blog Details
                     </Link>
                   </li>
                 </ul>
@@ -440,202 +233,6 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
             {/* Logo End  */}
             {/* form Category Start */}
             <div className='flex-align gap-16'>
-              <div className='select-dropdown-for-home-two d-lg-none d-block'>
-                {/* Dropdown Select Start */}
-                <ul className='header-top__right style-two flex-align flex-wrap'>
-                  <li className='on-hover-item border-right-item border-right-item-sm-space has-submenu arrow-white'>
-                    {/* Display the selected language */}
-                    <Link
-                      href='#'
-                      className='selected-text text-heading text-sm py-8'
-                    >
-                      {selectedLanguage}
-                    </Link>
-                    <ul className='selectable-text-list on-hover-dropdown common-dropdown common-dropdown--sm max-h-200 scroll-sm px-0 py-8'>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleLanguageChange("English")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag1.png'
-                            alt='English'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          English
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleLanguageChange("Japan")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag2.png'
-                            alt='Japan'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          Japan
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleLanguageChange("French")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag3.png'
-                            alt='French'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          French
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleLanguageChange("Germany")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag4.png'
-                            alt='Germany'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          Germany
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleLanguageChange("Bangladesh")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag6.png'
-                            alt='Bangladesh'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          Bangladesh
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleLanguageChange("South Korea")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag5.png'
-                            alt='South Korea'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          South Korea
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className='on-hover-item border-right-item border-right-item-sm-space has-submenu arrow-white'>
-                    {/* Display the selected currency */}
-                    <Link
-                      href='#'
-                      className='selected-text text-heading text-sm py-8'
-                    >
-                      {selectedCurrency}
-                    </Link>
-                    <ul className='selectable-text-list on-hover-dropdown common-dropdown common-dropdown--sm max-h-200 scroll-sm px-0 py-8'>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleCurrencyChange("USD")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag1.png'
-                            alt='USD'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          USD
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleCurrencyChange("Yen")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag2.png'
-                            alt='Yen'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          Yen
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleCurrencyChange("Franc")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag3.png'
-                            alt='Franc'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          Franc
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleCurrencyChange("EURO")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag4.png'
-                            alt='EURO'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          EURO
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleCurrencyChange("BDT")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag6.png'
-                            alt='BDT'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          BDT
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleCurrencyChange("WON")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag5.png'
-                            alt='WON'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          WON
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-                {/* Dropdown Select End */}
-              </div>
               <form
                 action='/search'
                 method='get'
@@ -702,34 +299,6 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                   </span>
                   <span className='text-md text-white item-hover__text d-none d-lg-flex'>
                     Profile
-                  </span>
-                </Link>
-                <Link
-                  href='/wishlist'
-                  className='flex-align flex-column gap-8 item-hover-two'
-                >
-                  <span className='text-2xl text-white d-flex position-relative me-6 mt-6 item-hover__text'>
-                    <i className='ph ph-heart' />
-                    <span className='w-16 h-16 flex-center rounded-circle bg-main-two-600 text-white text-xs position-absolute top-n6 end-n4'>
-                      2
-                    </span>
-                  </span>
-                  <span className='text-md text-white item-hover__text d-none d-lg-flex'>
-                    Wishlist
-                  </span>
-                </Link>
-                <Link
-                  href='/cart'
-                  className='flex-align flex-column gap-8 item-hover-two'
-                >
-                  <span className='text-2xl text-white d-flex position-relative me-6 mt-6 item-hover__text'>
-                    <i className='ph-fill ph-shuffle' />
-                    <span className='w-16 h-16 flex-center rounded-circle bg-main-two-600 text-white text-xs position-absolute top-n6 end-n4'>
-                      2
-                    </span>
-                  </span>
-                  <span className='text-md text-white item-hover__text d-none d-lg-flex'>
-                    Compare
                   </span>
                 </Link>
                 <Link
@@ -844,95 +413,18 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
               <div className='header-menu d-lg-block d-none'>
                 {/* Nav Menu Start */}
                 <ul className='nav-menu flex-align '>
-                  <li className='on-hover-item nav-menu__item has-submenu'>
-                    <Link href='#' className='nav-menu__link'>
+                  <li className='nav-menu__item'>
+                    <Link
+                      href='/'
+                      scroll={false}
+                      className={`nav-menu__link ${
+                        pathname == "/" && "activePage"
+                      } `}
+                    >
                       Home
                     </Link>
-                    <ul className='on-hover-dropdown common-dropdown nav-submenu scroll-sm'>
-                      <li className='common-dropdown__item nav-submenu__item'>
-                        <Link
-                          href='/'
-                          scroll={false}
-                          className={`common-dropdown__link nav-submenu__link hover-bg-neutral-100 ${
-                            pathname == "/" && "activePage"
-                          } `}
-                        >
-                          {" "}
-                          Home Grocery
-                        </Link>
-                      </li>
-                      <li className='common-dropdown__item nav-submenu__item'>
-                        <Link
-                          href='/index-two'
-                          scroll={false}
-                          className={`common-dropdown__link nav-submenu__link hover-bg-neutral-100 ${
-                            pathname == "/index-two" && "activePage"
-                          } `}
-                        >
-                          {" "}
-                          Home Electronics
-                        </Link>
-                      </li>
-                      <li className='common-dropdown__item nav-submenu__item'>
-                        <Link
-                          href='/index-three'
-                          scroll={false}
-                          className={`common-dropdown__link nav-submenu__link hover-bg-neutral-100 ${
-                            pathname == "/index-three" && "activePage"
-                          } `}
-                        >
-                          {" "}
-                          Home Fashion
-                        </Link>
-                      </li>
-                    </ul>
                   </li>
                   <li className='on-hover-item nav-menu__item has-submenu'>
-                    <Link href='#' className='nav-menu__link'>
-                      Shop
-                    </Link>
-                    <ul className='on-hover-dropdown common-dropdown nav-submenu scroll-sm'>
-                      <li className='common-dropdown__item nav-submenu__item'>
-                        <Link
-                          href='/shop'
-                          scroll={false}
-                          className={`common-dropdown__link nav-submenu__link hover-bg-neutral-100 ${
-                            pathname == "/shop" && "activePage"
-                          } `}
-                        >
-                          Shop
-                        </Link>
-                      </li>
-                      <li className='common-dropdown__item nav-submenu__item'>
-                        <Link
-                          href='/product-details'
-                          scroll={false}
-                          className={`common-dropdown__link nav-submenu__link hover-bg-neutral-100 ${
-                            pathname == "/product-details" && "activePage"
-                          } `}
-                        >
-                          {" "}
-                          Shop Details
-                        </Link>
-                      </li>
-                      <li className='common-dropdown__item nav-submenu__item'>
-                        <Link
-                          href='/product-details-two'
-                          scroll={false}
-                          className={`common-dropdown__link nav-submenu__link hover-bg-neutral-100 ${
-                            pathname == "/product-details-two" && "activePage"
-                          } `}
-                        >
-                          {" "}
-                          Shop Details Two
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className='on-hover-item nav-menu__item has-submenu'>
-                    <span className='badge-notification bg-warning-600 text-white text-sm py-2 px-8 rounded-4'>
-                      New
-                    </span>
                     <Link href='#' className='nav-menu__link'>
                       Pages
                     </Link>
@@ -950,17 +442,6 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                       </li>
                       <li className='common-dropdown__item nav-submenu__item'>
                         <Link
-                          href='/wishlist'
-                          scroll={false}
-                          className={`common-dropdown__link nav-submenu__link hover-bg-neutral-100 ${
-                            pathname == "/wishlist" && "activePage"
-                          } `}
-                        >
-                          Wishlist
-                        </Link>
-                      </li>
-                      <li className='common-dropdown__item nav-submenu__item'>
-                        <Link
                           href='/checkout'
                           scroll={false}
                           className={`common-dropdown__link nav-submenu__link hover-bg-neutral-100 ${
@@ -972,17 +453,6 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                       </li>
                       <li className='common-dropdown__item nav-submenu__item'>
                         <Link
-                          href='/become-seller'
-                          scroll={false}
-                          className={`common-dropdown__link nav-submenu__link hover-bg-neutral-100 ${
-                            pathname == "/become-seller" && "activePage"
-                          } `}
-                        >
-                          Become Seller
-                        </Link>
-                      </li>
-                      <li className='common-dropdown__item nav-submenu__item'>
-                        <Link
                           href='/account'
                           scroll={false}
                           className={`common-dropdown__link nav-submenu__link hover-bg-neutral-100 ${
@@ -990,90 +460,6 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                           } `}
                         >
                           Account
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className='on-hover-item nav-menu__item has-submenu'>
-                    <span className='badge-notification bg-tertiary-600 text-white text-sm py-2 px-8 rounded-4'>
-                      New
-                    </span>
-                    <Link href='#' className='nav-menu__link'>
-                      Vendors
-                    </Link>
-                    <ul className='on-hover-dropdown common-dropdown nav-submenu scroll-sm'>
-                      <li className='common-dropdown__item nav-submenu__item'>
-                        <Link
-                          href='/vendor'
-                          scroll={false}
-                          className={`common-dropdown__link nav-submenu__link hover-bg-neutral-100 ${
-                            pathname == "/vendor" && "activePage"
-                          } `}
-                        >
-                          Vendor
-                        </Link>
-                      </li>
-                      <li className='common-dropdown__item nav-submenu__item'>
-                        <Link
-                          href='/vendor-details'
-                          scroll={false}
-                          className={`common-dropdown__link nav-submenu__link hover-bg-neutral-100 ${
-                            pathname == "/vendor-details" && "activePage"
-                          } `}
-                        >
-                          Vendor Details
-                        </Link>
-                      </li>
-                      <li className='common-dropdown__item nav-submenu__item'>
-                        <Link
-                          href='/vendor-two'
-                          scroll={false}
-                          className={`common-dropdown__link nav-submenu__link hover-bg-neutral-100 ${
-                            pathname == "/vendor-two" && "activePage"
-                          } `}
-                        >
-                          Vendor Two
-                        </Link>
-                      </li>
-                      <li className='common-dropdown__item nav-submenu__item'>
-                        <Link
-                          href='/vendor-two-details'
-                          scroll={false}
-                          className={`common-dropdown__link nav-submenu__link hover-bg-neutral-100 ${
-                            pathname == "/vendor-two-details" && "activePage"
-                          } `}
-                        >
-                          Vendor Two Details
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className='on-hover-item nav-menu__item has-submenu'>
-                    <Link href='#' className='nav-menu__link'>
-                      Blog
-                    </Link>
-                    <ul className='on-hover-dropdown common-dropdown nav-submenu scroll-sm'>
-                      <li className='common-dropdown__item nav-submenu__item'>
-                        <Link
-                          href='/blog'
-                          scroll={false}
-                          className={`common-dropdown__link nav-submenu__link hover-bg-neutral-100 ${
-                            pathname == "/blog" && "activePage"
-                          } `}
-                        >
-                          Blog
-                        </Link>
-                      </li>
-                      <li className='common-dropdown__item nav-submenu__item'>
-                        <Link
-                          href='/blog-details'
-                          scroll={false}
-                          className={`common-dropdown__link nav-submenu__link hover-bg-neutral-100 ${
-                            pathname == "/blog-details" && "activePage"
-                          } `}
-                        >
-                          {" "}
-                          Blog Details
                         </Link>
                       </li>
                     </ul>
@@ -1096,202 +482,6 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
             </div>
             {/* Header Right start */}
             <div className='header-right flex-align'>
-              <div className='select-dropdown-for-home-two d-lg-block d-none'>
-                {/* Dropdown Select Start */}
-                <ul className='header-top__right style-two flex-align flex-wrap'>
-                  <li className='on-hover-item border-right-item border-right-item-sm-space has-submenu arrow-white'>
-                    {/* Display the selected language */}
-                    <Link
-                      href='#'
-                      className='selected-text text-heading text-sm py-8'
-                    >
-                      {selectedLanguage}
-                    </Link>
-                    <ul className='selectable-text-list on-hover-dropdown common-dropdown common-dropdown--sm max-h-200 scroll-sm px-0 py-8'>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleLanguageChange("English")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag1.png'
-                            alt='English'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          English
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleLanguageChange("Japan")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag2.png'
-                            alt='Japan'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          Japan
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleLanguageChange("French")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag3.png'
-                            alt='French'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          French
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleLanguageChange("Germany")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag4.png'
-                            alt='Germany'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          Germany
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleLanguageChange("Bangladesh")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag6.png'
-                            alt='Bangladesh'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          Bangladesh
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleLanguageChange("South Korea")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag5.png'
-                            alt='South Korea'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          South Korea
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className='on-hover-item border-right-item border-right-item-sm-space has-submenu arrow-white'>
-                    {/* Display the selected currency */}
-                    <Link
-                      href='#'
-                      className='selected-text text-heading text-sm py-8'
-                    >
-                      {selectedCurrency}
-                    </Link>
-                    <ul className='selectable-text-list on-hover-dropdown common-dropdown common-dropdown--sm max-h-200 scroll-sm px-0 py-8'>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleCurrencyChange("USD")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag1.png'
-                            alt='USD'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          USD
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleCurrencyChange("Yen")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag2.png'
-                            alt='Yen'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          Yen
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleCurrencyChange("Franc")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag3.png'
-                            alt='Franc'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          Franc
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleCurrencyChange("EURO")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag4.png'
-                            alt='EURO'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          EURO
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleCurrencyChange("BDT")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag6.png'
-                            alt='BDT'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          BDT
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='#'
-                          className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
-                          onClick={() => handleCurrencyChange("WON")}
-                        >
-                          <img
-                            src='assets/images/thumbs/flag5.png'
-                            alt='WON'
-                            className='w-16 h-12 rounded-4 border border-gray-100'
-                          />
-                          WON
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-                {/* Dropdown Select End */}
-              </div>
               <div className='me-8 d-lg-none d-block'>
                 <div className='header-two-activities flex-align flex-wrap gap-32'>
                   <button
@@ -1312,34 +502,6 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                     </span>
                     <span className='text-md text-white item-hover__text d-none d-lg-flex'>
                       Profile
-                    </span>
-                  </Link>
-                  <Link
-                    href='/wishlist'
-                    className='flex-align flex-column gap-8 item-hover-two'
-                  >
-                    <span className='text-2xl text-white d-flex position-relative me-6 mt-6 item-hover__text'>
-                      <i className='ph ph-heart' />
-                      <span className='w-16 h-16 flex-center rounded-circle bg-main-two-600 text-white text-xs position-absolute top-n6 end-n4'>
-                        2
-                      </span>
-                    </span>
-                    <span className='text-md text-white item-hover__text d-none d-lg-flex'>
-                      Wishlist
-                    </span>
-                  </Link>
-                  <Link
-                    href='/cart'
-                    className='flex-align flex-column gap-8 item-hover-two'
-                  >
-                    <span className='text-2xl text-white d-flex position-relative me-6 mt-6 item-hover__text'>
-                      <i className='ph-fill ph-shuffle' />
-                      <span className='w-16 h-16 flex-center rounded-circle bg-main-two-600 text-white text-xs position-absolute top-n6 end-n4'>
-                        2
-                      </span>
-                    </span>
-                    <span className='text-md text-white item-hover__text d-none d-lg-flex'>
-                      Compare
                     </span>
                   </Link>
                   <Link
