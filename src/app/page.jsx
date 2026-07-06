@@ -1,101 +1,95 @@
-import BannerOne from "@/components/BannerOne";
-import BestSellsOne from "@/components/BestSellsOne";
+import BannerTwo from "@/components/BannerTwo";
+import BigDealOne from "@/components/BigDealOne";
 import BottomFooter from "@/components/BottomFooter";
-import BrandOne from "@/components/BrandOne";
-import DeliveryOne from "@/components/DeliveryOne";
-import FeatureOne from "@/components/FeatureOne";
-import FlashSalesOne from "@/components/FlashSalesOne";
-import FooterOne from "@/components/FooterOne";
-import HeaderOne from "@/components/HeaderOne";
-import HotDealsOne from "@/components/HotDealsOne";
-import NewArrivalOne from "@/components/NewArrivalOne";
-import NewsletterOne from "@/components/NewsletterOne";
-import OfferOne from "@/components/OfferOne";
-import OrganicOne from "@/components/OrganicOne";
-import ProductListOne from "@/components/ProductListOne";
-import PromotionalOne from "@/components/PromotionalOne";
-import RecommendedOne from "@/components/RecommendedOne";
-import ShippingOne from "@/components/ShippingOne";
-import ShortProductOne from "@/components/ShortProductOne";
-import TopVendorsOne from "@/components/TopVendorsOne";
+import DaySaleOne from "@/components/DaySaleOne";
+import DealsOne from "@/components/DealsOne";
+import DiscountOne from "@/components/DiscountOne";
+import FeaturedOne from "@/components/FeaturedOne";
+import FooterTwo from "@/components/FooterTwo";
+import HeaderTwo from "@/components/HeaderTwo";
+import NewsletterTwo from "@/components/NewsletterTwo";
+import PopularProductsOne from "@/components/PopularProductsOne";
+import PromotionalTwo from "@/components/PromotionalTwo";
+import RecentlyViewedOne from "@/components/RecentlyViewedOne";
+import ShippingTwo from "@/components/ShippingTwo";
+import TopSellingOne from "@/components/TopSellingOne";
+import TopSellingTwo from "@/components/TopSellingTwo";
+import TopVendorsTwo from "@/components/TopVendorsTwo";
+import TrendingOne from "@/components/TrendingOne";
 import ColorInit from "@/helper/ColorInit";
 import Preloader from "@/helper/Preloader";
 import ScrollToTopInit from "@/helper/ScrollToTopInit";
+import { getCategoryTree } from "@/lib/catalog/categories";
 
 export const metadata = {
-  title: "MarketPro - E-commerce Next JS Template",
+  title: "Hot Rod Rigs — Truck Parts & Accessories",
   description:
-    "MarketPro is a comprehensive and versatile Next JS template designed for e-commerce platforms, specifically tailored for multi vendor marketplaces. With its modern design and extensive feature set, MarketPro provides everything you need to create a robust and user-friendly online marketplace..",
+    "Shop aftermarket truck parts and accessories — bumpers, mirrors, lighting, grilles and more for all major truck makes. Find parts matched to your truck and check out fast.",
 };
 
-const page = () => {
+const page = async () => {
+  const categoryTree = await getCategoryTree();
   return (
     <>
+      {/* ColorInit */}
+      <ColorInit color={true} />
+
+      {/* ScrollToTop */}
+      <ScrollToTopInit color='#FA6400' />
+
       {/* Preloader */}
       <Preloader />
 
-      {/* ScrollToTop */}
-      <ScrollToTopInit color='#299E60' />
+      {/* HeaderTwo */}
+      <HeaderTwo category={false} categoryTree={categoryTree} />
 
-      {/* ColorInit */}
-      <ColorInit color={false} />
+      {/* BannerTwo */}
+      <BannerTwo categoryTree={categoryTree} />
 
-      {/* HeaderOne */}
-      <HeaderOne />
+      {/* PromotionalTwo */}
+      <PromotionalTwo />
 
-      {/* BannerOne */}
-      <BannerOne />
+      {/* DealsOne */}
+      <DealsOne />
 
-      {/* FeatureOne */}
-      <FeatureOne />
+      {/* TopSellingOne */}
+      <TopSellingOne />
 
-      {/* PromotionalOne */}
-      <PromotionalOne />
+      {/* TrendingOne */}
+      <TrendingOne />
 
-      {/* FlashSalesOne */}
-      <FlashSalesOne />
+      {/* DiscountOne */}
+      <DiscountOne />
 
-      {/* ProductListOne */}
-      <ProductListOne />
+      {/* FeaturedOne */}
+      <FeaturedOne />
 
-      {/* OfferOne */}
-      <OfferOne />
+      {/* BigDealOne */}
+      <BigDealOne />
 
-      {/* RecommendedOne */}
-      <RecommendedOne />
+      {/* TopSellingTwo */}
+      <TopSellingTwo />
 
-      {/* HotDealsOne */}
-      <HotDealsOne />
+      {/* PopularProductsOne */}
+      <PopularProductsOne />
 
-      {/* TopVendorsOne */}
-      <TopVendorsOne />
+      {/* TopVendorsTwo */}
+      <TopVendorsTwo />
 
-      {/* BestSellsOne */}
-      <BestSellsOne />
+      {/* DaySaleOne */}
+      <DaySaleOne />
 
-      {/* DeliveryOne */}
-      <DeliveryOne />
+      {/* RecentlyViewedOne */}
+      <RecentlyViewedOne />
 
-      {/* OrganicOne */}
-      <OrganicOne />
+      {/* ShippingTwo */}
+      <ShippingTwo />
 
-      {/* ShortProductOne */}
-      <ShortProductOne />
+      {/* NewsletterTwo */}
+      <NewsletterTwo />
 
-      {/* BrandOne */}
-      <BrandOne />
-
-      {/* NewArrivalOne */}
-      <NewArrivalOne />
-
-      {/* ShippingOne */}
-      <ShippingOne />
-
-      {/* NewsletterOne */}
-      <NewsletterOne />
-
-      {/* FooterOne */}
-      <FooterOne />
+      {/* FooterTwo */}
+      <FooterTwo />
 
       {/* BottomFooter */}
       <BottomFooter />
