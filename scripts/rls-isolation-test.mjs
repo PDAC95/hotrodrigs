@@ -3,9 +3,15 @@
  * Cross-user RLS isolation gate — Phase 01 Foundation, Plan 04, Task 2.
  *
  * Proves that Row Level Security actually isolates users: signed in as the
- * anon-key session for one seeded user, you must NEVER see another user's
- * cart/order rows. RLS applies to the anon-key JWT session, so this is the
- * real-world boundary a browser hits.
+ * anon-key session for one seeded user, a NON-ADMIN must NEVER see another
+ * user's cart/order rows. RLS applies to the anon-key JWT session, so this is
+ * the real-world boundary a browser hits.
+ *
+ * User A is the seeded bootstrap ADMIN: the `admin_all` policies (Phase 1, by
+ * design) grant them read over every row once the `user_role` JWT claim is
+ * injected by the token hook (fixed in 20260702180000). So the test asserts
+ * the inverse for A — an admin MUST see foreign rows. If A sees none, the
+ * claim/hook chain is broken again (the exact regression Phase 8 hit).
  *
  * Fixtures come from supabase/seed.sql (run `supabase db reset` first).
  *
@@ -16,10 +22,10 @@
  */
 import { createClient } from "@supabase/supabase-js";
 
-// Mirrors the credentials seeded in supabase/seed.sql.
+// Mirrors the credentials seeded in supabase/seed.sql (user-a is the bootstrap admin).
 const USERS = [
-  { label: "A", email: "user-a@test.local", password: "test-password-a" },
-  { label: "B", email: "user-b@test.local", password: "test-password-b" },
+  { label: "A", email: "user-a@test.local", password: "test-password-a", admin: true },
+  { label: "B", email: "user-b@test.local", password: "test-password-b", admin: false },
 ];
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -78,14 +84,28 @@ async function main() {
     const others = USERS.filter((o) => o.label !== u.label).map((o) => sessions[o.label].id);
 
     for (const table of ["orders", "carts"]) {
-      // Owner-scoped RLS means this select can only ever return the caller's rows.
+      // Owner-scoped RLS means this select can only ever return the caller's
+      // rows — unless the caller is the admin, whom admin_all lets read all.
       const { data, error } = await self.client.from(table).select("id,user_id");
       if (error) throw new Error(`query ${table} as ${u.email} failed: ${error.message}`);
 
       const ownRows = data.filter((r) => r.user_id === self.id).length;
       const foreignRows = data.filter((r) => others.includes(r.user_id)).length;
 
-      if (foreignRows > 0) {
+      if (u.admin) {
+        // Admin MUST see other users' rows; zero means the user_role claim /
+        // token-hook chain regressed (admin_all never matches).
+        if (foreignRows > 0) {
+          console.log(
+            `ok: admin ${u.label} sees ${foreignRows} foreign ${table} row(s) via admin_all (claim working)`
+          );
+        } else {
+          leaks += 1;
+          console.error(
+            `FAIL: admin ${u.label} sees 0 foreign ${table} rows — user_role claim/token hook broken?`
+          );
+        }
+      } else if (foreignRows > 0) {
         leaks += foreignRows;
         console.error(
           `FAIL: user ${u.label} saw ${foreignRows} ${table} row(s) belonging to another user`
@@ -99,11 +119,13 @@ async function main() {
   }
 
   if (leaks > 0) {
-    console.error(`\nFAIL: RLS isolation broken — ${leaks} cross-user row(s) visible.`);
+    console.error(`\nFAIL: RLS check broken — ${leaks} violation(s) (non-admin leak or admin claim regression).`);
     process.exit(1);
   }
 
-  console.log("\nPASS: RLS isolation holds — no user can read another user's cart/order rows.");
+  console.log(
+    "\nPASS: RLS holds — non-admins are isolated; admin sees all rows via admin_all."
+  );
   process.exit(0);
 }
 
