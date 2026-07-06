@@ -7,7 +7,7 @@ import ScrollToTopInit from "@/helper/ScrollToTopInit";
 import RegisterForm from "@/components/account/RegisterForm";
 
 export const metadata = {
-  title: "Register - Hot Rod Rigs",
+  title: "Register",
 };
 
 // Server Component. Next 15: searchParams is async — await it before reading.

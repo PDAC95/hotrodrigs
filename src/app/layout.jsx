@@ -7,9 +7,12 @@ import CartProvider from "@/components/cart/CartProvider";
 import MiniCartDrawer from "@/components/cart/MiniCartDrawer";
 
 export const metadata = {
-  title: "Digital Market Place NEXT Js Template",
+  title: {
+    default: "Hot Rod Rigs — Truck Parts & Accessories",
+    template: "%s | Hot Rod Rigs",
+  },
   description:
-    "DpMarket – Digital Products Marketplace NEXT JS Template – A versatile and meticulously designed set of templates crafted to elevate your Digital Products Marketplace content and experiences.",
+    "Shop aftermarket truck parts and accessories — bumpers, mirrors, lighting, grilles and more for all major truck makes. Find the right part for your rig and check out fast.",
 };
 
 export default function RootLayout({ children }) {

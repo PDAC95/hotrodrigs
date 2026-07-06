@@ -2,7 +2,7 @@ import Link from "next/link";
 import ProductForm from "@/components/admin/ProductForm";
 
 export const metadata = {
-  title: "New product - Admin - Hot Rod Rigs",
+  title: "New Product",
 };
 
 // Create-product page (ADM-02). Renders inside the gated 08-01 /admin layout.

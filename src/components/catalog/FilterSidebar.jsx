@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 /**
  * Faceted filter sidebar (client island, SRCH-01/04 + BRWS).
  *
- * The MarketPro left-column facet stack: category (L1/L2 tree), price (min/max),
+ * The template's left-column facet stack: category (L1/L2 tree), price (min/max),
  * and the active-truck fitment facet. EVERY facet mutates the URL only — the
  * server page re-queries via search_products so category + price + truck + text
  * compose in ONE indexed call. No client-side list filtering (anti-pattern).

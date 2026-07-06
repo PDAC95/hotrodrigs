@@ -7,7 +7,7 @@ import ScrollToTopInit from "@/helper/ScrollToTopInit";
 import LoginForm from "@/components/account/LoginForm";
 
 export const metadata = {
-  title: "Login - Hot Rod Rigs",
+  title: "Login",
 };
 
 // Server Component. Next 15: searchParams is async — await it before reading.

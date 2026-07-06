@@ -4,7 +4,7 @@ import { formatPrice, formatOrderDate } from "@/lib/format";
 import OrderStatusBadge from "@/components/orders/OrderStatusBadge";
 
 export const metadata = {
-  title: "Orders - Admin - Hot Rod Rigs",
+  title: "Orders",
 };
 
 /**

@@ -9,9 +9,9 @@ import Preloader from "@/helper/Preloader";
 import ScrollToTopInit from "@/helper/ScrollToTopInit";
 
 export const metadata = {
-  title: "MarketPro - E-commerce Next JS Template",
+  title: "Contact",
   description:
-    "MarketPro is a comprehensive and versatile Next JS template designed for e-commerce platforms, specifically tailored for multi vendor marketplaces. With its modern design and extensive feature set, MarketPro provides everything you need to create a robust and user-friendly online marketplace..",
+    "Get in touch with the Hot Rod Rigs team — questions about parts, fitment, or your order.",
 };
 
 const page = () => {

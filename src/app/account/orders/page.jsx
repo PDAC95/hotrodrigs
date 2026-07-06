@@ -10,7 +10,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getOrdersForUser } from "@/lib/orders/read";
 
 export const metadata = {
-  title: "My Orders - Hot Rod Rigs",
+  title: "My Orders",
 };
 
 // Order-list route (ACCT-04). async Server Component mirroring account/page.jsx:

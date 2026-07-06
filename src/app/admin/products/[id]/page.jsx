@@ -3,7 +3,7 @@ import { getAdminProduct } from "@/lib/admin/catalog";
 import ProductForm from "@/components/admin/ProductForm";
 
 export const metadata = {
-  title: "Edit product - Admin - Hot Rod Rigs",
+  title: "Edit Product",
 };
 
 // Edit-product page (ADM-02). Renders inside the gated 08-01 /admin layout.

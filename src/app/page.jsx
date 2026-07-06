@@ -21,11 +21,9 @@ import Preloader from "@/helper/Preloader";
 import ScrollToTopInit from "@/helper/ScrollToTopInit";
 import { getCategoryTree } from "@/lib/catalog/categories";
 
-export const metadata = {
-  title: "Hot Rod Rigs — Truck Parts & Accessories",
-  description:
-    "Shop aftermarket truck parts and accessories — bumpers, mirrors, lighting, grilles and more for all major truck makes. Find parts matched to your truck and check out fast.",
-};
+// No page-level metadata: the home page inherits the site-wide default from
+// layout.jsx ("Hot Rod Rigs — Truck Parts & Accessories") so it never
+// double-brands under the "%s | Hot Rod Rigs" title template.
 
 const page = async () => {
   const categoryTree = await getCategoryTree();

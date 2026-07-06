@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Authentication error - Hot Rod Rigs",
+  title: "Authentication error",
 };
 
 const AuthCodeErrorPage = () => {

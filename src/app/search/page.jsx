@@ -14,6 +14,12 @@ import { getMakes } from "@/lib/catalog/fitment";
 
 export const dynamic = "force-dynamic";
 
+export const metadata = {
+  title: "Search",
+  description:
+    "Search Hot Rod Rigs for truck parts by name, OEM number, or category.",
+};
+
 // Search results page (async Server Component, SRCH-01/02/04).
 // Composes text (FTS + pg_trgm) + category + price + fitment + sort + page in ONE
 // search_products round-trip; sidebar/sort drive everything through the URL.

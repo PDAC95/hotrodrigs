@@ -23,7 +23,7 @@ function decodeOrderNumber(raw) {
 
 export async function generateMetadata({ params }) {
   const { order_number } = await params;
-  return { title: `Order ${decodeOrderNumber(order_number)} - Hot Rod Rigs` };
+  return { title: `Order ${decodeOrderNumber(order_number)}` };
 }
 
 // Order-detail route (ACCT-06). async Server Component: getUser-gated, then an

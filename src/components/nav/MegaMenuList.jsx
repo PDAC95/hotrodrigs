@@ -2,7 +2,7 @@ import Link from "next/link";
 
 /**
  * Presentational category mega-menu list (no client logic — CSS hover reveals the
- * L2 submenu via the existing MarketPro `has-submenus-submenu` styling). Renders the
+ * L2 submenu via the existing template `has-submenus-submenu` styling). Renders the
  * real L1 -> L2 tree: each L1 links to /c/{l1}, each L2 to /c/{l1}/{l2}.
  *
  * Importable from both the server `MegaMenu` wrapper and the client `HeaderTwo`

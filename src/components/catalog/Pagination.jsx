@@ -28,7 +28,7 @@ function pageWindow(current, totalPages) {
 /**
  * Link-based numbered pagination (server component — no client island).
  * Renders shareable ?page= links preserving existing filters/sort. Prev/next + a
- * windowed run of page numbers with ellipsis gaps. Uses MarketPro pagination classes.
+ * windowed run of page numbers with ellipsis gaps. Uses the template's pagination classes.
  */
 const Pagination = ({ page, total, pageSize, basePath, searchParams }) => {
   const totalPages = Math.max(1, Math.ceil((total ?? 0) / (pageSize || 1)));

@@ -6,7 +6,7 @@ import OrderReceipt from "@/components/orders/OrderReceipt";
 import AdminOrderStatus from "@/components/admin/AdminOrderStatus";
 
 export const metadata = {
-  title: "Order detail - Admin - Hot Rod Rigs",
+  title: "Order Detail",
 };
 
 /**

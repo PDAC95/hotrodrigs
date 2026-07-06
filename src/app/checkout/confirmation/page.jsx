@@ -8,7 +8,7 @@ import Preloader from "@/helper/Preloader";
 import ScrollToTopInit from "@/helper/ScrollToTopInit";
 
 export const metadata = {
-  title: "Order Confirmation - Hot Rod Rigs",
+  title: "Order Confirmation",
   description:
     "Your order confirmation and receipt. Thank you for shopping with Hot Rod Rigs.",
 };

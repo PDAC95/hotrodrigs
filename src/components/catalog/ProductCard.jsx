@@ -27,7 +27,7 @@ function badgeKind(product, truckActive) {
 }
 
 /**
- * Parent product card (server component). Reuses MarketPro design-2 card markup,
+ * Parent product card (server component). Reuses the template's design-2 card markup,
  * fed by real catalog data. Computes the Fits/Universal badge from `truckActive`
  * (03-05); an explicit `badge` node still overrides for any custom slot use.
  */

@@ -11,7 +11,7 @@ import AccountDashboard from "@/components/account/AccountDashboard";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata = {
-  title: "Account - Hot Rod Rigs",
+  title: "Account",
 };
 
 // Session-gated account page (async Server Component). Uses getUser (NOT

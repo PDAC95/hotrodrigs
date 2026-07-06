@@ -3,7 +3,7 @@ import { listAdminProducts } from "@/lib/admin/catalog";
 import { formatPrice } from "@/lib/format";
 
 export const metadata = {
-  title: "Products - Admin - Hot Rod Rigs",
+  title: "Products",
 };
 
 // Admin product list + search page (ADM-02). Renders inside the gated 08-01

@@ -18,7 +18,7 @@ import Preloader from "@/helper/Preloader";
 import ScrollToTopInit from "@/helper/ScrollToTopInit";
 
 export const metadata = {
-  title: "Hot Rod Rigs - Product",
+  title: "Product",
   description: "Heavy-duty truck part detail.",
 };
 

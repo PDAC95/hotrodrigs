@@ -8,7 +8,7 @@ import AdminNav from "@/components/admin/AdminNav";
 import { requireAdmin } from "@/lib/admin/guard";
 
 export const metadata = {
-  title: "Admin - Hot Rod Rigs",
+  title: "Admin",
 };
 
 // Protected admin shell (ADM-01). Because Next nests layouts, awaiting

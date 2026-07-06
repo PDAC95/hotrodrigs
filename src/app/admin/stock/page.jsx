@@ -2,7 +2,7 @@ import { findVariants } from "@/lib/admin/stock";
 import StockEditor from "@/components/admin/StockEditor";
 
 export const metadata = {
-  title: "Stock - Admin - Hot Rod Rigs",
+  title: "Stock",
 };
 
 // Admin stock management page (ADM-03). Renders inside the gated 08-01 /admin
