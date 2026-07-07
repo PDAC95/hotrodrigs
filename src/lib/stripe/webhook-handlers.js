@@ -3,6 +3,11 @@ import "server-only"; // only reachable from the verified webhook route
 import { getStripe } from "@/lib/stripe/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createOrderFromIntent } from "@/lib/orders/server";
+import { sendOnce } from "@/lib/email/send";
+import {
+  orderConfirmationEmail,
+  guestActivationEmail,
+} from "@/lib/email/templates";
 
 /**
  * Handle a verified `payment_intent.succeeded` event. Order creation happens
@@ -14,7 +19,9 @@ import { createOrderFromIntent } from "@/lib/orders/server";
  *   3. Fulfill via the idempotent fulfill_order RPC. A genuine oversell refunds
  *      the buyer, marks the row needs_refund, and RETURNS (never loops).
  *   4. Record the Stripe Tax transaction when a calculation id exists (CHK-02).
- *   5. Rely on the PaymentIntent's receipt_email (set in 06-02) for the receipt.
+ *   5. Send the branded post-order emails (EML-01 order confirmation for every
+ *      buyer; EML-02 activation link for a genuinely new guest account) —
+ *      best-effort, claim-guarded in sent_emails, NEVER a webhook failure.
  *
  * @param {import('stripe').Stripe.PaymentIntent} pi
  */
@@ -41,8 +48,9 @@ export async function onPaymentIntentSucceeded(pi) {
   }
 
   // 2. Fulfill.
+  let isNewGuest = false;
   try {
-    await createOrderFromIntent(pending);
+    ({ isNewGuest } = await createOrderFromIntent(pending));
   } catch (err) {
     if (err?.code === "insufficient_stock") {
       // Genuine oversell (Pitfall 4): refund and stop. A 500 here would make
@@ -81,8 +89,86 @@ export async function onPaymentIntentSucceeded(pi) {
     }
   }
 
-  // 4. (CHK-06) Receipt: the PaymentIntent carries receipt_email (set in 06-02),
-  // so Stripe emails its own receipt automatically — the zero-effort v1 baseline.
-  // Optional follow-up: a branded HRR receipt via Resend would hook in here
-  // (RESEARCH Open Question 2) — intentionally NOT built in this phase.
+  // 4. (EML-01/EML-02) Post-order emails — best-effort, NEVER throws out of the
+  // webhook (EML-04). sent_emails UNIQUE claim arbitrates concurrent deliveries.
+  try {
+    await sendPostOrderEmails(pending, isNewGuest);
+  } catch (emailErr) {
+    console.error(
+      `[email] post-order emails failed for ${pi.id} (non-fatal):`,
+      emailErr
+    );
+  }
+}
+
+/**
+ * Send the purchase-moment emails for a just-fulfilled order:
+ *
+ *   - order_confirmation (EML-01): every buyer, rendered off the pending row
+ *     (server-authoritative money, real tax post-Phase 11).
+ *   - guest_activation (EML-02): ONLY when this fulfillment created a brand-new
+ *     guest account. The link is a Supabase recovery token_hash routed through
+ *     OUR /auth/confirm on the app origin — never the ready-made URL Supabase
+ *     also returns (it points at the Supabase origin) and never a PI secret.
+ *
+ * sendOnce never throws (claim-then-send against sent_emails); the only
+ * throw-capable call here (generateLink) is guarded. The caller's try/catch is
+ * the second wall (EML-04: no email path can 500 the webhook).
+ *
+ * @param {object} pending - the fulfilled public.pending_orders row
+ * @param {boolean} isNewGuest - true when fulfillment created a new guest account
+ */
+async function sendPostOrderEmails(pending, isNewGuest) {
+  if (!pending?.email) {
+    console.warn(
+      `[email] no buyer email on ${pending?.order_number} — skipping emails`
+    );
+    return;
+  }
+
+  // EML-01 — order confirmation for EVERY buyer.
+  const confirmation = orderConfirmationEmail(pending);
+  await sendOnce({
+    orderNumber: pending.order_number,
+    emailType: "order_confirmation",
+    to: pending.email,
+    ...confirmation,
+  });
+
+  // EML-02 — activation link for genuinely NEW guest accounts only.
+  if (!isNewGuest) return;
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  if (!siteUrl) {
+    console.error("[email] NEXT_PUBLIC_SITE_URL unset — skipping activation email");
+    return;
+  }
+
+  const { data, error } = await createAdminClient().auth.admin.generateLink({
+    type: "recovery",
+    email: pending.email,
+  });
+  // The token lives at data.properties.hashed_token (supabase-js v2). A failed
+  // generateLink must never block/undo the confirmation email already sent.
+  if (error || !data?.properties?.hashed_token) {
+    console.error(
+      `[email] generateLink failed for ${pending.order_number}:`,
+      error
+    );
+    return;
+  }
+
+  const activationUrl = `${siteUrl}/auth/confirm?token_hash=${data.properties.hashed_token}&type=recovery&next=/account/set-password`;
+
+  const activation = guestActivationEmail({
+    email: pending.email,
+    orderNumber: pending.order_number,
+    activationUrl,
+  });
+  await sendOnce({
+    orderNumber: pending.order_number,
+    emailType: "guest_activation",
+    to: pending.email,
+    ...activation,
+  });
 }
