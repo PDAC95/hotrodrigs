@@ -147,6 +147,14 @@ const Confirmation = () => {
         weak_password: "Password must be at least 8 characters.",
         invalid_request:
           "We couldn't verify this purchase. Use the link in your receipt email.",
+        not_ready:
+          "Your order is still being finalized — give it a few seconds, then try again.",
+        no_account:
+          "We couldn't find the account for this purchase. Check your email for your activation link, or contact support.",
+        update_failed:
+          "We couldn't set your password just now. Please try again in a moment.",
+        signin_failed:
+          "Your password was saved, but automatic sign-in failed. Please log in with your new password.",
       };
       setActivateError(map[res?.error] || "Something went wrong — please try again.");
     });
