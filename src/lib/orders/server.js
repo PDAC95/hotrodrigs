@@ -11,19 +11,23 @@ import { createAdminClient } from "@/lib/supabase/admin";
  *                      to activate the account and sign in to see their order.
  *
  * Never blocks order creation: if account resolution genuinely fails, log and
- * return null so the order is still created with user_id null (a later sign-in
- * with that email can be linked in Phase 7). CONTEXT: link to existing, never
- * force login.
+ * return a null userId so the order is still created with user_id null (a later
+ * sign-in with that email can be linked in Phase 7). CONTEXT: link to existing,
+ * never force login.
  *
  * The existing-user lookup is O(1) by email via the public.user_id_by_email
  * SECURITY DEFINER helper (indexed auth.users query) — NOT auth.admin.listUsers,
  * which scans/pages the whole user table.
  *
+ * isNewGuest is true ONLY when THIS call created the account (EML-02: only a
+ * genuinely new guest account gets an activation email). Existing accounts,
+ * the email_exists race loser, and every failure path return false.
+ *
  * @param {string} email
- * @returns {Promise<string|null>} user id, or null if resolution failed
+ * @returns {Promise<{userId: string|null, isNewGuest: boolean}>}
  */
 export async function resolveOrCreateUser(email) {
-  if (!email) return null;
+  if (!email) return { userId: null, isNewGuest: false };
   const admin = createAdminClient();
 
   try {
@@ -33,7 +37,7 @@ export async function resolveOrCreateUser(email) {
       { p_email: email }
     );
     if (lookupError) throw lookupError;
-    if (existingId) return existingId;
+    if (existingId) return { userId: existingId, isNewGuest: false };
 
     // No account yet — create a confirmed user, flagged as an unactivated guest
     // account. The buyer sets its password from the confirmation page (ACCT-03,
@@ -48,21 +52,25 @@ export async function resolveOrCreateUser(email) {
 
     if (createError) {
       // Race: another delivery/tab created the account between lookup and insert.
+      // The OTHER delivery created it and owns the activation email.
       const code = createError.code || createError.message || "";
       if (String(code).includes("email_exists")) {
         const { data: raceId } = await admin.rpc("user_id_by_email", {
           p_email: email,
         });
-        return raceId ?? null;
+        return { userId: raceId ?? null, isNewGuest: false };
       }
       throw createError;
     }
 
-    return created?.user?.id ?? null;
+    return {
+      userId: created?.user?.id ?? null,
+      isNewGuest: created?.user?.id != null,
+    };
   } catch (err) {
     // Account resolution must never block the order (CONTEXT).
     console.error("[orders] resolveOrCreateUser failed (non-fatal):", err);
-    return null;
+    return { userId: null, isNewGuest: false };
   }
 }
 
@@ -76,12 +84,22 @@ export async function resolveOrCreateUser(email) {
  * errors are rethrown so the webhook returns 500 and Stripe safely retries.
  *
  * @param {object} pending - a public.pending_orders row
- * @returns {Promise<number>} the created (or existing) order id
+ * @returns {Promise<{orderId: number, isNewGuest: boolean}>} the created (or
+ *   existing) order id, plus whether this fulfillment created a brand-new guest
+ *   account (EML-02 activation-email trigger; always false for logged-in buyers)
  */
 export async function createOrderFromIntent(pending) {
   const admin = createAdminClient();
 
-  const userId = pending.user_id ?? (await resolveOrCreateUser(pending.email));
+  // Logged-in checkouts (pending.user_id set) never resolve -> isNewGuest stays
+  // false (EML-02 is guests only).
+  let isNewGuest = false;
+  let userId = pending.user_id ?? null;
+  if (!userId) {
+    const resolved = await resolveOrCreateUser(pending.email);
+    userId = resolved.userId;
+    isNewGuest = resolved.isNewGuest;
+  }
 
   const { data: orderId, error } = await admin.rpc("fulfill_order", {
     p_stripe_pi_id: pending.stripe_pi_id,
@@ -107,5 +125,5 @@ export async function createOrderFromIntent(pending) {
     throw error;
   }
 
-  return orderId;
+  return { orderId, isNewGuest };
 }

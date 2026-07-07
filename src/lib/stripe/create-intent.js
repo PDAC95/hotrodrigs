@@ -168,7 +168,6 @@ export async function createCheckoutIntent({
     amount: totalCents,
     currency: "usd",
     automatic_payment_methods: { enabled: true },
-    receipt_email: email, // free Stripe receipt (CHK-06 baseline)
     metadata: {
       order_number: orderNumber,
       tax_calculation: tax.calculationId ?? "",
