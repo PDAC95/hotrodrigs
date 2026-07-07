@@ -38,3 +38,6 @@ next-env.d.ts
 
 # GSD planning docs (local only)
 /.planning/
+
+# Phase 10 Sass migration artifacts (baseline CSS, warning inventories, screenshots)
+/scripts/sass-artifacts/
