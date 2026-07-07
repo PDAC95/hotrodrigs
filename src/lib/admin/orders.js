@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { sendOnce } from "@/lib/email/send";
+import { orderFulfilledEmail } from "@/lib/email/templates";
 
 /**
  * Admin order data layer + fulfillment mutation (ADM-04).
@@ -111,6 +113,15 @@ const SETTABLE_STATUSES = ["processing", "fulfilled"];
  * admin list + detail so the new badge renders on re-render. A non-admin's update
  * matches zero rows / is denied by RLS.
  *
+ * Transition guard (EML-03): `.neq("status", status)` makes a same-status re-save
+ * match 0 rows — a success-no-op (still `{ ok: true }`, the admin never sees an
+ * error toast for a double-save), and no email fires. Only a REAL transition to
+ * "fulfilled" attempts the order-fulfilled email, and even then sendOnce's
+ * (order_number, 'order_fulfilled') claim in sent_emails is PERMANENT: a
+ * fulfilled → processing → fulfilled flip-flop does NOT resend. Once per order
+ * EVER — a deliberate decision for a single-operator store, not an accident.
+ * Email failures are try/catch-walled and can never break the status update.
+ *
  * @param {FormData} formData
  * @returns {Promise<{ ok: boolean, status?: string, error?: string }>}
  */
@@ -124,18 +135,59 @@ export async function updateOrderStatus(formData) {
 
   const supabase = await createClient();
 
-  const { error } = await supabase
+  const { data: updated, error } = await supabase
     .from("orders")
     .update({ status })
-    .eq("order_number", orderNumber);
+    .eq("order_number", orderNumber)
+    .neq("status", status) // no-op re-save matches 0 rows
+    .select("order_number, status, ship_to_snapshot");
 
   if (error) {
     console.error("[admin/orders] updateOrderStatus failed:", error);
     return { ok: false, error: "update_failed" };
   }
 
+  // Fulfilled email — ONLY when a row actually transitioned AND the new status is
+  // "fulfilled". The buyer email lives on pending_orders (same order_number key —
+  // Phase 7 FIX-01, mirrors getAllOrders above). Wrapped so an email failure can
+  // never change the action result: the status write above already succeeded.
+  if (updated?.length > 0 && status === "fulfilled") {
+    try {
+      const { data: pendingRow } = await supabase
+        .from("pending_orders")
+        .select("email")
+        .eq("order_number", orderNumber)
+        .maybeSingle();
+      const buyerEmail = pendingRow?.email ?? null;
+      if (buyerEmail) {
+        const message = orderFulfilledEmail({
+          orderNumber: updated[0].order_number,
+          shipTo: updated[0].ship_to_snapshot ?? null,
+        });
+        await sendOnce({
+          orderNumber: updated[0].order_number,
+          emailType: "order_fulfilled",
+          to: buyerEmail,
+          ...message,
+        });
+      } else {
+        console.warn(
+          `[email] no buyer email for ${orderNumber} — skipping fulfilled email`
+        );
+      }
+    } catch (emailErr) {
+      console.error(
+        `[email] fulfilled email failed for ${orderNumber} (non-fatal):`,
+        emailErr
+      );
+    }
+  }
+
   revalidatePath("/admin/orders");
   revalidatePath(`/admin/orders/${orderNumber}`);
 
+  // 0 rows updated + no error = already that status (or unknown order): a
+  // success-no-op, NOT a failure — no email was sent, but the admin UI must not
+  // toast an error for re-saving the same status.
   return { ok: true, status };
 }
