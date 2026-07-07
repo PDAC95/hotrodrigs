@@ -37,8 +37,14 @@ export async function calcTax({ lines, shippingCents, address }) {
         // Cents ONCE (Pitfall 3): round the unit price to cents, then multiply.
         amount: Math.round(Number(l.unit_price) * 100) * Number(l.quantity),
         quantity: Number(l.quantity),
+        // Pin exclusive semantics in code: this seam reads ONLY
+        // tax_amount_exclusive. If the Dashboard default were "inclusive",
+        // that field would read 0 and tax would silently vanish from the
+        // charged total — explicit tax_behavior makes the read immune to
+        // Dashboard state.
+        tax_behavior: "exclusive",
       })),
-      shipping_cost: { amount: shippingCents },
+      shipping_cost: { amount: shippingCents, tax_behavior: "exclusive" },
       customer_details: {
         address: {
           line1: address.street1,
@@ -52,13 +58,36 @@ export async function calcTax({ lines, shippingCents, address }) {
       expand: ["line_items.data.tax_breakdown"],
     });
 
+    // Loud $0 tripwire (TAX-03): Stripe NEVER errors for an unregistered
+    // jurisdiction — it succeeds with tax_amount_exclusive: 0 and
+    // taxability_reason: "not_collecting". This error-level log is the ONLY
+    // signal of that registration/config gap. Reading the log:
+    //   - "not_collecting"  -> registration/config gap (fix Dashboard settings)
+    //   - a legit no-sales-tax state (OR/MT/NH/DE/AK) also yields $0 with a
+    //     different reason — the purchase must still complete either way.
+    // This is a tripwire, NEVER a throw: log loudly, don't block checkout.
+    if (calculation.tax_amount_exclusive === 0) {
+      const reasons = (calculation.tax_breakdown ?? [])
+        .map((b) => b.taxability_reason)
+        .join(",");
+      console.error(
+        `[tax] FLAG-ON $0 RESULT — likely missing registration for ${address?.state ?? ""} ${address?.country ?? ""} (calc ${calculation.id}); taxability: ${reasons}`
+      );
+    }
+
     return {
       taxCents: calculation.tax_amount_exclusive,
       calculationId: calculation.id,
     };
   } catch (err) {
-    // Capability off / not registered / any error -> $0, never block checkout.
-    console.error("[tax] degraded to $0:", err?.message);
+    // A calculation ERROR while the flag is on (missing head office, no
+    // default tax code, customer_tax_location_invalid, ...) is equally a loud
+    // event — same grep-able [tax] family. Still degrade to $0, never block
+    // checkout (never throws).
+    console.error(
+      `[tax] degraded to $0 (calculation error) for ${address?.state ?? ""} ${address?.country ?? ""}:`,
+      err?.message
+    );
     return { taxCents: 0, calculationId: null };
   }
 }
