@@ -1,3 +1,15 @@
+// @use must precede all other rules (plain-CSS @imports count as rules).
+// Sass hoists the served-path @imports back above module CSS in the output,
+// so the browser-facing order is unchanged.
+// Relative node_modules paths — Next 15's sass-loader does not resolve package
+// specifiers under @use (`~animate.css` -> invalid "~animate" namespace; bare
+// `animate.css` / `slick-carousel/...` -> "Can't find stylesheet to import").
+@use "../../node_modules/animate.css/animate.css";
+@use "../../node_modules/slick-carousel/slick/slick.css";
+@use "../../node_modules/slick-carousel/slick/slick-theme.css";
+@use "../../node_modules/select2/dist/css/select2.min.css";
+@use "../../public/assets/sass/main.scss";
+
 // Plugin CSS — plain-CSS @imports pass through to the browser verbatim, so they
 // must use the SERVED path (/assets/...), not the repo path (/public/assets/...)
 // which 404s on every route (fixed in 09-05, guarded by `npm run check:assets`).
@@ -7,9 +19,3 @@
 @import "/assets/css/select2.min.css";
 @import "/assets/css/jquery-ui.css";
 @import "~/public/assets/css/bootstrap.min.css";
-
-@import "~animate.css";
-@import "slick-carousel/slick/slick.css";
-@import "slick-carousel/slick/slick-theme.css";
-@import "select2/dist/css/select2.min.css";
-@import "/public/assets/sass/main.scss";
