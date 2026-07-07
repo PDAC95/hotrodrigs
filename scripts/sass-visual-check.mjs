@@ -183,6 +183,18 @@ async function capture(run) {
       viewport: { width: vp.width, height: vp.height },
       reducedMotion: "reduce",
     });
+    // Kill slick/react-slick AUTOPLAY: both tick via setInterval(>=~2000ms),
+    // so each capture otherwise catches a different carousel rotation (10-03
+    // saw the home 'Deal of The Week' slider offset by 2 slides between runs).
+    // Swallowing long intervals pins every carousel at slide 0 on BOTH runs.
+    // Short intervals (<500ms) pass through; Preloader uses setTimeout — untouched.
+    await context.addInitScript(() => {
+      const origSetInterval = window.setInterval;
+      window.setInterval = function (fn, delay, ...args) {
+        if (typeof delay === "number" && delay >= 500) return 0;
+        return origSetInterval.call(window, fn, delay, ...args);
+      };
+    });
     const page = await context.newPage();
     await page.emulateMedia({ reducedMotion: "reduce" });
 
@@ -212,8 +224,17 @@ async function capture(run) {
       // copied verbatim from check-asset-404.mjs.
       await page.goto(BASE + pg.route, { waitUntil: "load" });
       await page.waitForLoadState("networkidle", { timeout: 8000 }).catch(() => {});
+      // Preloader.jsx unmounts div.preloader via a 1000ms setTimeout — CSS
+      // freezing does NOT stop it, but a fast capture can beat it and shoot a
+      // preloader-covered page (10-03 caught the pdp baseline like that).
+      await page
+        .waitForSelector(".preloader", { state: "detached", timeout: 15000 })
+        .catch(() => {});
       await page.addStyleTag({ content: FREEZE_CSS });
       await page.evaluate(() => document.fonts.ready);
+      // Extra bounded settle: lets slick/wow finish their post-load layout so
+      // both runs land in the same final state (10-03 saw a bistable home).
+      await page.waitForTimeout(1500);
       const file = path.join(outDir, `${pg.slug}-${vp.tag}.png`);
       await page.screenshot({ path: file, fullPage: true });
       console.log(`  captured ${pg.slug}-${vp.tag}.png (${pg.route})`);
