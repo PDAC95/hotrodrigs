@@ -1,7 +1,7 @@
-@use "../abstracts/variable";
+@use "../abstracts" as *;
 
 /* Border Radius */
-@each $property, $value in variable.$spaces {
+@each $property, $value in $spaces {
     .rounded-#{$property} {
        border-radius: #{$value} !important;
     }

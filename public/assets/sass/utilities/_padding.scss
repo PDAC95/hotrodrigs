@@ -1,44 +1,43 @@
-@use "../abstracts/functions";
-@use "../abstracts/variable";
+@use "../abstracts" as *;
 
 /* ================================= Padding Css Start =========================== */
-@each $property, $value in variable.$spaces {
+@each $property, $value in $spaces {
   .p-#{$property} {
     padding: var(--size-#{$property}) !important;
   }
 }
 
-@each $property, $value in variable.$spaces {
+@each $property, $value in $spaces {
   .px-#{$property} {
     padding-inline: var(--size-#{$property}) !important;
   }
 }
 
-@each $property, $value in variable.$spaces {
+@each $property, $value in $spaces {
   .py-#{$property} {
     padding-block: var(--size-#{$property}) !important;
   }
 }
 
-@each $property, $value in variable.$spaces {
+@each $property, $value in $spaces {
   .ps-#{$property} {
     padding-inline-start: var(--size-#{$property}) !important;
   }
 }
 
-@each $property, $value in variable.$spaces {
+@each $property, $value in $spaces {
   .pe-#{$property} {
     padding-inline-end: var(--size-#{$property}) !important;
   }
 }
 
-@each $property, $value in variable.$spaces {
+@each $property, $value in $spaces {
   .pt-#{$property} {
     padding-block-start: var(--size-#{$property}) !important;
   }
 }
 
-@each $property, $value in variable.$spaces {
+@each $property, $value in $spaces {
   .pb-#{$property} {
     padding-block-end: var(--size-#{$property}) !important;
   }
@@ -49,7 +48,7 @@
 }
 
 .p-56-px {
-  padding: functions.clampCal(8, 56, 1299, 1699);
+  padding: clampCal(8, 56, 1299, 1699);
 }
 
 .pt-0 {

@@ -1,9 +1,4 @@
- // Css Index
- @use "css-index";
- // function
- @use "functions";
-// Variable
- @use "variable";
-// Mixin
- @use "mixins";
-
+@forward "css-index";
+@forward "functions";
+@forward "variable";
+@forward "mixins";

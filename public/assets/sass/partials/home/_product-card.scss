@@ -1,5 +1,4 @@
-@use "../../abstracts/functions";
-@use "../../abstracts/mixins";
+@use "../../abstracts" as *;
 
 /* ============================= Product Card Css Start ========================== */
 .product-card {
@@ -13,7 +12,7 @@
     }
   }
   &__cart {
-    @include mixins.xxl-screen {
+    @include xxl-screen {
       font-size: 12px;
       padding: 9px 12px !important;
     }
@@ -38,10 +37,10 @@
       &__thumb {
         width: 260px;
         height: 190px;
-        @include mixins.md-screen {
+        @include md-screen {
           width: 190px;
         }
-        @include mixins.msm-screen {
+        @include msm-screen {
           width: 124px;
         }
       }
@@ -49,7 +48,7 @@
   }
 }
 
-@include mixins.lg-screen {
+@include lg-screen {
   .product-card {
     &__thumb {
       min-height: 160px;
@@ -60,14 +59,14 @@
     &__content {
       .product-card {
         &__price span {
-          font-size: functions.rem(12px) !important;
+          font-size: rem(12px) !important;
         }
       }
       .title .link {
-        font-size: functions.rem(14px);
+        font-size: rem(14px);
       }
       .text-xs {
-        font-size: functions.rem(10px) !important;
+        font-size: rem(10px) !important;
       }
     }
   }

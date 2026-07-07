@@ -1,4 +1,4 @@
-@use "../abstracts/mixins";
+@use "../abstracts" as *;
 
 
 /* Overlay Start */
@@ -32,7 +32,7 @@
     transition: .2s linear;
     visibility: hidden;
     opacity: 0;
-    @include mixins.md-screen {
+    @include md-screen {
         &.show {
             visibility: visible;
             opacity: 1;

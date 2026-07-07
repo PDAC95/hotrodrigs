@@ -1,9 +1,9 @@
-@use "../../abstracts/mixins";
+@use "../../abstracts" as *;
 
 /* ================================ Featured Products Css Start ============================ */
 .featured-products {
     .product-card {
-        @include mixins.xsm-screen {
+        @include xsm-screen {
             flex-direction: column;
         }
     }

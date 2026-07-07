@@ -1,5 +1,4 @@
-@use "../abstracts/functions";
-@use "../abstracts/mixins";
+@use "../abstracts" as *;
 @use "../utilities/shadow";
 
 /* ============= Header Start Here ======================= */
@@ -15,7 +14,7 @@
         backdrop-filter: blur(24px);
         animation: slideDown 0.35s ease-out;    
         box-shadow: 0 5px 16px rgba(0, 0, 0, 0.1);
-        @include mixins.md-screen {
+        @include md-screen {
             inset-block-start: -1px;
         }
     }
@@ -33,7 +32,7 @@
 .logo {
     img {
         max-width: 200px;
-        @include mixins.xsm-screen {
+        @include xsm-screen {
             max-width: 148px;
         }
     }
@@ -42,10 +41,10 @@
 /* Header Menu and Submenu Css Start */
 .nav-menu {
     gap: 32px;
-    @include mixins.xl-screen {
+    @include xl-screen {
         gap: 24px;
     }
-    @include mixins.lg-screen {
+    @include lg-screen {
         gap: 16px;
     }
     &__item {
@@ -73,19 +72,19 @@
         padding: 16px 0;
         width: 100%;
         @media (max-width: 1299px) {
-            font-size: functions.rem(14px);
+            font-size: rem(14px);
         } 
-        @include mixins.lg-screen {
-            font-size: functions.rem(13px);
+        @include lg-screen {
+            font-size: rem(13px);
         }
     }   
 
     .common-dropdown__link {
         @media (max-width: 1299px) {
-            font-size: functions.rem(14px);
+            font-size: rem(14px);
         } 
-        @include mixins.lg-screen {
-            font-size: functions.rem(13px);
+        @include lg-screen {
+            font-size: rem(13px);
         }
     }
 }
@@ -149,7 +148,7 @@
         border-radius: 4px;
         transition: .2s linear;
         position: relative;
-        @include mixins.md-screen {
+        @include md-screen {
             border-radius: 0;
         }
         &.activePage {
@@ -182,7 +181,7 @@
 
 /* Category Submenus Submenu Css Start */
 .menu-category-wrapper {
-    gap: functions.clampCal(12, 72, 1199, 1699);
+    gap: clampCal(12, 72, 1199, 1699);
 }
 
 .submenus-submenu-wrapper {
@@ -252,11 +251,11 @@
 
 .category {
     .category__button {
-        @include mixins.sm-screen {
+        @include sm-screen {
             padding: 12px 3px !important;
             font-size: 12px !important;
         }
-        @include mixins.msm-screen {
+        @include msm-screen {
             padding-left: 10px !important;
         }
     }
@@ -281,7 +280,7 @@
     }
     .category__button {
         width: 100%;
-        @include mixins.msm-screen {
+        @include msm-screen {
             font-size: 12px;
             padding: 8px 4px !important;
         }
@@ -297,7 +296,7 @@
     max-height: 900px;
     .responsive-dropdown__list {
         max-height: 900px;
-        @include mixins.lg-screen {
+        @include lg-screen {
             max-height: 438px;
         }
     }

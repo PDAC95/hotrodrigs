@@ -1,7 +1,7 @@
-@use "../abstracts/variable";
+@use "../abstracts" as *;
 
 // border
-@each $color, $shades in variable.$colors {
+@each $color, $shades in $colors {
     @each $shade, $value in $shades {
       .border-#{$color}-#{$shade} {
         border-color: var(--#{$color}-#{$shade}) !important;
@@ -10,7 +10,7 @@
 }
 
 // hover border
-@each $color, $shades in variable.$colors {
+@each $color, $shades in $colors {
     @each $shade, $value in $shades {
       .hover-border-#{$color}-#{$shade} {
         &:hover {

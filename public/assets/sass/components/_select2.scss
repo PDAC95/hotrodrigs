@@ -1,4 +1,4 @@
-@use "../abstracts/mixins";
+@use "../abstracts" as *;
 
 /* ======================= Select 2 Css Start =========================== */
 .select2-container--default .select2-selection--single {
@@ -64,7 +64,7 @@
     inset-block-start: 50% !important;
     transform: translateY(-50%) !important;
     width: unset !important;
-    @include mixins.lg-screen {
+    @include lg-screen {
         right: 6px !important;
     }
 }
@@ -72,7 +72,7 @@
 .select2-container .select2-selection--single .select2-selection__rendered {
     padding-inline-start: 24px !important;
     padding-inline-end: 40px !important;
-    @include mixins.lg-screen {
+    @include lg-screen {
         padding-inline-start: 10px !important;
         padding-inline-end: 24px !important;
     }
@@ -91,10 +91,10 @@
     padding: 10px !important;  
     border-radius: 6px !important;  
     min-width: 200px;
-    @include mixins.sm-screen {
+    @include sm-screen {
         min-width: 170px;
     }
-    @include mixins.xsm-screen {
+    @include xsm-screen {
         min-width: 150px;
     }
 }
@@ -122,7 +122,7 @@
     padding: 6px 12px !important;
     color: var(--gray-500);
     font-size: 14px !important;
-    @include mixins.sm-screen {
+    @include sm-screen {
         padding: 4px 10px !important;
         font-size: 12px !important;
     }
@@ -195,16 +195,16 @@
 
 
 .select2-container--open .select2-dropdown {
-    @include mixins.md-screen {
+    @include md-screen {
         left: -74px;
     }
-    @include mixins.xsm-screen {
+    @include xsm-screen {
         left:   -40px;
     }
 }
 
 
-@include mixins.md-screen {
+@include md-screen {
     .location-box, .search-category.h-48 {
         height: 40px !important;
         .select2-selection__rendered {

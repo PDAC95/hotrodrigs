@@ -1,5 +1,4 @@
-@use "../abstracts/functions";
-@use "../abstracts/mixins";
+@use "../abstracts" as *;
 
 /* =========================== Accordion Css start ============================= */
 .common-accordion {
@@ -19,7 +18,7 @@
         padding: 20px 30px;
 
         padding-block-start: 0;
-        @include mixins.msm-screen {
+        @include msm-screen {
             padding: 12px 20px;
             padding-block-start: 0;
         }
@@ -36,9 +35,9 @@
         padding: 20px 30px;
         padding-inline-end: 46px;
         font-weight: 600;
-        font-size: functions.clampCal(16, 20);
+        font-size: clampCal(16, 20);
         font-family: var(--heading-font);
-        @include mixins.msm-screen {
+        @include msm-screen {
             padding: 12px 20px;
             padding-inline-end: 36px;
         }
@@ -71,7 +70,7 @@
                 height: unset;
 
                 text-align: center;
-                @include mixins.msm-screen {
+                @include msm-screen {
                     inset-inline-end: 20px;
                 }
             }

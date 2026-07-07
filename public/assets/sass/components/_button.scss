@@ -1,5 +1,4 @@
-@use "../abstracts/functions";
-@use "../abstracts/mixins";
+@use "../abstracts" as *;
 
 /* ================================= Button Css Start =========================== */
 .btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active {
@@ -21,9 +20,9 @@
     &:hover, &:focus, &:focus-visible {
         box-shadow: none !important;
     }
-    @include mixins.xl-screen {
+    @include xl-screen {
         padding: 10px 20px;         
-        font-size: functions.rem(14px);
+        font-size: rem(14px);
     }
     &-sm {
         padding: 10px 16px !important;

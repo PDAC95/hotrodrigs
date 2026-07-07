@@ -1,9 +1,9 @@
-@use "../abstracts/mixins";
+@use "../abstracts" as *;
 
 /* =========================== header top Css Start =============================== */
 .header-top {
     &__right {
-        @include mixins.sm-screen {
+        @include sm-screen {
             width: 100%;
             li {
                 &:last-child {
@@ -31,7 +31,7 @@
                 }
                 a {
                     padding-inline-end: 20px;
-                    @include mixins.md-screen {
+                    @include md-screen {
                         color: #fff !important;
                     }
                     &::before {
@@ -43,7 +43,7 @@
                     inset-inline-end: auto !important;
                     inset-inline-start: calc(-100% + -24px) !important;
                     li a {
-                        @include mixins.md-screen {
+                        @include md-screen {
                             color: var(--neutral-600) !important;
                         }
                     }
@@ -53,7 +53,7 @@
     }
 }
 
-@include mixins.md-screen {
+@include md-screen {
     .border-right-item {
         a {
             font-size: 12px !important;
@@ -66,11 +66,11 @@
     &:not(:last-child) {
         margin-inline-end: 24px;
         padding-inline-end: 24px;
-        @include mixins.xl-screen {
+        @include xl-screen {
             margin-inline-end: 16px !important;
             padding-inline-end: 16px !important;
         }
-        @include mixins.lg-screen {
+        @include lg-screen {
             margin-inline-end: 10px !important;
             padding-inline-end: 10px !important;
         }

@@ -1,19 +1,18 @@
-@use "../abstracts/functions";
-@use "../abstracts/mixins";
+@use "../abstracts" as *;
 
 /* ========================== Count Down Css Start =============================== */
 .countdown-list {
     gap: 20px;
-    @include mixins.xl-screen {
+    @include xl-screen {
         gap: 6px;
     }
     &__item {
         background-color: hsl(var(--white));
-        padding: functions.clampCal(6, 12, 1399, 1599) functions.clampCal(8, 16, 1399, 1599);
+        padding: clampCal(6, 12, 1399, 1599) clampCal(8, 16, 1399, 1599);
         border-radius: 8px;
         position: relative;
-        @include mixins.xl-screen {
-            font-size: functions.rem(12px) !important;
+        @include xl-screen {
+            font-size: rem(12px) !important;
         }
         &:last-child {
             &::before {
@@ -27,7 +26,7 @@
             inset-inline-end: -10px;
             transform: translateY(-50%);
             font-weight: 700;
-            @include mixins.xl-screen {
+            @include xl-screen {
                 display: none;
             }
         }

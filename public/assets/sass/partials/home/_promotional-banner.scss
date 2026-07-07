@@ -1,18 +1,17 @@
-@use "../../abstracts/functions";
-@use "../../abstracts/mixins";
+@use "../../abstracts" as *;
 
 /* ======================== promotional banner Css Start ============================== */
 .promotional-banner-item {
-    padding: functions.clampCal(32, 84) 24px;
-    @include mixins.msm-screen {
+    padding: clampCal(32, 84) 24px;
+    @include msm-screen {
         padding: 24px 16px;
     }
     &__content {
         max-width: 200px;
     }
     &__title {
-        @include mixins.xl-screen {
-            font-size: functions.rem(24px) !important;
+        @include xl-screen {
+            font-size: rem(24px) !important;
         }
     }
 }

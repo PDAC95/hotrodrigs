@@ -1,15 +1,15 @@
-@use "../abstracts/mixins";
+@use "../abstracts" as *;
 
 /* ================================= Pagination Css Start =========================== */
 .pagination {
     margin-block-start: 64px;
-    @include mixins.lg-screen {
+    @include lg-screen {
         margin-block-start: 48px;
     }
-    @include mixins.md-screen {
+    @include md-screen {
         margin-block-start: 40px;
     }
-    @include mixins.sm-screen {
+    @include sm-screen {
         margin-block-start: 32px;
     }
     .page-item {

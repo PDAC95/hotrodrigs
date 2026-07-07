@@ -1,19 +1,19 @@
-@use "../../abstracts/mixins";
+@use "../../abstracts" as *;
 
 /* ======================== Vendors Two Page css Start ============================= */
 .grid-cols-3 {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr !important;
     gap: 24px;
-    @include mixins.lg-screen {
+    @include lg-screen {
         grid-template-columns: 1fr 1fr !important;
     }
-    @include mixins.msm-screen {
+    @include msm-screen {
         grid-template-columns: 1fr !important;
     }
     &.list-view {
         grid-template-columns: 1fr 1fr !important;
-        @include mixins.xl-screen {
+        @include xl-screen {
             grid-template-columns: 1fr !important;
         }
     }

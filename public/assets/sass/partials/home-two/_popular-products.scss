@@ -1,9 +1,9 @@
-@use "../../abstracts/mixins";
+@use "../../abstracts" as *;
 
 /* ====================== Popular Products Start ==================== */
 .popular-products {
     .product-card {
-        @include mixins.sm-screen {
+        @include sm-screen {
             flex-direction: column;
         }
     }

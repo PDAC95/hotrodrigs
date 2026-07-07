@@ -1,4 +1,4 @@
-@use "abstracts/mixins";
+@use "abstracts" as *;
 
 .slick-arrow::before {
   display: none;
@@ -20,7 +20,7 @@
   .mr-point {
     margin-right: 124px;
 
-    @include mixins.sm-screen {
+    @include sm-screen {
       margin-right: 108px;
     }
   }
@@ -32,15 +32,15 @@
       right: 60px;
       left: auto;
 
-      @include mixins.xl-screen {
+      @include xl-screen {
         top: -58px;
       }
 
-      @include mixins.lg-screen {
+      @include lg-screen {
         top: -40px;
       }
 
-      @include mixins.sm-screen {
+      @include sm-screen {
         top: -37px;
       }
     }
@@ -51,19 +51,19 @@
       right: 0px;
       left: auto;
 
-      @include mixins.xl-screen {
+      @include xl-screen {
         top: -58px;
       }
 
-      @include mixins.lg-screen {
+      @include lg-screen {
         top: -40px;
       }
 
-      @include mixins.sm-screen {
+      @include sm-screen {
         top: -37px;
       }
 
-      @include mixins.md-screen {
+      @include md-screen {
         right: 14px;
       }
     }
@@ -74,7 +74,7 @@
   .mr-point {
     margin-right: 124px;
 
-    @include mixins.sm-screen {
+    @include sm-screen {
       margin-right: 5px;
     }
   }
@@ -86,15 +86,15 @@
       right: 60px;
       left: auto;
 
-      @include mixins.xl-screen {
+      @include xl-screen {
         top: -58px;
       }
 
-      @include mixins.lg-screen {
+      @include lg-screen {
         top: -40px;
       }
 
-      @include mixins.sm-screen {
+      @include sm-screen {
         top: -37px;
       }
     }
@@ -105,19 +105,19 @@
       right: 0px;
       left: auto;
 
-      @include mixins.xl-screen {
+      @include xl-screen {
         top: -58px;
       }
 
-      @include mixins.lg-screen {
+      @include lg-screen {
         top: -40px;
       }
 
-      @include mixins.md-screen {
+      @include md-screen {
         right: 14px;
       }
 
-      @include mixins.sm-screen {
+      @include sm-screen {
         top: -37px;
       }
     }
@@ -128,7 +128,7 @@
   .mr-point {
     margin-right: 124px;
 
-    @include mixins.sm-screen {
+    @include sm-screen {
       margin-right: 108px;
     }
   }
@@ -140,15 +140,15 @@
       right: 60px;
       left: auto;
 
-      @include mixins.xl-screen {
+      @include xl-screen {
         top: -58px;
       }
 
-      @include mixins.lg-screen {
+      @include lg-screen {
         top: -40px;
       }
 
-      @include mixins.sm-screen {
+      @include sm-screen {
         top: -37px;
       }
     }
@@ -159,19 +159,19 @@
       right: 0px;
       left: auto;
 
-      @include mixins.xl-screen {
+      @include xl-screen {
         top: -58px;
       }
 
-      @include mixins.lg-screen {
+      @include lg-screen {
         top: -40px;
       }
 
-      @include mixins.md-screen {
+      @include md-screen {
         right: 14px;
       }
 
-      @include mixins.sm-screen {
+      @include sm-screen {
         top: -37px;
       }
     }
@@ -209,7 +209,7 @@
   .mr-point {
     margin-right: 124px;
 
-    @include mixins.sm-screen {
+    @include sm-screen {
       margin-right: 108px;
     }
   }
@@ -221,15 +221,15 @@
       right: 60px;
       left: auto;
 
-      @include mixins.xl-screen {
+      @include xl-screen {
         top: -58px;
       }
 
-      @include mixins.lg-screen {
+      @include lg-screen {
         top: -40px;
       }
 
-      @include mixins.sm-screen {
+      @include sm-screen {
         top: -37px;
       }
     }
@@ -240,19 +240,19 @@
       right: 0px;
       left: auto;
 
-      @include mixins.xl-screen {
+      @include xl-screen {
         top: -58px;
       }
 
-      @include mixins.lg-screen {
+      @include lg-screen {
         top: -40px;
       }
 
-      @include mixins.md-screen {
+      @include md-screen {
         right: 14px;
       }
 
-      @include mixins.sm-screen {
+      @include sm-screen {
         top: -37px;
       }
     }
@@ -263,7 +263,7 @@
   .mr-point {
     margin-right: 124px;
 
-    @include mixins.sm-screen {
+    @include sm-screen {
       margin-right: 108px;
     }
   }
@@ -275,15 +275,15 @@
       right: 60px;
       left: auto;
 
-      @include mixins.xl-screen {
+      @include xl-screen {
         top: -58px;
       }
 
-      @include mixins.lg-screen {
+      @include lg-screen {
         top: -40px;
       }
 
-      @include mixins.sm-screen {
+      @include sm-screen {
         top: -37px;
       }
     }
@@ -294,19 +294,19 @@
       right: 0px;
       left: auto;
 
-      @include mixins.xl-screen {
+      @include xl-screen {
         top: -58px;
       }
 
-      @include mixins.lg-screen {
+      @include lg-screen {
         top: -40px;
       }
 
-      @include mixins.md-screen {
+      @include md-screen {
         right: 14px;
       }
 
-      @include mixins.sm-screen {
+      @include sm-screen {
         top: -37px;
       }
     }
@@ -317,7 +317,7 @@
   .mr-point {
     margin-right: 124px;
 
-    @include mixins.sm-screen {
+    @include sm-screen {
       margin-right: 108px;
     }
   }
@@ -329,15 +329,15 @@
       right: 60px;
       left: auto;
 
-      @include mixins.xl-screen {
+      @include xl-screen {
         top: -290px;
       }
 
-      @include mixins.lg-screen {
+      @include lg-screen {
         top: -218px;
       }
 
-      @include mixins.sm-screen {
+      @include sm-screen {
         top: -218px;
       }
     }
@@ -348,19 +348,19 @@
       right: 0px;
       left: auto;
 
-      @include mixins.xl-screen {
+      @include xl-screen {
         top: -290px;
       }
 
-      @include mixins.lg-screen {
+      @include lg-screen {
         top: -218px;
       }
 
-      @include mixins.md-screen {
+      @include md-screen {
         right: 14px;
       }
 
-      @include mixins.sm-screen {
+      @include sm-screen {
         top: -218px;
       }
     }
@@ -371,7 +371,7 @@
   .mr-point {
     margin-right: 124px;
 
-    @include mixins.sm-screen {
+    @include sm-screen {
       margin-right: 5px;
     }
   }
@@ -383,15 +383,15 @@
       right: 60px;
       left: auto;
 
-      @include mixins.xl-screen {
+      @include xl-screen {
         top: -42px;
       }
 
-      @include mixins.lg-screen {
+      @include lg-screen {
         top: -42px;
       }
 
-      @include mixins.sm-screen {
+      @include sm-screen {
         top: -42px;
       }
     }
@@ -402,19 +402,19 @@
       right: 0px;
       left: auto;
 
-      @include mixins.xl-screen {
+      @include xl-screen {
         top: -42px;
       }
 
-      @include mixins.lg-screen {
+      @include lg-screen {
         top: -42px;
       }
 
-      @include mixins.md-screen {
+      @include md-screen {
         right: 14px;
       }
 
-      @include mixins.sm-screen {
+      @include sm-screen {
         top: -42px;
       }
     }
@@ -425,7 +425,7 @@
   .mr-point {
     margin-right: 124px;
 
-    @include mixins.sm-screen {
+    @include sm-screen {
       margin-right: 108px;
     }
   }
@@ -437,15 +437,15 @@
       right: 60px;
       left: auto;
 
-      @include mixins.xl-screen {
+      @include xl-screen {
         top: -42px;
       }
 
-      @include mixins.lg-screen {
+      @include lg-screen {
         top: -38px;
       }
 
-      @include mixins.sm-screen {
+      @include sm-screen {
         top: -38px;
       }
     }
@@ -456,19 +456,19 @@
       right: 0px;
       left: auto;
 
-      @include mixins.xl-screen {
+      @include xl-screen {
         top: -42px;
       }
 
-      @include mixins.lg-screen {
+      @include lg-screen {
         top: -38px;
       }
 
-      @include mixins.md-screen {
+      @include md-screen {
         right: 14px;
       }
 
-      @include mixins.sm-screen {
+      @include sm-screen {
         top: -38px;
       }
     }
@@ -485,7 +485,7 @@
   .mr-point {
     margin-right: 124px;
 
-    @include mixins.sm-screen {
+    @include sm-screen {
       margin-right: 108px;
     }
   }
@@ -497,15 +497,15 @@
       right: 60px;
       left: auto;
 
-      @include mixins.xl-screen {
+      @include xl-screen {
         top: -42px;
       }
 
-      @include mixins.lg-screen {
+      @include lg-screen {
         top: -42px;
       }
 
-      @include mixins.sm-screen {
+      @include sm-screen {
         top: -42px;
       }
     }
@@ -516,19 +516,19 @@
       right: 0px;
       left: auto;
 
-      @include mixins.xl-screen {
+      @include xl-screen {
         top: -42px;
       }
 
-      @include mixins.lg-screen {
+      @include lg-screen {
         top: -42px;
       }
 
-      @include mixins.md-screen {
+      @include md-screen {
         right: 14px;
       }
 
-      @include mixins.sm-screen {
+      @include sm-screen {
         top: -42px;
       }
     }
@@ -547,7 +547,7 @@
       right: 60px;
       left: auto;
 
-      @include mixins.sm-screen {
+      @include sm-screen {
         right: 46px;
       }
     }
@@ -699,13 +699,13 @@
 }
 
 .category-two {
-  @include mixins.md-screen {
+  @include md-screen {
     display: block !important;
   }
 }
 
 .category.main {
-  @include mixins.md-screen {
+  @include md-screen {
     display: none !important;
   }
 }
@@ -793,7 +793,7 @@
 
 .vendor-two {
   .list-grid-wrapper.list-view {
-    @include mixins.sm-screen {
+    @include sm-screen {
       display: grid;
     }
   }
