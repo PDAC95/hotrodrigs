@@ -1,7 +1,9 @@
+@use "../../abstracts/functions";
+
 /* Week Deals Start  */
 .deal-week-box {
     &__content {
-        padding: clampCal(24, 60) 0;
+        padding: functions.clampCal(24, 60) 0;
     }
 }
 /* Week Deals End  */

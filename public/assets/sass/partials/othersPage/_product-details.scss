@@ -1,8 +1,10 @@
+@use "../../abstracts/functions";
+
 /* ============================ Product Details Css Start ============================= */
 .product-details {
     &__thumb {
         &-slider {
-            padding: clampCal(48, 116);
+            padding: functions.clampCal(48, 116);
         }
     }
 

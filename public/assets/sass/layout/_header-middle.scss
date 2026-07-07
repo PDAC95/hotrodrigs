@@ -1,36 +1,39 @@
+@use "../abstracts/functions";
+@use "../abstracts/mixins";
+
 /* =========================== header Middle Css Start =============================== */
 .header-middle {
     padding: 30px 0;
     &.style-two {
         padding: 24px 0;
     }
-    @include xl-screen {
+    @include mixins.xl-screen {
         padding: 24px 0;
     }
-    @include lg-screen {
+    @include mixins.lg-screen {
         padding: 16px 0 !important;
     }
-    @include md-screen {
+    @include mixins.md-screen {
         padding: 8px 0 !important;
     }
 
     .location-box {
-        @include lg-screen {
+        @include mixins.lg-screen {
             padding: 6px 8px !important;
         }
-        @include sm-screen {
+        @include mixins.sm-screen {
             padding-left: 14px !important;
         }
     }
 }
 
 .form-location-wrapper {
-    gap: clampCal(8, 16, 1199, 1599);
+    gap: functions.clampCal(8, 16, 1199, 1599);
 }
 
 /* Search Form Css Here */
 .search-form {
-    @include md-screen {
+    @include mixins.md-screen {
         .select2-selection.select2-selection--single {
             border-radius: 50px !important;
             border-radius: 50px !important;
@@ -39,20 +42,20 @@
         }
     }
     &__wrapper {
-        @include md-screen {
+        @include mixins.md-screen {
             display: none;
         }
     }
     &__input {
         border-color: var(--gray-200) !important;
         width: 520px;
-        @include xxl-screen {
+        @include mixins.xxl-screen {
             width: 400px;
         }
-        @include xl-screen {
+        @include mixins.xl-screen {
             width: 300px;
         }
-        @include lg-screen {
+        @include mixins.lg-screen {
             width: 200px;
         }
     }
@@ -60,17 +63,17 @@
 
 /* Header Activities Css Start */
 .header-two-activities {
-    @include xl-screen {
+    @include mixins.xl-screen {
         gap: 24px !important;
     }
-    @include md-screen {
+    @include mixins.md-screen {
         gap: 16px !important;
     }
-    @include sm-screen {
+    @include mixins.sm-screen {
         gap: 10px !important;
     }
 
-    @include md-screen {
+    @include mixins.md-screen {
         .item-hover-two {
             > span {
                 font-size: 18px !important;
@@ -100,7 +103,7 @@
 
 
 /* Category Dropdown Responsive Css Start */
-@include md-screen {
+@include mixins.md-screen {
     .responsive-dropdown {
         position: fixed;
         inset-inline-start: 0;

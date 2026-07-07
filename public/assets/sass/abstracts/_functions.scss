@@ -1,3 +1,4 @@
+@use "sass:math";
 /* Convert to Rem start */
 $font-base: 16px;
 @function rem($target, $context: $font-base) {
@@ -16,7 +17,7 @@ $font-base: 16px;
   @return $val;
 }
 @function formatFloatingNumber($number) {
-  @return calc(round($number * 1000) / 1000);
+  @return calc(math.round($number * 1000) / 1000);
 }
 @function clampCal($minSize, $maxSize, $minWidth: 768, $maxWidth: 1399) {
   $minREMsize: convertToRem($minSize);

@@ -1,3 +1,6 @@
+@use "../abstracts/functions";
+@use "../abstracts/mixins";
+
 /* ================================= Tab Css Start =========================== */
 .common-tab {
     margin-block-end: 20px;
@@ -15,9 +18,9 @@
             overflow: hidden;
             border-radius: 50px;
             font-size: 16px;
-            @include xl-screen {
+            @include mixins.xl-screen {
                 padding: 6px 16px !important;
-                font-size: rem(14px);
+                font-size: functions.rem(14px);
             }
             &.active {
                 color: hsl(var(--white)) !important; 

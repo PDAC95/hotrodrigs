@@ -1,7 +1,10 @@
+@use "../../abstracts/functions";
+@use "../../abstracts/mixins";
+
 /* ============================== Banner Css Start ========================== */
 .banner {
   margin-top: 32px;
-  @include sm-screen {
+  @include mixins.sm-screen {
     margin-bottom: 32px;
   }
   .slick-slider {
@@ -14,10 +17,10 @@
 
 .banner-item {
   position: relative;
-  padding-block-start: clampCal(32, 100, 768, 1599);
-  padding-block-end: clampCal(32, 220, 768, 1599);
-  padding-inline-start: clampCal(16, 142, 992, 1599);
-  padding-inline-end: clampCal(16, 76, 992, 1599);
+  padding-block-start: functions.clampCal(32, 100, 768, 1599);
+  padding-block-end: functions.clampCal(32, 220, 768, 1599);
+  padding-inline-start: functions.clampCal(16, 142, 992, 1599);
+  padding-inline-end: functions.clampCal(16, 76, 992, 1599);
   -webkit-mask-image: url("~/public/assets/images/bg/banner-bg2.png");
   mask-image: url("~/public/assets/images/bg/banner-bg2.png");
   -webkit-mask-repeat: no-repeat;
@@ -25,36 +28,36 @@
   background: #d3ebc0;
   mask-position: top;
   mask-size: 100% 100%;
-  gap: clampCal(24, 72);
-  @include sm-screen {
+  gap: functions.clampCal(24, 72);
+  @include mixins.sm-screen {
     mask-image: none;
     overflow: unset !important;
   }
 
   &__title {
-    margin-block-end: clampCal(16, 60);
-    @include xxl-screen {
-      font-size: rem(56px);
+    margin-block-end: functions.clampCal(16, 60);
+    @include mixins.xxl-screen {
+      font-size: functions.rem(56px);
     }
-    @include lg-screen {
-      font-size: rem(46px);
+    @include mixins.lg-screen {
+      font-size: functions.rem(46px);
     }
-    @include md-screen {
-      font-size: rem(28px);
+    @include mixins.md-screen {
+      font-size: functions.rem(28px);
     }
-    @include sm-screen {
-      font-size: rem(26px);
+    @include mixins.sm-screen {
+      font-size: functions.rem(26px);
     }
   }
   &__content {
     max-width: 852px;
-    @include xxl-screen {
+    @include mixins.xxl-screen {
       max-width: 750px;
     }
   }
   &__thumb {
     img {
-      @include msm-screen {
+      @include mixins.msm-screen {
         max-width: 350px;
         width: 100%;
       }
@@ -63,7 +66,7 @@
 }
 
 .banner-slider__inner {
-  @include msm-screen {
+  @include mixins.msm-screen {
     flex-wrap: wrap;
   }
 }
@@ -74,12 +77,12 @@
   position: relative;
   margin-bottom: 24px;
   z-index: 2;
-  @include xl-screen {
+  @include mixins.xl-screen {
     width: 74px;
     height: 74px;
     margin-bottom: 16px;
   }
-  @include sm-screen {
+  @include mixins.sm-screen {
     margin-bottom: -36px;
   }
   &::before {
@@ -90,13 +93,13 @@
     border: 2px dashed hsl(var(--white) / 0.4);
     top: 16px;
     animation: upDown 2s linear infinite;
-    @include xl-screen {
+    @include mixins.xl-screen {
       top: 8px;
     }
   }
   .icon {
     animation: upDown 2s linear infinite;
-    font-size: rem(28px);
+    font-size: functions.rem(28px);
     margin-top: 16px;
   }
 }

@@ -1,7 +1,9 @@
+@use "../abstracts/mixins";
+
 /* ================== Section Heading Css Start ========================= */
 .section-heading {
     margin-bottom: 40px;
-    @include lg-screen {
+    @include mixins.lg-screen {
         margin-bottom: 24px;
     }
 

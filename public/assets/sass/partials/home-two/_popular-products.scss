@@ -1,7 +1,9 @@
+@use "../../abstracts/mixins";
+
 /* ====================== Popular Products Start ==================== */
 .popular-products {
     .product-card {
-        @include sm-screen {
+        @include mixins.sm-screen {
             flex-direction: column;
         }
     }

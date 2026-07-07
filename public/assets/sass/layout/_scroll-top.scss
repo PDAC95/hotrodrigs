@@ -1,3 +1,5 @@
+@use "../abstracts/mixins";
+
 
 /* ===================== Scroll to Top Start ================================= */
   .progress-wrap {
@@ -18,7 +20,7 @@
     -webkit-transition: all 200ms linear;
     transition: all 200ms linear;
     background-color: transparent;
-    @include md-screen {
+    @include mixins.md-screen {
       inset-inline-end: 24px;
       inset-block-end: 24px;
       height: 40px;
@@ -51,7 +53,7 @@
         -webkit-transition: all 200ms linear;
         transition: all 200ms linear;
         color: hsl(var(--main)) !important;
-        @include md-screen {
+        @include mixins.md-screen {
           height: 40px;
           width: 40px;
           line-height: 40px;

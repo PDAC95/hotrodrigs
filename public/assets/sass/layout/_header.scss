@@ -1,3 +1,7 @@
+@use "../abstracts/functions";
+@use "../abstracts/mixins";
+@use "../utilities/shadow";
+
 /* ============= Header Start Here ======================= */
 .header {
     transition: .2s linear;
@@ -11,7 +15,7 @@
         backdrop-filter: blur(24px);
         animation: slideDown 0.35s ease-out;    
         box-shadow: 0 5px 16px rgba(0, 0, 0, 0.1);
-        @include md-screen {
+        @include mixins.md-screen {
             inset-block-start: -1px;
         }
     }
@@ -29,7 +33,7 @@
 .logo {
     img {
         max-width: 200px;
-        @include xsm-screen {
+        @include mixins.xsm-screen {
             max-width: 148px;
         }
     }
@@ -38,10 +42,10 @@
 /* Header Menu and Submenu Css Start */
 .nav-menu {
     gap: 32px;
-    @include xl-screen {
+    @include mixins.xl-screen {
         gap: 24px;
     }
-    @include lg-screen {
+    @include mixins.lg-screen {
         gap: 16px;
     }
     &__item {
@@ -69,19 +73,19 @@
         padding: 16px 0;
         width: 100%;
         @media (max-width: 1299px) {
-            font-size: rem(14px);
+            font-size: functions.rem(14px);
         } 
-        @include lg-screen {
-            font-size: rem(13px);
+        @include mixins.lg-screen {
+            font-size: functions.rem(13px);
         }
     }   
 
     .common-dropdown__link {
         @media (max-width: 1299px) {
-            font-size: rem(14px);
+            font-size: functions.rem(14px);
         } 
-        @include lg-screen {
-            font-size: rem(13px);
+        @include mixins.lg-screen {
+            font-size: functions.rem(13px);
         }
     }
 }
@@ -145,7 +149,7 @@
         border-radius: 4px;
         transition: .2s linear;
         position: relative;
-        @include md-screen {
+        @include mixins.md-screen {
             border-radius: 0;
         }
         &.activePage {
@@ -178,7 +182,7 @@
 
 /* Category Submenus Submenu Css Start */
 .menu-category-wrapper {
-    gap: clampCal(12, 72, 1199, 1699);
+    gap: functions.clampCal(12, 72, 1199, 1699);
 }
 
 .submenus-submenu-wrapper {
@@ -248,11 +252,11 @@
 
 .category {
     .category__button {
-        @include sm-screen {
+        @include mixins.sm-screen {
             padding: 12px 3px !important;
             font-size: 12px !important;
         }
-        @include msm-screen {
+        @include mixins.msm-screen {
             padding-left: 10px !important;
         }
     }
@@ -277,7 +281,7 @@
     }
     .category__button {
         width: 100%;
-        @include msm-screen {
+        @include mixins.msm-screen {
             font-size: 12px;
             padding: 8px 4px !important;
         }
@@ -293,7 +297,7 @@
     max-height: 900px;
     .responsive-dropdown__list {
         max-height: 900px;
-        @include lg-screen {
+        @include mixins.lg-screen {
             max-height: 438px;
         }
     }

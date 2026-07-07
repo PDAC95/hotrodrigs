@@ -1,12 +1,14 @@
+@use "../abstracts/functions";
+
 
 /* ============= Footer Start Here ======================= */
 .footer {
     margin-block-start: auto;
     &-item-wrapper {
-        gap: clampCal(32, 44, 1199, 1899);
+        gap: functions.clampCal(32, 44, 1199, 1899);
     }
     &-item-two-wrapper {
-        gap: clampCal(32, 90, 1199, 1899);
+        gap: functions.clampCal(32, 90, 1199, 1899);
     }
     &-item {
         &__logo {

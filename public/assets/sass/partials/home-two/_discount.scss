@@ -1,12 +1,14 @@
+@use "../../abstracts/functions";
+
 /* =============================== Discount css Start ============================ */
 .discount-item {
-    padding: clampCal(24, 48, 1199, 1599);
+    padding: functions.clampCal(24, 48, 1199, 1599);
     &__content{
         max-width: 320px;
     }
 }
 
 .discount-three-item {
-    padding: clampCal(32, 136) clampCal(24, 56);
+    padding: functions.clampCal(32, 136) functions.clampCal(24, 56);
 }
 /* =============================== Discount css End ============================ */

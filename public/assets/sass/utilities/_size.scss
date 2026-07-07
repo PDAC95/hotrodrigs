@@ -1,5 +1,7 @@
+@use "../abstracts/variable";
+
 // width height
-@each $property, $value in $spaces {
+@each $property, $value in variable.$spaces {
     .w-#{$property} {
       width: $value !important;
     }
@@ -17,7 +19,7 @@
   }
 }
 
-@each $property, $value in $spaces {
+@each $property, $value in variable.$spaces {
     .h-#{$property} {
       height: $value !important;
     }

@@ -1,20 +1,22 @@
+@use "../../abstracts/mixins";
+
 /* ============================== Vendor Two Details Css Start =============================== */
 .grid-cols-4 {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr !important;
     gap: 24px;
-    @include xl-screen {
+    @include mixins.xl-screen {
         grid-template-columns: 1fr 1fr 1fr !important;
     }
-    @include lg-screen {
+    @include mixins.lg-screen {
         grid-template-columns: 1fr 1fr !important;
     }
-    @include msm-screen {
+    @include mixins.msm-screen {
         grid-template-columns: 1fr !important;
     }
     &.list-view {
         grid-template-columns: 1fr 1fr !important;
-        @include xl-screen {
+        @include mixins.xl-screen {
             grid-template-columns: 1fr !important;
         }
     }

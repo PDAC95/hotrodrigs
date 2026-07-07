@@ -1,41 +1,43 @@
+@use "../abstracts/variable";
+
 /* ================================= Margin Css Start =========================== */
-@each $property, $value in $spaces {
+@each $property, $value in variable.$spaces {
   .m-#{$property} {
     margin: var(--size-#{$property}) !important;
   }
 }
 
-@each $property, $value in $spaces {
+@each $property, $value in variable.$spaces {
   .mx-#{$property} {
     margin-inline: var(--size-#{$property}) !important;
   }
 }
 
-@each $property, $value in $spaces {
+@each $property, $value in variable.$spaces {
   .my-#{$property} {
     margin-block: var(--size-#{$property}) !important;
   }
 }
 
-@each $property, $value in $spaces {
+@each $property, $value in variable.$spaces {
   .ms-#{$property} {
     margin-inline-start: var(--size-#{$property}) !important;
   }
 }
 
-@each $property, $value in $spaces {
+@each $property, $value in variable.$spaces {
   .me-#{$property} {
     margin-inline-end: var(--size-#{$property}) !important;
   }
 }
 
-@each $property, $value in $spaces {
+@each $property, $value in variable.$spaces {
   .mt-#{$property} {
     margin-block-start: var(--size-#{$property}) !important;
   }
 }
 
-@each $property, $value in $spaces {
+@each $property, $value in variable.$spaces {
   .mb-#{$property} {
     margin-block-end: var(--size-#{$property}) !important;
   }

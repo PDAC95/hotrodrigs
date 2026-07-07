@@ -1,20 +1,20 @@
 // preloader
-@import "preloader";    
+@use "preloader";    
 // header Top
-@import "header-top";
+@use "header-top";
 // header
-@import "header";
+@use "header";
 // header Middle
-@import "header-middle";
+@use "header-middle";
 // mobile menu
-@import "mobile-nav-menu";
+@use "mobile-nav-menu";
 // footer
-@import "footer";
+@use "footer";
 // scroll top
-@import "scroll-top";
+@use "scroll-top";
 // search form
-@import "search-form";
+@use "search-form";
 // slick
-@import "slick"; 
+@use "slick"; 
 // section heading
-@import "section-heading"; 
+@use "section-heading"; 

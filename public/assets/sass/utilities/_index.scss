@@ -1,40 +1,40 @@
 
 //  Typography
-@import "typography";
+@use "typography";
 //  margin
-@import "margin";
+@use "margin";
 //  padding
-@import "padding";
+@use "padding";
 
 //  Classes
-@import "classes";
+@use "classes";
 // extend
- @import "extend";
+ @use "extend";
 // size
- @import "size";
+ @use "size";
 // colors
- @import "colors";
+ @use "colors";
 // border
- @import "border";
+ @use "border";
 // bg
- @import "bg";
+ @use "bg";
 // font size 
- @import "font-size";
+ @use "font-size";
 // shadow 
- @import "shadow";
+ @use "shadow";
 // radius
- @import "radius";
+ @use "radius";
 // scroll hide
- @import "scroll-hide";
+ @use "scroll-hide";
 // overlay
- @import "overlay";
+ @use "overlay";
 // line clamp
- @import "line-clamp";
+ @use "line-clamp";
 // scrollbar
- @import "scrollbar";
+ @use "scrollbar";
 // gap
- @import "gap";
+ @use "gap";
 // hover
- @import "hover";
+ @use "hover";
 // gutter
- @import "gutter";
+ @use "gutter";

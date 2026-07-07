@@ -1,12 +1,12 @@
 // abstract
-@import "abstracts/index";
+@use "abstracts/index";
 // Component
-@import "components/index";
+@use "components/index" as index2;
 // utilities
-@import "utilities/index";
+@use "utilities/index" as index3;
 // Module
-@import "layout/index";
+@use "layout/index" as index4;
 // All partials
-@import "partials/index";
+@use "partials/index" as index5;
 
-@import "extra"
+@use "extra";

@@ -1,8 +1,10 @@
+@use "../abstracts/functions";
+
 /* ======================= Common Table Css Start ======================= */
 .table-card {
     border: 1px solid hsl(var(--white)/.2);
     border-radius: 10px;
-    padding: clampCal(20, 36);
+    padding: functions.clampCal(20, 36);
 }
 .table {
     color: hsl(var(--white));
@@ -39,9 +41,9 @@
             border-bottom: 1px solid hsl(var(--white)/.2);
             th {
                 padding-block-start: 0;
-                font-size: clampCal(16, 20);
+                font-size: functions.clampCal(16, 20);
                 font-weight: 400;
-                padding-block-end: clampCal(16, 30);
+                padding-block-end: functions.clampCal(16, 30);
             }
         }
     }
@@ -55,9 +57,9 @@
                 }
             }
             td {
-                font-size: clampCal(14, 16);
+                font-size: functions.clampCal(14, 16);
                 font-weight: 400;
-                padding: clampCal(16, 30) 0;
+                padding: functions.clampCal(16, 30) 0;
             }
         }
     }
@@ -87,7 +89,7 @@
                 }
             }
             td {
-                padding: clampCal(24, 40) 24px;
+                padding: functions.clampCal(24, 40) 24px;
             }
         }
     }

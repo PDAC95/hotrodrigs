@@ -7,7 +7,9 @@
     object-fit: cover;  
   }
 /* Display Flex Css Start */ 
-  .flex-align {
+  // .common-check co-located: was `@extend .flex-align` in components/_form.scss —
+  // a cross-module extend the module system can't express without reordering CSS (Phase 10)
+  .flex-align, .common-check {
     display: flex;
     align-items: center;
   }

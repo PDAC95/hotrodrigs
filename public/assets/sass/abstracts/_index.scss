@@ -1,9 +1,9 @@
  // Css Index
- @import "css-index";
+ @use "css-index";
  // function
- @import "functions";
+ @use "functions";
 // Variable
- @import "variable";
+ @use "variable";
 // Mixin
- @import "mixins";
+ @use "mixins";
 
