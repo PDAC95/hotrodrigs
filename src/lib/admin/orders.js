@@ -36,7 +36,7 @@ export async function getAllOrders() {
 
   const { data, error } = await supabase
     .from("orders")
-    .select("id, order_number, status, total, created_at, user_id, ship_to_snapshot")
+    .select("id, order_number, status, total, created_at, user_id, ship_to_snapshot, stock_issue")
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -87,7 +87,7 @@ export async function getAdminOrderByNumber(orderNumber) {
   const { data, error } = await supabase
     .from("orders")
     .select(
-      "order_number, status, subtotal, shipping, tax, total, ship_to_snapshot, created_at, order_items:order_items(name_snapshot, sku_snapshot, unit_price, quantity)"
+      "order_number, status, subtotal, shipping, tax, total, ship_to_snapshot, created_at, stock_issue, order_items:order_items(name_snapshot, sku_snapshot, unit_price, quantity)"
     )
     .eq("order_number", orderNumber)
     .maybeSingle();

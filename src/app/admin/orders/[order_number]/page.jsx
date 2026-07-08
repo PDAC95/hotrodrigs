@@ -45,8 +45,24 @@ const AdminOrderDetailPage = async ({ params }) => {
           <p className='text-gray-500 mb-0'>
             {formatOrderDate(order.created_at)}
           </p>
+          {order.stock_issue ? (
+            <p className='text-sm text-warning-600 mb-0'>
+              Stock issue: a tracked item was short when this order was
+              fulfilled. Decide refund vs fulfill-from-supplier.
+            </p>
+          ) : null}
         </div>
-        <OrderStatusBadge status={order.status} />
+        <div className='flex-align gap-8'>
+          <OrderStatusBadge status={order.status} />
+          {order.stock_issue ? (
+            <span
+              className='px-8 py-4 text-sm rounded-4 bg-warning-50 text-warning-600 fw-medium ms-8'
+              title='A tracked item was short at fulfillment — resolve manually (refund or fulfill from supplier)'
+            >
+              Stock issue
+            </span>
+          ) : null}
+        </div>
       </div>
 
       <OrderReceipt order={order} />

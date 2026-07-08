@@ -79,6 +79,14 @@ const AdminOrdersPage = async () => {
                     </td>
                     <td>
                       <OrderStatusBadge status={o.status} />
+                      {o.stock_issue ? (
+                        <span
+                          className='px-8 py-4 text-sm rounded-4 bg-warning-50 text-warning-600 fw-medium ms-8'
+                          title='A tracked item was short at fulfillment — resolve manually (refund or fulfill from supplier)'
+                        >
+                          Stock issue
+                        </span>
+                      ) : null}
                     </td>
                   </tr>
                 );
