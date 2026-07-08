@@ -1,6 +1,11 @@
 import "server-only";
 
 import { createClient } from "@/lib/supabase/server";
+import {
+  isTracked,
+  maxQty,
+  UNTRACKED_MAX_QTY,
+} from "@/lib/catalog/availability";
 
 /**
  * Shipping-specific cart read. Pulls the product_variants SHIPPING columns that
@@ -19,13 +24,21 @@ const SHIPPING_VARIANT_SELECT =
   "id, weight, length, width, height, ltl_flag, oversized, stock";
 
 /**
- * Shape one variant row + desired quantity into a shipping line. effective_qty
- * is min(qty, live stock) so parcel weight reflects only what can actually ship.
+ * Shape one variant row + desired quantity into a shipping line.
+ *
+ * effective_qty (Phase 13, tracked/untracked aware):
+ *   - TRACKED (numeric stock): min(qty, live stock) — parcel weight reflects
+ *     only what can actually ship (unchanged).
+ *   - UNTRACKED (stock NULL): the FULL quantity, capped at UNTRACKED_MAX_QTY —
+ *     mirrors the cart's sanity cap so the quoted weight matches exactly what
+ *     create-intent will charge (never 0 weight / empty EasyPost quotes).
  */
 function toShippingLine(variant, quantity) {
   const qty = Number(quantity) || 0;
-  const available = Number(variant.stock) || 0;
-  const effective_qty = Math.max(0, Math.min(qty, available));
+  const effective_qty = isTracked(variant.stock)
+    ? // maxQty(tracked stock) === max(0, trunc(stock)) — same math as before.
+      Math.max(0, Math.min(qty, maxQty(variant.stock)))
+    : Math.max(0, Math.min(qty, UNTRACKED_MAX_QTY));
   return {
     variant_id: variant.id,
     quantity: qty,

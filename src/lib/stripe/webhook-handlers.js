@@ -16,8 +16,9 @@ import {
  * Flow:
  *   1. Read the staged pending_orders row (keyed on the PaymentIntent id).
  *   2. Short-circuit if there is no staged row or it is already fulfilled.
- *   3. Fulfill via the idempotent fulfill_order RPC. A genuine oversell refunds
- *      the buyer, marks the row needs_refund, and RETURNS (never loops).
+ *   3. Fulfill via the idempotent fulfill_order RPC. Tracked shortages clamp at
+ *      0 and flag orders.stock_issue inside the RPC (Phase 13) — the order
+ *      always fulfills; NO automatic refunds (locked decision).
  *   4. Record the Stripe Tax transaction when a calculation id exists (CHK-02).
  *   5. Send the branded post-order emails (EML-01 order confirmation for every
  *      buyer; EML-02 activation link for a genuinely new guest account) —
@@ -53,21 +54,14 @@ export async function onPaymentIntentSucceeded(pi) {
     ({ isNewGuest } = await createOrderFromIntent(pending));
   } catch (err) {
     if (err?.code === "insufficient_stock") {
-      // Genuine oversell (Pitfall 4): refund and stop. A 500 here would make
-      // Stripe retry a permanently-failing event forever, so we return 200-equiv.
-      try {
-        await getStripe().refunds.create({ payment_intent: pi.id });
-      } catch (refundErr) {
-        console.error(`[webhook] refund failed for ${pi.id}:`, refundErr);
-      }
-      await admin
-        .from("pending_orders")
-        .update({ status: "needs_refund" })
-        .eq("stripe_pi_id", pi.id);
+      // Phase 13: fulfill_order no longer raises for oversell (tracked shortages
+      // clamp at 0 and flag orders.stock_issue for manual resolution — locked
+      // decision: NO automatic refunds). This branch is defensive dead code for
+      // an unexpected legacy raise; log loudly and stop (returning 200-equiv so
+      // Stripe doesn't retry a permanently-failing event).
       console.error(
-        `[webhook] oversell on ${pi.id} — refunded buyer, marked needs_refund`
+        `[webhook] UNEXPECTED insufficient_stock on ${pi.id} — NOT refunding (Phase 13 policy); investigate manually`
       );
-      // 06-05 shows the confirmation page an apologetic "refunded" state.
       return;
     }
     // Transient/other failure: rethrow so the route returns 500 and Stripe
