@@ -20,7 +20,7 @@ const AdminStockPage = async ({ searchParams }) => {
     <div>
       <h4 className='mb-8'>Stock</h4>
       <p className='text-gray-500 mb-24'>
-        Search a variant by SKU, then set its stock quantity.
+        Search a variant by SKU, then track a stock count or leave it orderable.
       </p>
 
       <form method='get' className='flex-align gap-12 mb-32' role='search'>
@@ -58,6 +58,7 @@ const AdminStockPage = async ({ searchParams }) => {
                 <th scope='col'>SKU</th>
                 <th scope='col'>Product</th>
                 <th scope='col'>Size · Pack</th>
+                <th scope='col'>Availability</th>
                 <th scope='col'>Stock</th>
               </tr>
             </thead>
@@ -68,6 +69,24 @@ const AdminStockPage = async ({ searchParams }) => {
                   <td>{v.products?.name ?? "—"}</td>
                   <td className='text-gray-500 text-sm'>
                     {[v.size, v.pack].filter(Boolean).join(" · ") || "—"}
+                  </td>
+                  <td>
+                    {/* Mode badge: untracked = Orderable; tracked shows the
+                        count (admin-only — the storefront never shows counts);
+                        tracked 0 = red Out of stock. */}
+                    {v.stock == null ? (
+                      <span className='px-8 py-4 text-sm rounded-4 bg-success-50 text-success-600 fw-medium'>
+                        Orderable
+                      </span>
+                    ) : Number(v.stock) > 0 ? (
+                      <span className='px-8 py-4 text-sm rounded-4 bg-gray-50 text-gray-600 fw-medium'>
+                        {v.stock} in stock
+                      </span>
+                    ) : (
+                      <span className='px-8 py-4 text-sm rounded-4 bg-danger-50 text-danger-600 fw-medium'>
+                        Out of stock
+                      </span>
+                    )}
                   </td>
                   <td>
                     <StockEditor variantId={v.id} currentStock={v.stock} />

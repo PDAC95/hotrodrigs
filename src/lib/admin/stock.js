@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { isOrderable } from "@/lib/catalog/availability";
 
 // Admin stock data layer (ADM-03).
 //
@@ -14,9 +15,10 @@ import { createClient } from "@/lib/supabase/server";
 // STOREFRONT-REFRESH RULE: the storefront lists PARENTS using the denormalized
 // `products.in_stock` aggregate (Phase 3), NOT live variant stock. So every
 // stock mutation MUST recompute the owning product's in_stock as
-// `exists(published variant with stock > 0)` and write it back — otherwise
-// /c/**, /search, and cards keep the stale availability. This mirrors backfill
-// 5b in 20260629000000_storefront_read.sql, done for a single parent in JS.
+// `exists(published variant that is orderable: stock IS NULL or > 0)` and write
+// it back — otherwise /c/**, /search, and cards keep the stale availability.
+// Uses the shared isOrderable predicate (Phase 13 stock semantics: NULL =
+// untracked/orderable), done for a single parent in JS.
 
 // Find variants for the management list, scoped by an admin search box.
 //
@@ -47,22 +49,39 @@ export async function findVariants({ q = "", limit = 50 } = {}) {
   return data ?? [];
 }
 
-// Set a variant's stock quantity and refresh the storefront aggregate.
+// Set a variant's stock mode + quantity and refresh the storefront aggregate.
 //
-// Called as a form action from StockEditor. Validates input, updates
-// product_variants.stock via the RLS cookie client, then recomputes and writes
-// products.in_stock for the owning parent so the storefront reflects the change.
+// Called as a form action from StockEditor. STOCK-03 semantics: the
+// track_inventory checkbox decides tracked vs untracked — untracked writes
+// stock NULL (orderable, the stock field is never read); tracked REQUIRES a
+// real numeric count (empty field is rejected server-side too, never silently
+// saved as 0). Updates product_variants.stock via the RLS cookie client, then
+// recomputes and writes products.in_stock for the owning parent so the
+// storefront reflects the change.
 export async function setVariantStock(formData) {
   const variantId = Number(formData.get("variant_id"));
-  const rawStock = formData.get("stock");
-  const stock = Math.trunc(Number(rawStock));
 
-  // Validate: variantId a positive integer, stock a finite integer >= 0.
+  // Validate: variantId a positive integer.
   if (!Number.isInteger(variantId) || variantId <= 0) {
     return { ok: false, error: "invalid_input" };
   }
-  if (!Number.isFinite(stock) || stock < 0) {
-    return { ok: false, error: "invalid_input" };
+
+  // Checkbox present in the payload = tracking ON.
+  const tracked = formData.get("track_inventory") != null;
+
+  let stock = null; // untracked default — orderable, no count.
+  if (tracked) {
+    const raw = formData.get("stock");
+    // Server re-validation of the empty-field rule: tracking without a real
+    // count is invalid — never coerce blank to 0.
+    if (raw == null || String(raw).trim() === "") {
+      return { ok: false, error: "invalid_input" };
+    }
+    const n = Number(raw);
+    if (!Number.isFinite(n) || n < 0) {
+      return { ok: false, error: "invalid_input" };
+    }
+    stock = Math.trunc(n);
   }
 
   const supabase = await createClient();
@@ -81,14 +100,15 @@ export async function setVariantStock(formData) {
   }
 
   // STOREFRONT-REFRESH: recompute the parent's in_stock from its published
-  // variants (a published variant with stock > 0 exists) and write it back.
+  // variants (a published variant that is orderable exists: stock IS NULL or
+  // > 0) and write it back.
   const { data: sib } = await supabase
     .from("product_variants")
     .select("stock")
     .eq("product_id", updated.product_id)
     .eq("published", true);
 
-  const inStock = (sib ?? []).some((v) => (v.stock ?? 0) > 0);
+  const inStock = (sib ?? []).some((v) => isOrderable(v.stock));
 
   await supabase
     .from("products")
