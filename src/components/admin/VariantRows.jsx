@@ -25,7 +25,7 @@ function toRow(v) {
     size: v?.size ?? "",
     pack: v?.pack ?? "",
     price: v?.price != null ? String(v.price) : "",
-    stock: v?.stock != null ? String(v.stock) : "0",
+    stock: v?.stock != null ? String(v.stock) : "", // empty = untracked/orderable
   };
 }
 
@@ -110,13 +110,16 @@ const VariantRows = ({ initialRows = [] }) => {
             </div>
 
             <div className='col-md-2'>
-              <label className='form-label text-sm mb-4'>Stock</label>
+              <label className='form-label text-sm mb-4'>
+                Stock (blank = orderable)
+              </label>
               <input
                 type='number'
                 name='variant_stock'
                 min='0'
                 step='1'
                 defaultValue={row.stock}
+                placeholder='Orderable'
                 className='form-control px-12 py-8 rounded-8'
               />
             </div>

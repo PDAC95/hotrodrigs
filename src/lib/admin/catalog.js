@@ -19,6 +19,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
+import { isOrderable } from "@/lib/catalog/availability";
 
 // --------------------------------------------------------------------------
 // Helpers (module-local — not exported, so they may be sync).
@@ -40,7 +41,8 @@ function slugify(name) {
 // Recompute the denormalized parent aggregates for ONE product from its
 // PUBLISHED variants and write them back to the products row:
 //   price_min/price_max = min/max(price) over published variants (null if none)
-//   in_stock            = a published variant with stock > 0 exists
+//   in_stock            = a published ORDERABLE variant exists (stock IS NULL
+//                         = untracked/orderable, or tracked stock > 0)
 // Mirrors 5a/5b in 20260629000000_storefront_read.sql. cover_image_url is left
 // as-is (no image editing in this plan).
 async function refreshAggregates(supabase, productId) {
@@ -57,7 +59,7 @@ async function refreshAggregates(supabase, productId) {
 
   const price_min = prices.length ? Math.min(...prices) : null;
   const price_max = prices.length ? Math.max(...prices) : null;
-  const in_stock = published.some((v) => Number(v.stock) > 0);
+  const in_stock = published.some((v) => isOrderable(v.stock));
 
   const { error: upErr } = await supabase
     .from("products")
@@ -110,10 +112,13 @@ function normalizePrice(raw) {
   return n;
 }
 
-// Normalize a posted stock to a non-negative integer.
+// Normalize a posted stock: empty = untracked (NULL); numeric = tracked count.
+// Invalid non-empty input also falls back to NULL — never 0 (an accidental 0
+// is a dead product).
 function normalizeStock(raw) {
+  if (raw == null || String(raw).trim() === "") return null; // untracked/orderable
   const n = Number(raw);
-  if (!Number.isFinite(n)) return 0;
+  if (!Number.isFinite(n)) return null;
   return Math.max(0, Math.trunc(n));
 }
 
