@@ -2,6 +2,12 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 
+import {
+  isOrderable,
+  IN_STOCK_LABEL,
+  OUT_OF_STOCK_LABEL,
+} from "@/lib/catalog/availability";
+
 // Variant Matrix (RESEARCH.md Pattern 3): the PDP loads ALL variants once on the server
 // and hands them in as props. Selection is pure client-side derivation — zero network
 // calls on click (BRWS-04, no N+1).
@@ -35,9 +41,9 @@ const VariantSelector = ({ variants = [], priceMin, priceMax, onVariantChange })
   const hasSize = sizes.length > 0;
   const hasPack = packs.length > 0;
 
-  // Default selection: first in-stock variant, else first variant.
+  // Default selection: first orderable variant (untracked = orderable), else first variant.
   const defaultVariant = useMemo(() => {
-    return rows.find((v) => (v.stock ?? 0) > 0) ?? rows[0] ?? null;
+    return rows.find((v) => isOrderable(v.stock)) ?? rows[0] ?? null;
   }, [rows]);
 
   const [size, setSize] = useState(defaultVariant ? defaultVariant.size : null);
@@ -69,7 +75,7 @@ const VariantSelector = ({ variants = [], priceMin, priceMax, onVariantChange })
     }
   }, [match, onVariantChange]);
 
-  const inStock = match && (match.stock ?? 0) > 0;
+  const inStock = match && isOrderable(match.stock);
   const priceText = match
     ? formatPrice(match.price)
     : priceMin != null && priceMax != null && priceMin !== priceMax
@@ -84,11 +90,11 @@ const VariantSelector = ({ variants = [], priceMin, priceMax, onVariantChange })
         {match ? (
           inStock ? (
             <span className='px-12 py-6 text-sm rounded-8 bg-success-50 text-success-600 fw-medium'>
-              In stock
+              {IN_STOCK_LABEL}
             </span>
           ) : (
             <span className='px-12 py-6 text-sm rounded-8 bg-gray-100 text-gray-500 fw-medium'>
-              Out of stock
+              {OUT_OF_STOCK_LABEL}
             </span>
           )
         ) : (

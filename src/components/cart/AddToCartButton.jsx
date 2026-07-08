@@ -11,9 +11,10 @@
  *  - guest:     addGuestItem(variant.id, qty) (localStorage), then
  *    getGuestCartAction(newLines) for server-derived display lines.
  *
- * The quantity stepper is capped client-side at variant.stock (UX only — the
- * server re-validates + caps on every write). stock <= 0 disables the button and
- * shows "Out of stock" (CONTEXT cap rule + Pitfall 8).
+ * The quantity stepper is capped client-side at maxQty(stock) (UX only — the
+ * server re-validates + caps on every write): untracked (stock NULL) → the
+ * sanity cap, tracked → live stock. !isOrderable disables the button and shows
+ * the locked Out of Stock copy (no unit counts anywhere — locked).
  */
 
 import React, { useEffect, useMemo, useState } from "react";
@@ -22,29 +23,34 @@ import { createClient } from "@/lib/supabase/client";
 import { addToCartAction, getGuestCartAction } from "@/lib/cart/actions";
 import { addGuestItem } from "@/lib/cart/guest-store";
 import { useCart } from "@/components/cart/CartProvider";
+import {
+  isOrderable,
+  maxQty,
+  MAX_QTY_NOTE,
+  OUT_OF_STOCK_LABEL,
+} from "@/lib/catalog/availability";
 
 const AddToCartButton = ({ variant }) => {
   const { setCount, setLines, openDrawer } = useCart();
 
-  const stock = Number(variant?.stock ?? 0);
+  const stock = variant?.stock; // raw: number | null (null = untracked/orderable)
   const hasVariant = !!variant;
-  const outOfStock = !hasVariant || stock <= 0;
+  const orderable = hasVariant && isOrderable(stock);
+  const cap = hasVariant ? maxQty(stock) : 0; // untracked -> 10, tracked -> live stock
+  const outOfStock = !orderable;
 
   const [qty, setQty] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  // Reset / clamp the quantity whenever the selected variant (and its stock) changes.
+  // Reset / clamp the quantity whenever the selected variant (and its cap) changes.
   useEffect(() => {
-    setQty((q) => {
-      if (stock <= 0) return 1;
-      return Math.min(Math.max(1, q), stock);
-    });
-  }, [variant, stock]);
+    setQty((q) => (cap > 0 ? Math.min(Math.max(1, q), cap) : 1));
+  }, [variant, cap]);
 
   const dec = () => setQty((q) => Math.max(1, q - 1));
-  const inc = () => setQty((q) => (stock > 0 ? Math.min(stock, q + 1) : q));
+  const inc = () => setQty((q) => (cap > 0 ? Math.min(cap, q + 1) : q));
 
-  const atMax = useMemo(() => stock > 0 && qty >= stock, [qty, stock]);
+  const atMax = useMemo(() => cap > 0 && qty >= cap, [qty, cap]);
 
   const handleAdd = async () => {
     if (outOfStock || loading) return;
@@ -96,7 +102,7 @@ const AddToCartButton = ({ variant }) => {
               className='quantity__input flex-grow-1 border border-gray-100 border-start-0 border-end-0 text-center w-32 px-4'
               value={qty}
               min={1}
-              max={stock}
+              max={cap}
               readOnly
             />
             <button
@@ -108,10 +114,8 @@ const AddToCartButton = ({ variant }) => {
               <i className='ph ph-plus' />
             </button>
           </div>
-          {stock > 0 && stock <= 5 && (
-            <span className='text-sm text-warning-600 fw-medium'>
-              Only {stock} left
-            </span>
+          {atMax && (
+            <span className='text-sm text-gray-500'>{MAX_QTY_NOTE}</span>
           )}
         </div>
       )}
@@ -122,7 +126,7 @@ const AddToCartButton = ({ variant }) => {
         disabled={outOfStock || loading}
         aria-disabled={outOfStock || loading}
         className='btn btn-main flex-center gap-8 rounded-8 py-16 fw-normal w-100'
-        title={outOfStock ? "Out of stock" : "Add to cart"}
+        title={outOfStock ? OUT_OF_STOCK_LABEL : "Add to cart"}
       >
         {loading ? (
           <>
@@ -136,7 +140,7 @@ const AddToCartButton = ({ variant }) => {
         ) : outOfStock ? (
           <>
             <i className='ph ph-x-circle text-lg' />
-            Out of stock
+            {OUT_OF_STOCK_LABEL}
           </>
         ) : (
           <>
