@@ -364,7 +364,7 @@ export async function loadCatalog(admin, { merged, validated, fitmentByParent, d
       size: r.size ?? null,
       pack: r.pack ?? null,
       price: r.price ?? null,
-      stock: 0,
+      // stock is ADMIN-OWNED (Phase 13): never written by the ETL; new variants take the column default (NULL = untracked/orderable).
       weight: r.weight ?? null,
       length: r.length ?? null,
       width: r.width ?? null,
