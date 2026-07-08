@@ -10,13 +10,16 @@
  *     capped, sku, size, pack, product:{id,name,slug,cover_image_url,oem_number},
  *     line_subtotal }
  *
- * Quantity control is bound to `available` (live stock). Setting qty to 0 removes
- * the line. The mutation is delegated to the parent via onUpdateQty/onRemove so
- * the same line works for guest (guest-store) and logged-in (server actions).
+ * Quantity control is bound to maxQty(line.available): untracked (available NULL)
+ * → the sanity cap, tracked → live stock. Setting qty to 0 removes the line. The
+ * mutation is delegated to the parent via onUpdateQty/onRemove so the same line
+ * works for guest (guest-store) and logged-in (server actions).
  *
- * Flags: out_of_stock / capped surface a subtle badge and the line is excluded
- * from the total upstream (the read already zeroes line_subtotal). A priceChanged
- * notice is rendered when the parent passes it.
+ * Flags: out_of_stock / capped surface count-free copy (unit counts are NEVER
+ * shown in the storefront — locked) and the line is excluded from the total
+ * upstream (the read already zeroes line_subtotal). Non-flagged lines carry the
+ * discreet per-item lead-time note. A priceChanged notice is rendered when the
+ * parent passes it.
  *
  * Fitment: reuse FitsBadge + getStoredTruck() — a "fits your <truck>" badge when
  * a truck is selected (the storefront differentiator).
@@ -27,6 +30,12 @@ import Link from "next/link";
 
 import FitsBadge from "@/components/fitment/FitsBadge";
 import { getStoredTruck } from "@/lib/fitment/truck-storage";
+import {
+  maxQty,
+  CART_LEAD_TIME_LINE,
+  MAX_QTY_NOTE,
+  OUT_OF_STOCK_LABEL,
+} from "@/lib/catalog/availability";
 
 const PLACEHOLDER = "/assets/images/placeholder-product.png";
 
@@ -60,9 +69,9 @@ const CartLine = ({
   const product = line.product ?? {};
   const img = product.cover_image_url || PLACEHOLDER;
   const href = product.slug ? `/product/${product.slug}` : "#";
-  const available = Number(line.available ?? 0);
+  const cap = maxQty(line.available); // untracked (null) -> sanity cap, tracked -> live stock
   const qty = Number(line.quantity ?? 0);
-  const atMax = available > 0 && qty >= available;
+  const atMax = cap > 0 && qty >= cap;
   const flagged = line.out_of_stock || line.capped;
 
   // Fitment: when this product fits the active truck. The cart line carries the
@@ -115,11 +124,14 @@ const CartLine = ({
           <span className='text-xs text-gray-700'>
             {qty} × {formatPrice(line.price)}
           </span>
+          {!line.out_of_stock && (
+            <span className='text-xs text-gray-500 d-block'>
+              {CART_LEAD_TIME_LINE}
+            </span>
+          )}
           {flagged && (
             <span className='d-block text-xs text-danger-600 fw-medium'>
-              {line.out_of_stock
-                ? "Out of stock"
-                : `Only ${available} available`}
+              {line.out_of_stock ? OUT_OF_STOCK_LABEL : MAX_QTY_NOTE}
             </span>
           )}
         </div>
@@ -190,6 +202,11 @@ const CartLine = ({
                 <span className='text-sm text-gray-500'>SKU: {line.sku}</span>
               )}
             </div>
+            {!line.out_of_stock && (
+              <span className='text-sm text-gray-500 d-block'>
+                {CART_LEAD_TIME_LINE}
+              </span>
+            )}
             <div className='flex-align gap-12 flex-wrap'>
               {showFits && (
                 <span className='text-sm text-success-600 fw-medium flex-align gap-4'>
@@ -199,12 +216,12 @@ const CartLine = ({
               )}
               {line.out_of_stock && (
                 <span className='text-sm text-danger-600 fw-medium'>
-                  Out of stock — not counted in total
+                  {OUT_OF_STOCK_LABEL} — not counted in total
                 </span>
               )}
               {!line.out_of_stock && line.capped && (
                 <span className='text-sm text-warning-600 fw-medium'>
-                  Only {available} available
+                  {MAX_QTY_NOTE}
                 </span>
               )}
               {priceChanged && (
@@ -235,7 +252,7 @@ const CartLine = ({
             className='quantity__input flex-grow-1 border border-gray-100 border-start-0 border-end-0 text-center w-32 px-4'
             value={qty}
             min={0}
-            max={available}
+            max={cap}
             readOnly
           />
           <button
@@ -247,6 +264,9 @@ const CartLine = ({
             <i className='ph ph-plus' />
           </button>
         </div>
+        {atMax && !flagged && (
+          <span className='text-xs text-gray-500 d-block'>{MAX_QTY_NOTE}</span>
+        )}
       </td>
       <td>
         <span className='text-lg h6 mb-0 fw-semibold'>

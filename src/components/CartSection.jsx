@@ -134,6 +134,10 @@ const CartSection = () => {
     0
   );
 
+  // Flagged lines (out_of_stock/capped) block checkout until adjusted (locked
+  // decision — create-intent's 409 stays the hard server gate).
+  const hasBlockedLines = lines.some((l) => l.out_of_stock || l.capped);
+
   // Empty state.
   if (!loading && lines.length === 0) {
     return (
@@ -223,20 +227,54 @@ const CartSection = () => {
               </span>
 
               {isLoggedIn ? (
-                <Link
-                  href='/checkout'
-                  className='btn btn-main mt-32 py-18 w-100 rounded-8'
-                >
-                  Proceed to checkout
-                </Link>
-              ) : (
-                <>
+                hasBlockedLines ? (
+                  <>
+                    <button
+                      type='button'
+                      disabled
+                      aria-disabled='true'
+                      className='btn btn-main mt-32 py-18 w-100 rounded-8'
+                    >
+                      Proceed to checkout
+                    </button>
+                    <span className='text-sm text-danger-600 d-block mt-12'>
+                      Some items in your cart are unavailable at the requested
+                      quantity. Adjust or remove them to check out.
+                    </span>
+                  </>
+                ) : (
                   <Link
                     href='/checkout'
                     className='btn btn-main mt-32 py-18 w-100 rounded-8'
                   >
-                    Check out as guest
+                    Proceed to checkout
                   </Link>
+                )
+              ) : (
+                <>
+                  {hasBlockedLines ? (
+                    <>
+                      <button
+                        type='button'
+                        disabled
+                        aria-disabled='true'
+                        className='btn btn-main mt-32 py-18 w-100 rounded-8'
+                      >
+                        Check out as guest
+                      </button>
+                      <span className='text-sm text-danger-600 d-block mt-12'>
+                        Some items in your cart are unavailable at the requested
+                        quantity. Adjust or remove them to check out.
+                      </span>
+                    </>
+                  ) : (
+                    <Link
+                      href='/checkout'
+                      className='btn btn-main mt-32 py-18 w-100 rounded-8'
+                    >
+                      Check out as guest
+                    </Link>
+                  )}
                   <span className='text-sm text-gray-500 d-block mt-12 text-center'>
                     Have an account?{" "}
                     <Link href='/login' className='text-main-600'>
