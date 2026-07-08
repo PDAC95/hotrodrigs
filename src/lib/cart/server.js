@@ -2,6 +2,11 @@ import "server-only";
 
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
+import {
+  isTracked,
+  maxQty,
+  UNTRACKED_MAX_QTY,
+} from "@/lib/catalog/availability";
 
 /**
  * Server-authoritative cart data layer (CART-01..04).
@@ -16,8 +21,14 @@ import { revalidatePath } from "next/cache";
  * image are ALWAYS re-derived from product_variants/products on read. The client
  * stores only {variant_id, quantity}; it never supplies a price.
  *
- * Stock cap: quantity is clamped to live stock on every write, and effective_qty
- * is re-min'd against live stock on every read (stock can drop between the two).
+ * Stock cap — two modes (Phase 13, STOCK-02):
+ *   - TRACKED (numeric stock): quantity is clamped to live stock on every write,
+ *     and effective_qty is re-min'd against live stock on every read (stock can
+ *     drop between the two). Shortages surface as capped/out_of_stock flags.
+ *   - UNTRACKED (stock NULL): always orderable; quantity is normalized to the
+ *     UNTRACKED_MAX_QTY sanity cap at every entry point (write AND read), so
+ *     quantity === effective_qty always holds and no downstream shortage check
+ *     (create-intent's short-line filter) can ever fire for these lines.
  */
 
 // Nested-select shape used by every read path (logged-in + guest).
@@ -27,51 +38,91 @@ const VARIANT_SELECT =
 
 /**
  * Map a product_variant row (+ joined product) and a desired quantity into the
- * CartLine shape consumed by Plan 03's UI. Price/availability are taken LIVE
- * from the variant row — never from any client-supplied value.
+ * CartLine shape consumed by the cart/checkout UI. Price/availability are taken
+ * LIVE from the variant row — never from any client-supplied value.
+ *
+ * Fields (Phase 13):
+ *   - tracked: boolean — false when the variant's stock is NULL (untracked).
+ *   - available: number|null — live stock for tracked variants; null when
+ *     untracked (there is no meaningful count).
+ *   - UNTRACKED lines normalize the quantity ITSELF to the UNTRACKED_MAX_QTY
+ *     sanity cap: quantity === effective_qty, out_of_stock === false,
+ *     capped === false — the cap must never masquerade as a shortage, so
+ *     create-intent's short-line filter can never match an untracked line.
+ *   - TRACKED lines keep the original semantics: effective_qty re-min'd against
+ *     live stock, out_of_stock/capped flags, subtotal zeroed when out of stock.
  */
 function toCartLine(variant, quantity) {
   const price = Number(variant.price) || 0;
-  const available = Number(variant.stock) || 0;
-  const qty = Number(quantity) || 0;
-  const effective_qty = Math.max(0, Math.min(qty, available));
-  const out_of_stock = available <= 0;
   // products may come back as an array or object depending on the join cardinality.
   const product = Array.isArray(variant.product)
     ? variant.product[0] || null
     : variant.product || null;
+  const productShape = product
+    ? {
+        id: product.id,
+        name: product.name,
+        slug: product.slug,
+        cover_image_url: product.cover_image_url,
+        oem_number: product.oem_number,
+      }
+    : null;
+
+  if (!isTracked(variant.stock)) {
+    // Untracked (stock NULL): always orderable; normalize quantity to the
+    // sanity cap so quantity === effective_qty holds (STOCK-02 invariant).
+    const q = Math.max(0, Math.min(Number(quantity) || 0, UNTRACKED_MAX_QTY));
+    return {
+      variant_id: variant.id,
+      quantity: q,
+      effective_qty: q,
+      price,
+      available: null,
+      tracked: false,
+      out_of_stock: false,
+      capped: false,
+      sku: variant.sku,
+      size: variant.size,
+      pack: variant.pack,
+      product: productShape,
+      line_subtotal: price * q,
+    };
+  }
+
+  // Tracked: maxQty(stock) === max(0, trunc(stock)) — same math as before.
+  const available = maxQty(variant.stock);
+  const qty = Number(quantity) || 0;
+  const effective_qty = Math.max(0, Math.min(qty, available));
+  const out_of_stock = available <= 0;
   return {
     variant_id: variant.id,
     quantity: qty,
     effective_qty,
     price,
     available,
+    tracked: true,
     out_of_stock,
     capped: effective_qty < qty,
     sku: variant.sku,
     size: variant.size,
     pack: variant.pack,
-    product: product
-      ? {
-          id: product.id,
-          name: product.name,
-          slug: product.slug,
-          cover_image_url: product.cover_image_url,
-          oem_number: product.oem_number,
-        }
-      : null,
+    product: productShape,
     line_subtotal: out_of_stock ? 0 : price * effective_qty,
   };
 }
 
-/** Read live stock for one variant (0 if missing). */
-async function liveStock(supabase, variantId) {
+/**
+ * Read the RAW live stock for one variant. Returns null for a missing row AND
+ * for stock NULL — null means UNTRACKED (orderable), never "out of stock".
+ * Callers derive the write cap via maxQty(stock).
+ */
+async function liveStockRaw(supabase, variantId) {
   const { data } = await supabase
     .from("product_variants")
     .select("stock")
     .eq("id", variantId)
     .maybeSingle();
-  return Number(data?.stock) || 0;
+  return data?.stock ?? null;
 }
 
 /**
@@ -98,8 +149,9 @@ export async function getOrCreateCart() {
 
 /**
  * Add (merge) a variant to the logged-in cart. nextQty = existing + qty, capped
- * at live stock. Out-of-stock variants are still allowed onto the cart (CONTEXT:
- * mark, don't block) — the read derives out_of_stock and zeroes the subtotal.
+ * via maxQty (tracked -> live stock; untracked -> sanity cap). Out-of-stock
+ * tracked variants are still allowed onto the cart (CONTEXT: mark, don't
+ * block) — the read derives out_of_stock and zeroes the subtotal.
  * @throws if there is no session.
  */
 export async function addToCart(variantId, qty = 1) {
@@ -107,7 +159,7 @@ export async function addToCart(variantId, qty = 1) {
   const cartId = await getOrCreateCart();
   if (cartId == null) throw new Error("Not authenticated");
 
-  const available = await liveStock(supabase, variantId);
+  const stock = await liveStockRaw(supabase, variantId);
   const { data: existing } = await supabase
     .from("cart_items")
     .select("quantity")
@@ -116,9 +168,11 @@ export async function addToCart(variantId, qty = 1) {
     .maybeSingle();
 
   const desired = (Number(existing?.quantity) || 0) + (Number(qty) || 1);
-  // Cap at stock when there IS stock; keep a single unit when out of stock so the
-  // line exists and the read can flag it (mark-not-block).
-  const nextQty = available > 0 ? Math.min(desired, available) : 1;
+  // Cap: tracked -> live stock; untracked -> UNTRACKED_MAX_QTY sanity cap.
+  // Tracked-at-0: keep a single unit so the line exists and the read can flag
+  // it (mark-not-block, unchanged).
+  const cap = maxQty(stock);
+  const nextQty = cap > 0 ? Math.min(desired, cap) : 1;
 
   const { error } = await supabase
     .from("cart_items")
@@ -132,7 +186,7 @@ export async function addToCart(variantId, qty = 1) {
 
 /**
  * Set the absolute quantity for a variant. qty <= 0 removes the row (CONTEXT:
- * qty 0 = remove). Otherwise quantity = min(qty, live stock).
+ * qty 0 = remove). Otherwise quantity = min(qty, maxQty(stock)).
  * @throws if there is no session.
  */
 export async function updateCartItem(variantId, qty) {
@@ -146,8 +200,9 @@ export async function updateCartItem(variantId, qty) {
     return;
   }
 
-  const available = await liveStock(supabase, variantId);
-  const capped = available > 0 ? Math.min(next, available) : 1;
+  const stock = await liveStockRaw(supabase, variantId);
+  const cap = maxQty(stock); // tracked -> live stock; untracked -> sanity cap
+  const capped = cap > 0 ? Math.min(next, cap) : 1;
   const { error } = await supabase
     .from("cart_items")
     .update({ quantity: capped })
@@ -252,8 +307,8 @@ export async function getCartCount() {
 
 /**
  * Fold a guest cart into the logged-in DB cart on login. Additive merge: same
- * variant in both → sum, capped at live stock (CONTEXT). The caller clears
- * localStorage afterward.
+ * variant in both → sum, capped via maxQty (tracked -> live stock; untracked ->
+ * sanity cap) (CONTEXT). The caller clears localStorage afterward.
  * @param {{variant_id:number, quantity:number}[]} guestLines
  */
 export async function mergeGuestCart(guestLines) {
@@ -269,7 +324,7 @@ export async function mergeGuestCart(guestLines) {
     const addQty = Number(l.quantity) || 0;
     if (!Number.isFinite(variantId) || addQty <= 0) continue;
 
-    const available = await liveStock(supabase, variantId);
+    const stock = await liveStockRaw(supabase, variantId);
     const { data: existing } = await supabase
       .from("cart_items")
       .select("quantity")
@@ -278,7 +333,9 @@ export async function mergeGuestCart(guestLines) {
       .maybeSingle();
 
     const desired = (Number(existing?.quantity) || 0) + addQty;
-    const nextQty = available > 0 ? Math.min(desired, available) : 1;
+    // Same clamp as addToCart: tracked -> live stock; untracked -> sanity cap.
+    const cap = maxQty(stock);
+    const nextQty = cap > 0 ? Math.min(desired, cap) : 1;
 
     const { error } = await supabase
       .from("cart_items")
