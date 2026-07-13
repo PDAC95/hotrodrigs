@@ -1,0 +1,659 @@
+/* ---------------------------------------------------------------------------
+ * HRR header menu system — shared visual language for the black-header
+ * dropdowns (My Truck panel, search category scope).
+ *
+ * One dark "machined" surface so every menu hanging off the header reads as
+ * part of the same instrument cluster: near-black panel, hairline borders,
+ * inner top highlight, 160ms ease-out entrance, orange reserved for state
+ * (focus ring, active dot, selected check) — never decoration.
+ * ------------------------------------------------------------------------- */
+
+:root {
+  --hrr-menu-bg: #151515;
+  --hrr-menu-bg-raised: #1e1e1e;
+  --hrr-menu-border: #2c2c2c;
+  --hrr-menu-hairline: rgba(255, 255, 255, 0.07);
+  --hrr-menu-ink: #f2f2f2;
+  --hrr-menu-muted: #a6a6a6;
+  --hrr-menu-faint: #7a7a7a;
+  --hrr-accent: #fa6400;
+  --hrr-accent-ring: rgba(250, 100, 0, 0.3);
+  --hrr-danger: #f97066;
+  --hrr-menu-radius: 10px;
+  --hrr-menu-shadow: 0 18px 44px rgba(0, 0, 0, 0.38),
+    0 4px 10px rgba(0, 0, 0, 0.28);
+  --hrr-menu-ease: cubic-bezier(0.2, 0.9, 0.25, 1);
+  --hrr-menu-z: 120;
+}
+
+/* --- Panel surface ------------------------------------------------------- */
+
+.hrr-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  background: var(--hrr-menu-bg);
+  border: 1px solid var(--hrr-menu-border);
+  border-radius: var(--hrr-menu-radius);
+  box-shadow: var(--hrr-menu-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  z-index: var(--hrr-menu-z);
+  animation: hrr-menu-in 160ms var(--hrr-menu-ease);
+}
+
+@keyframes hrr-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-5px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hrr-menu {
+    animation: none;
+  }
+}
+
+/* Notch pointing at the trigger. Positioned per menu via --hrr-notch-*. */
+.hrr-menu::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: var(--hrr-notch-left, auto);
+  right: var(--hrr-notch-right, auto);
+  width: 11px;
+  height: 11px;
+  background: var(--hrr-menu-bg);
+  border-left: 1px solid var(--hrr-menu-border);
+  border-top: 1px solid var(--hrr-menu-border);
+  transform: rotate(45deg);
+}
+
+/* --- Listbox rows (pill hover, check for selected) ----------------------- */
+
+.hrr-menu__list {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  max-height: 384px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #3a3a3a transparent;
+}
+
+.hrr-menu__list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.hrr-menu__list::-webkit-scrollbar-thumb {
+  background: #3a3a3a;
+  border-radius: 8px;
+  border: 2px solid var(--hrr-menu-bg);
+}
+
+.hrr-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--hrr-menu-ink);
+  cursor: pointer;
+  transition: background-color 120ms ease-out;
+}
+
+.hrr-option[data-active="true"] {
+  background: var(--hrr-menu-bg-raised);
+}
+
+.hrr-option[aria-selected="true"] {
+  color: #fff;
+  font-weight: 600;
+}
+
+.hrr-option__check {
+  margin-left: auto;
+  font-size: 15px;
+  color: var(--hrr-accent);
+}
+
+/* --- Fields (labels + dark selects) --------------------------------------- */
+
+.hrr-field {
+  margin-bottom: 12px;
+}
+
+.hrr-field:last-child {
+  margin-bottom: 0;
+}
+
+.hrr-field__label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--hrr-menu-muted);
+}
+
+.hrr-select {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 36px 10px 12px;
+  font-size: 14px;
+  color: var(--hrr-menu-ink);
+  background-color: var(--hrr-menu-bg-raised);
+  border: 1px solid #383838;
+  border-radius: 8px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%23a6a6a6' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  transition: border-color 150ms ease-out, box-shadow 150ms ease-out;
+}
+
+.hrr-select:hover:not(:disabled) {
+  border-color: #555;
+}
+
+.hrr-select:focus-visible {
+  outline: none;
+  border-color: var(--hrr-accent);
+  box-shadow: 0 0 0 3px var(--hrr-accent-ring);
+}
+
+.hrr-select:disabled {
+  color: var(--hrr-menu-faint);
+  background-color: #181818;
+  border-color: #2c2c2c;
+  cursor: not-allowed;
+}
+
+/* --- Buttons --------------------------------------------------------------- */
+
+.hrr-btn {
+  min-height: 44px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background-color 150ms ease-out, border-color 150ms ease-out,
+    color 150ms ease-out;
+}
+
+.hrr-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--hrr-accent-ring);
+}
+
+.hrr-btn--outline {
+  flex: 1 1 auto;
+  background: transparent;
+  border: 1px solid #3f3f3f;
+  color: var(--hrr-menu-ink);
+}
+
+.hrr-btn--outline:hover {
+  border-color: #8a8a8a;
+  background: var(--hrr-menu-bg-raised);
+}
+
+.hrr-btn--ghost {
+  flex: 0 0 auto;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--hrr-menu-muted);
+}
+
+.hrr-btn--ghost:hover {
+  color: var(--hrr-danger);
+  background: rgba(249, 112, 102, 0.09);
+}
+
+/* --- My Truck panel -------------------------------------------------------- */
+
+.mtm-panel {
+  right: 0;
+  width: 336px;
+  --hrr-notch-right: 22px;
+}
+
+.mtm-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid var(--hrr-menu-hairline);
+}
+
+.mtm-chip {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #232323, #191919);
+  border: 1px solid #333;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font-size: 22px;
+}
+
+.mtm-head-caption {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  color: var(--hrr-menu-muted);
+}
+
+.mtm-head-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mtm-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--hrr-accent);
+}
+
+.mtm-body {
+  padding: 16px;
+}
+
+.mtm-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.mtm-hint {
+  margin: 12px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--hrr-menu-muted);
+}
+
+/* Orange state dot on the header truck icon. */
+.mtm-dot {
+  position: absolute;
+  top: -2px;
+  right: -4px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--hrr-accent);
+  /* Matches the header band (#1d1d1f) so the dot reads punched-out. */
+  border: 2px solid #1d1d1f;
+  box-sizing: content-box;
+}
+
+/* --- Search category scope (combobox in the white search pill) ------------- */
+
+.hrr-scope {
+  position: relative;
+  height: 100%;
+}
+
+.hrr-scope__trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  padding: 0 14px 0 18px;
+  background: #fff;
+  border: 0;
+  border-right: 1px solid #e6e6e6;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a1a;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 120ms ease-out;
+}
+
+.hrr-scope__trigger:hover {
+  background: #f6f6f6;
+}
+
+.hrr-scope__trigger:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--hrr-accent-ring);
+}
+
+.hrr-scope__caret {
+  font-size: 13px;
+  color: #6b6b6b;
+  transition: transform 160ms var(--hrr-menu-ease);
+}
+
+.hrr-scope__caret.is-open {
+  transform: rotate(180deg);
+}
+
+.hrr-scope__list {
+  left: 0;
+  min-width: 248px;
+  --hrr-notch-left: 26px;
+}
+
+/* Keeps the real <select name="category"> in the form for submit + no-JS. */
+.hrr-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- Sticky-bar categories menu (click-driven twin panels) ------------------ */
+
+.hrr-cat {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+.hrr-cat__drop {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: flex;
+  align-items: stretch;
+  width: 320px;
+  background: var(--hrr-menu-bg);
+  border: 1px solid rgba(250, 100, 0, 0.55);
+  border-top: 0; /* fuses with the bar's bottom hairline */
+  border-radius: 0 0 12px 12px;
+  box-shadow: var(--hrr-menu-shadow);
+  overflow: hidden;
+  z-index: var(--hrr-menu-z);
+  transition: width 220ms var(--hrr-menu-ease);
+  animation: hrr-menu-in 160ms var(--hrr-menu-ease);
+}
+
+/* The container grows to fit the twin — one continuous outline, no seams. */
+.hrr-cat__drop.has-twin {
+  width: 640px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hrr-cat__drop {
+    transition: none;
+    animation: none;
+  }
+}
+
+.hrr-cat__col {
+  flex: 0 0 320px;
+  width: 320px;
+  /* Tall enough to show the full L1 tree without scrolling, capped so it
+     never spills past the viewport on short screens. */
+  height: min(72vh, 700px);
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+}
+
+.hrr-cat__col--twin {
+  border-inline-start: 1px solid var(--hrr-menu-hairline);
+  animation: hrr-menu-in 160ms var(--hrr-menu-ease);
+}
+
+.hrr-cat__title {
+  padding: 10px 20px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  border-bottom: 1px solid var(--hrr-menu-hairline);
+  margin-bottom: 6px;
+}
+
+.hrr-cat__list {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0 8px;
+  list-style: none;
+  scrollbar-width: thin;
+  scrollbar-color: #3a3a3a transparent;
+}
+
+.hrr-cat__list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.hrr-cat__list::-webkit-scrollbar-thumb {
+  background: #3a3a3a;
+  border-radius: 8px;
+  border: 2px solid var(--hrr-menu-bg);
+}
+
+.hrr-cat__list::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+}
+
+.hrr-cat__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 14px;
+  border-radius: 8px;
+  font-size: 14.5px;
+  color: var(--hrr-menu-ink);
+  transition: background-color 120ms ease-out;
+}
+
+.hrr-cat__row:hover,
+.hrr-cat__row.is-active {
+  background: var(--hrr-menu-bg-raised);
+  color: #fff;
+}
+
+.hrr-cat__row .hrr-cat__lead {
+  font-size: 18px;
+  color: var(--hrr-menu-faint);
+  display: flex;
+}
+
+.hrr-cat__row .hrr-cat__chev {
+  margin-left: auto;
+  font-size: 14px;
+  color: var(--hrr-menu-faint);
+  display: flex;
+}
+
+/* --- Sticky search band (slides down under the bar) ------------------------- */
+
+.hrr-sticky-search {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  border-top: 1px solid transparent;
+  transition: max-height 240ms var(--hrr-menu-ease), opacity 200ms ease-out,
+    border-top-color 200ms ease-out;
+}
+
+.hrr-sticky-search.is-open {
+  max-height: 92px;
+  opacity: 1;
+  border-top-color: var(--hrr-menu-hairline);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hrr-sticky-search {
+    transition: none;
+  }
+}
+
+.hrr-sticky-search__form {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+}
+
+.hrr-sticky-search__input {
+  flex: 1 1 auto;
+  height: 48px;
+  padding: 0 18px;
+  font-size: 14.5px;
+  color: #1a1a1a;
+  background: #fff;
+  border: 1px solid transparent;
+  border-radius: 8px;
+}
+
+.hrr-sticky-search__input::placeholder {
+  color: #6d7486;
+}
+
+.hrr-sticky-search__input:focus-visible {
+  outline: none;
+  border-color: var(--hrr-accent);
+  box-shadow: 0 0 0 3px var(--hrr-accent-ring);
+}
+
+.hrr-sticky-search__submit {
+  flex: 0 0 auto;
+  height: 48px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--hrr-accent);
+  border-radius: 8px;
+  transition: background-color 150ms ease-out;
+}
+
+.hrr-sticky-search__submit:hover {
+  background: #d85700;
+}
+
+.hrr-sticky-search__submit:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--hrr-accent-ring);
+}
+
+/* --- Mobile category drawer: two-level sliding list -------------------------- */
+
+.hrr-mcat {
+  overflow: hidden;
+}
+
+.hrr-mcat__track {
+  display: flex;
+  width: 200%;
+  transform: translateX(0);
+  transition: transform 240ms var(--hrr-menu-ease);
+}
+
+.hrr-mcat.is-sub .hrr-mcat__track {
+  transform: translateX(-50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hrr-mcat__track {
+    transition: none;
+  }
+}
+
+.hrr-mcat__panel {
+  width: 50%;
+  flex: 0 0 50%;
+  padding: 8px;
+}
+
+.hrr-mcat__panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.hrr-mcat__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 12px;
+  border-radius: 8px;
+  font-size: 15px;
+  text-align: left;
+  color: var(--hrr-menu-ink);
+  transition: background-color 120ms ease-out;
+}
+
+.hrr-mcat__row:hover,
+.hrr-mcat__row:active {
+  background: var(--hrr-menu-bg-raised);
+  color: #fff;
+}
+
+.hrr-mcat__lead {
+  display: flex;
+  font-size: 18px;
+  color: var(--hrr-menu-faint);
+}
+
+.hrr-mcat__chev {
+  display: flex;
+  margin-left: auto;
+  font-size: 14px;
+  color: var(--hrr-menu-faint);
+}
+
+.hrr-mcat__back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 500;
+  text-align: left;
+  color: var(--hrr-menu-muted);
+}
+
+.hrr-mcat__back:hover,
+.hrr-mcat__back:active {
+  color: #fff;
+  background: var(--hrr-menu-bg-raised);
+}
+
+.hrr-mcat__title {
+  padding: 6px 12px 10px;
+  font-size: 16.5px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.hrr-mcat__divider {
+  height: 1px;
+  margin: 2px 12px 8px;
+  background: var(--hrr-menu-hairline);
+}

@@ -8,8 +8,9 @@ import FeaturedOne from "@/components/FeaturedOne";
 import FooterTwo from "@/components/FooterTwo";
 import HeaderTwo from "@/components/HeaderTwo";
 import NewsletterTwo from "@/components/NewsletterTwo";
+import { Suspense } from "react";
 import PopularProductsOne from "@/components/PopularProductsOne";
-import PromotionalTwo from "@/components/PromotionalTwo";
+import TruckPickerCards from "@/components/fitment/TruckPickerCards";
 import RecentlyViewedOne from "@/components/RecentlyViewedOne";
 import ShippingTwo from "@/components/ShippingTwo";
 import TopSellingOne from "@/components/TopSellingOne";
@@ -41,11 +42,15 @@ const page = async () => {
       {/* HeaderTwo */}
       <HeaderTwo category={false} categoryTree={categoryTree} />
 
-      {/* BannerTwo */}
-      <BannerTwo categoryTree={categoryTree} />
+      {/* BannerTwo — truck-aware hero (personalized slides when a truck is set) */}
+      <Suspense fallback={null}>
+        <BannerTwo categoryTree={categoryTree} />
+      </Suspense>
 
-      {/* PromotionalTwo */}
-      <PromotionalTwo />
+      {/* Shop by My Truck — Make/Model/Year picker cards (was PromotionalTwo) */}
+      <Suspense fallback={null}>
+        <TruckPickerCards />
+      </Suspense>
 
       {/* DealsOne */}
       <DealsOne />

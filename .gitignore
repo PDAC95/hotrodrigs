@@ -38,3 +38,4 @@ next-env.d.ts
 
 # GSD planning docs (local only)
 /.planning/
+.playwright-mcp/

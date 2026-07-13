@@ -1,10 +1,14 @@
 "use client";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import query from "jquery";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import "select2/dist/css/select2.min.css";
-import MyTruckSelector from "@/components/fitment/MyTruckSelector";
+import MyTruckMenu from "@/components/fitment/MyTruckMenu";
+import CategoryScopeSelect from "@/components/nav/CategoryScopeSelect";
+import StickyCategoryMenu from "@/components/nav/StickyCategoryMenu";
+import MobileCategoryList from "@/components/nav/MobileCategoryList";
+import { TRUCK_AREAS } from "@/lib/catalog/areas";
 import MegaMenuList from "@/components/nav/MegaMenuList";
 import { useCart } from "@/components/cart/CartProvider";
 const HeaderTwo = ({ category, categoryTree = [] }) => {
@@ -74,6 +78,9 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
     const q = input ? input.value.trim() : "";
     const params = new URLSearchParams();
     if (q) params.set("q", q);
+    // Category scope from the header select (real L1 ids; "" = all categories).
+    const catSelect = e.currentTarget.querySelector('select[name="category"]');
+    if (catSelect && catSelect.value) params.set("category", catSelect.value);
     // Re-read the truck param live (it may have changed since mount).
     const live =
       typeof window !== "undefined"
@@ -83,6 +90,17 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
     const qs = params.toString();
     window.location.href = qs ? `/search?${qs}` : "/search";
   };
+
+  // Sticky-bar search band (desktop): slides down under the fixed bar.
+  const [stickySearchOpen, setStickySearchOpen] = useState(false);
+  const stickySearchRef = useRef(null);
+  useEffect(() => {
+    if (stickySearchOpen) stickySearchRef.current?.focus();
+  }, [stickySearchOpen]);
+  // Leaving the sticky state collapses the band.
+  useEffect(() => {
+    if (!scroll) setStickySearchOpen(false);
+  }, [scroll]);
 
   // category control support
   const [activeCategory, setActiveCategory] = useState(false);
@@ -155,65 +173,76 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
           </Link>
           <div className='mobile-menu__menu'>
             {/* Nav Menu Start */}
+            {/* Truck areas — same list as the desktop nav bar */}
             <ul className='nav-menu flex-align nav-menu--mobile'>
-              <li className='nav-menu__item'>
-                <Link
-                  onClick={() => setActiveIndex(null)}
-                  href='/'
-                  className='nav-menu__link'
-                >
-                  Home
-                </Link>
-              </li>
-              <li
-                onClick={() => handleMenuClick(0)}
-                className={`on-hover-item nav-menu__item has-submenu ${
-                  activeIndex === 0 ? "d-block" : ""
-                }`}
-              >
-                <Link href='#' className='nav-menu__link'>
-                  Pages
-                </Link>
-                <ul
-                  className={`on-hover-dropdown common-dropdown nav-submenu scroll-sm ${
-                    activeIndex === 0 ? "open" : ""
-                  }`}
-                >
-                  <li className='common-dropdown__item nav-submenu__item'>
+              {TRUCK_AREAS.map((area) => (
+                <li key={area.slug} className='nav-menu__item'>
+                  <Link
+                    onClick={() => setActiveIndex(null)}
+                    href={`/search?area=${area.slug}`}
+                    className='nav-menu__link'
+                  >
+                    {area.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            {/* Categories — full L1/L2 tree (accordion) */}
+            <ul className='nav-menu flex-align nav-menu--mobile border-top border-gray-100 mt-16 pt-16'>
+              {categoryTree.map((section, i) =>
+                section.children?.length > 0 ? (
+                  <li
+                    key={section.id}
+                    onClick={() => handleMenuClick(i)}
+                    className={`on-hover-item nav-menu__item has-submenu ${
+                      activeIndex === i ? "d-block" : ""
+                    }`}
+                  >
+                    <Link href='#' className='nav-menu__link'>
+                      {section.name}
+                    </Link>
+                    <ul
+                      className={`on-hover-dropdown common-dropdown nav-submenu scroll-sm ${
+                        activeIndex === i ? "open" : ""
+                      }`}
+                    >
+                      <li className='common-dropdown__item nav-submenu__item'>
+                        <Link
+                          onClick={() => setActiveIndex(null)}
+                          href={`/c/${section.slug}`}
+                          className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
+                        >
+                          All {section.name}
+                        </Link>
+                      </li>
+                      {section.children.map((child) => (
+                        <li
+                          key={child.id}
+                          className='common-dropdown__item nav-submenu__item'
+                        >
+                          <Link
+                            onClick={() => setActiveIndex(null)}
+                            href={`/c/${section.slug}/${child.slug}`}
+                            className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
+                          >
+                            {child.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ) : (
+                  <li key={section.id} className='nav-menu__item'>
                     <Link
                       onClick={() => setActiveIndex(null)}
-                      href='/cart'
-                      className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
+                      href={`/c/${section.slug}`}
+                      className='nav-menu__link'
                     >
-                      {" "}
-                      Cart
+                      {section.name}
                     </Link>
                   </li>
-                  <li className='common-dropdown__item nav-submenu__item'>
-                    <Link
-                      onClick={() => setActiveIndex(null)}
-                      href='/checkout'
-                      className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
-                    >
-                      Checkout
-                    </Link>
-                  </li>
-                  <li className='common-dropdown__item nav-submenu__item'>
-                    <Link
-                      onClick={() => setActiveIndex(null)}
-                      href='/account'
-                      className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
-                    >
-                      Account
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-              <li className='nav-menu__item'>
-                <Link href='/contact' className='nav-menu__link'>
-                  Contact Us
-                </Link>
-              </li>
+                )
+              )}
             </ul>
             {/* Nav Menu End */}
           </div>
@@ -240,23 +269,7 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                 className='flex-align flex-wrap form-location-wrapper'
               >
                 <div className='search-category style-two d-flex h-48 search-form d-sm-flex d-none'>
-                  <select
-                    defaultValue={1}
-                    className='js-example-basic-single border border-gray-200 border-end-0 rounded-0 border-0'
-                    name='state'
-                  >
-                    <option value={1}>All Categories</option>
-                    <option value={1}>Grocery</option>
-                    <option value={1}>Breakfast &amp; Dairy</option>
-                    <option value={1}>Vegetables</option>
-                    <option value={1}>Milks and Dairies</option>
-                    <option value={1}>Pet Foods &amp; Toy</option>
-                    <option value={1}>Breads &amp; Bakery</option>
-                    <option value={1}>Fresh Seafood</option>
-                    <option value={1}>Fronzen Foods</option>
-                    <option value={1}>Noodles &amp; Rice</option>
-                    <option value={1}>Ice Cream</option>
-                  </select>
+                  <CategoryScopeSelect categories={categoryTree} />
                   <div className='search-form__wrapper position-relative'>
                     <input
                       type='text'
@@ -273,15 +286,15 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                   </button>
                 </div>
               </form>
-              {/* My Truck selector — global, persistent fitment context (SRCH-03) */}
-              <Suspense fallback={null}>
-                <MyTruckSelector />
-              </Suspense>
             </div>
             {/* form Category start */}
             {/* Header Middle Right start */}
             <div className='header-right flex-align d-lg-block d-none'>
               <div className='header-two-activities flex-align flex-wrap gap-32'>
+                {/* My Truck icon + dropdown — global, persistent fitment context (SRCH-03) */}
+                <Suspense fallback={null}>
+                  <MyTruckMenu />
+                </Suspense>
                 <button
                   type='button'
                   className='flex-align search-icon d-lg-none d-flex gap-4 item-hover-two'
@@ -333,11 +346,24 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
       >
         <div className='container container-lg'>
           <nav className='header-inner d-flex justify-content-between gap-8'>
+            {scroll ? (
+              <Link
+                href='/'
+                className='d-none d-lg-flex align-items-center flex-shrink-0 me-8'
+                aria-label='Hot Rod Rigs home'
+              >
+                <img
+                  src='/assets/images/logo/logo-two.png'
+                  alt='Hot Rod Rigs'
+                  style={{ height: 44, width: "auto" }}
+                />
+              </Link>
+            ) : null}
             <div className='flex-align menu-category-wrapper'>
               {/* Category Dropdown Start */}
               <div
                 className={`category-two ${
-                  category === false ? "d-block" : "d-none"
+                  category === false && !scroll ? "d-block" : "d-none"
                 } `}
               >
                 <button
@@ -373,12 +399,20 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                       <img src='/assets/images/logo/logo.png' alt='Logo' />
                     </Link>
                   </div>
-                  <MegaMenuList tree={categoryTree} />
+                  {/* Two-level sliding list — hover flyouts can't work in an
+                      off-canvas drawer. */}
+                  <MobileCategoryList
+                    tree={categoryTree}
+                    onNavigate={() => setActiveCategory(false)}
+                  />
                 </div>
               </div>
+              {/* Sticky-state categories: click-driven twin-panel menu (the
+                  home's banner sidebar is off-screen once scrolled). */}
+              {scroll ? <StickyCategoryMenu tree={categoryTree} /> : null}
               <div
                 className={`category main  on-hover-item bg-main-600 text-white ${
-                  category === true ? "d-block" : "d-none"
+                  category === true && !scroll ? "d-block" : "d-none"
                 }`}
               >
                 <button
@@ -412,69 +446,20 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
               {/* Menu Start  */}
               <div className='header-menu d-lg-block d-none'>
                 {/* Nav Menu Start */}
+                {/* Truck areas — browse by physical area of the rig
+                    (products.area tag; categories stay in All Categories). */}
                 <ul className='nav-menu flex-align '>
-                  <li className='nav-menu__item'>
-                    <Link
-                      href='/'
-                      scroll={false}
-                      className={`nav-menu__link ${
-                        pathname == "/" && "activePage"
-                      } `}
-                    >
-                      Home
-                    </Link>
-                  </li>
-                  <li className='on-hover-item nav-menu__item has-submenu'>
-                    <Link href='#' className='nav-menu__link'>
-                      Pages
-                    </Link>
-                    <ul className='on-hover-dropdown common-dropdown nav-submenu scroll-sm'>
-                      <li className='common-dropdown__item nav-submenu__item'>
-                        <Link
-                          href='/cart'
-                          scroll={false}
-                          className={`common-dropdown__link nav-submenu__link hover-bg-neutral-100 ${
-                            pathname == "/cart" && "activePage"
-                          } `}
-                        >
-                          Cart
-                        </Link>
-                      </li>
-                      <li className='common-dropdown__item nav-submenu__item'>
-                        <Link
-                          href='/checkout'
-                          scroll={false}
-                          className={`common-dropdown__link nav-submenu__link hover-bg-neutral-100 ${
-                            pathname == "/checkout" && "activePage"
-                          } `}
-                        >
-                          Checkout
-                        </Link>
-                      </li>
-                      <li className='common-dropdown__item nav-submenu__item'>
-                        <Link
-                          href='/account'
-                          scroll={false}
-                          className={`common-dropdown__link nav-submenu__link hover-bg-neutral-100 ${
-                            pathname == "/account" && "activePage"
-                          } `}
-                        >
-                          Account
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className='nav-menu__item'>
-                    <Link
-                      href='/contact'
-                      scroll={false}
-                      className={`nav-menu__link ${
-                        pathname == "/contact" && "activePage"
-                      } `}
-                    >
-                      Contact Us
-                    </Link>
-                  </li>
+                  {TRUCK_AREAS.map((area) => (
+                    <li key={area.slug} className='nav-menu__item'>
+                      <Link
+                        href={`/search?area=${area.slug}`}
+                        scroll={false}
+                        className='nav-menu__link text-nowrap'
+                      >
+                        {area.name}
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
                 {/* Nav Menu End */}
               </div>
@@ -482,6 +467,54 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
             </div>
             {/* Header Right start */}
             <div className='header-right flex-align'>
+              {/* Sticky-header actions: search + fitment + account + cart stay
+                  reachable after the middle header scrolls away. */}
+              {scroll ? (
+                <div className='d-none d-lg-flex flex-align gap-24 me-4'>
+                  <button
+                    onClick={() => setStickySearchOpen((o) => !o)}
+                    type='button'
+                    className='flex-align item-hover-two'
+                    aria-label='Search'
+                    aria-expanded={stickySearchOpen}
+                  >
+                    <span className='text-2xl text-white d-flex item-hover__text'>
+                      <i
+                        className={`ph ${
+                          stickySearchOpen ? "ph-x" : "ph-magnifying-glass"
+                        }`}
+                      />
+                    </span>
+                  </button>
+                  <Suspense fallback={null}>
+                    <MyTruckMenu compact />
+                  </Suspense>
+                  <Link
+                    href='/account'
+                    className='flex-align item-hover-two'
+                    aria-label='Profile'
+                  >
+                    <span className='text-2xl text-white d-flex item-hover__text'>
+                      <i className='ph ph-user' />
+                    </span>
+                  </Link>
+                  <Link
+                    href='/cart'
+                    className='flex-align item-hover-two'
+                    aria-label='Cart'
+                  >
+                    <span className='text-2xl text-white d-flex position-relative me-6 item-hover__text'>
+                      <i className='ph ph-shopping-cart-simple' />
+                      <span
+                        suppressHydrationWarning
+                        className='w-16 h-16 flex-center rounded-circle bg-main-two-600 text-white text-xs position-absolute top-n6 end-n4'
+                      >
+                        {cartBadge}
+                      </span>
+                    </span>
+                  </Link>
+                </div>
+              ) : null}
               <div className='me-8 d-lg-none d-block'>
                 <div className='header-two-activities flex-align flex-wrap gap-32'>
                   <button
@@ -535,6 +568,38 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
             {/* Header Right End  */}
           </nav>
         </div>
+        {/* Sticky search band — slides down under the bar (desktop) */}
+        {scroll ? (
+          <div
+            className={`hrr-sticky-search d-none d-lg-block ${
+              stickySearchOpen ? "is-open" : ""
+            }`}
+          >
+            <div className='container container-lg'>
+              <form
+                action='/search'
+                method='get'
+                onSubmit={handleSearchSubmit}
+                className='hrr-sticky-search__form'
+              >
+                <input
+                  ref={stickySearchRef}
+                  type='text'
+                  name='q'
+                  className='hrr-sticky-search__input'
+                  placeholder='Search for a part, brand, or OEM number'
+                  onKeyDown={(e) => {
+                    if (e.key === "Escape") setStickySearchOpen(false);
+                  }}
+                />
+                <button type='submit' className='hrr-sticky-search__submit'>
+                  <i className='ph ph-magnifying-glass' />
+                  Search
+                </button>
+              </form>
+            </div>
+          </div>
+        ) : null}
       </header>
       {/* ==================== Header End Here ==================== */}
     </>

@@ -8,7 +8,7 @@ import {
 } from "@/lib/fitment/truck-storage";
 
 /**
- * "My Truck" selector — the v1 differentiator (SRCH-03).
+ * "My Truck" selection logic — the v1 differentiator (SRCH-03).
  *
  * A global, persistent Make -> Model cascade. The chosen truck is:
  *   1. saved to localStorage (follows the customer across visits), and
@@ -16,17 +16,19 @@ import {
  *      params) so server-rendered listing/search pages (03-05) can filter and
  *      mark compatibility deterministically via search_products.
  *
- * Native <select> elements (SSR-safe, no select2 dependency). Selection is
- * client-only and hydrated AFTER mount to avoid an SSR hydration mismatch
- * (Pitfall 3): the server renders empty controls; the effect repopulates them
- * from the URL first (shareable links) then localStorage.
+ * Selection is client-only and hydrated AFTER mount to avoid an SSR hydration
+ * mismatch (Pitfall 3): the server renders empty controls; the effect
+ * repopulates them from the URL first (shareable links) then localStorage.
  *
- * Props:
- *   makes?: [{ id, name }]  — optional server-provided seed. When absent the
- *     component fetches /api/fitment/makes once on mount (HeaderTwo is a client
- *     component, so a server prop is awkward there).
+ * Exposed as a hook so different surfaces (header dropdown, home picker
+ * cards) can render their own UI over the same single source of truth.
+ * Multiple mounted consumers converge through the URL: each instance
+ * re-seeds its local state whenever the ?truck_model param changes to
+ * something it didn't set itself (see the sync effect below). The on-mount
+ * URL-reflection uses replace() with identical params, so two instances
+ * racing it is benign.
  */
-const MyTruckSelector = ({ makes: makesProp = null }) => {
+export function useTruckSelection({ makes: makesProp = null } = {}) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -59,7 +61,7 @@ const MyTruckSelector = ({ makes: makesProp = null }) => {
 
   // On mount: seed makes (prop or fetch), then hydrate the selection from the
   // URL (shareable link wins) or localStorage. Runs once, after hydration, so
-  // the server-rendered empty controls never mismatch.
+  // server-rendered empty controls never mismatch.
   useEffect(() => {
     let cancelled = false;
 
@@ -108,7 +110,9 @@ const MyTruckSelector = ({ makes: makesProp = null }) => {
           params.set("truck_model", String(seedModelId));
           if (seedMakeId) params.set("truck_make", String(seedMakeId));
           const qs = params.toString();
-          router.replace(qs ? `${pathname}?${qs}` : pathname);
+          router.replace(qs ? `${pathname}?${qs}` : pathname, {
+            scroll: false,
+          });
         }
       }
       setHydrated(true);
@@ -120,6 +124,49 @@ const MyTruckSelector = ({ makes: makesProp = null }) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Multi-consumer sync: when another surface (header menu vs home cards)
+  // changes the truck, its push updates ?truck_model — re-seed this instance
+  // so every mounted consumer shows the same truck. No-op when this instance
+  // made the change (state already matches the URL), which also prevents loops.
+  useEffect(() => {
+    if (!hydrated) return;
+    const urlModel = searchParams.get("truck_model") ?? "";
+    const urlMake = searchParams.get("truck_make") ?? "";
+
+    if (!urlModel) {
+      // No truck on the URL. Only a REAL clear (storage empty too) wipes local
+      // state — a plain page load before the mount reflection, or an
+      // in-progress make change, must survive.
+      if (!getStoredTruck() && (makeId || modelId)) {
+        setMakeId("");
+        setModelId("");
+        setMakeName("");
+        setModelName("");
+        setModels([]);
+      }
+      return;
+    }
+
+    if (urlModel === String(modelId ?? "")) return;
+
+    let cancelled = false;
+    (async () => {
+      const stored = getStoredTruck();
+      setMakeId(urlMake);
+      const foundMake = makes.find((m) => String(m.id) === String(urlMake));
+      setMakeName(foundMake ? foundMake.name : stored?.makeName ?? "");
+      const list = await loadModels(urlMake);
+      if (cancelled) return;
+      setModelId(urlModel);
+      const fm = list.find((m) => String(m.id) === String(urlModel));
+      setModelName(fm ? fm.name : stored?.modelName ?? "");
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   // Push (or clear) the truck params on the URL, preserving everything else.
   const pushTruckParams = useCallback(
@@ -133,7 +180,9 @@ const MyTruckSelector = ({ makes: makesProp = null }) => {
         params.delete("truck_make");
       }
       const qs = params.toString();
-      router.push(qs ? `${pathname}?${qs}` : pathname);
+      // scroll: false — picking a truck must never yank the page to the top
+      // (the home picker cards live mid-page).
+      router.push(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
     },
     [router, pathname, searchParams]
   );
@@ -171,7 +220,7 @@ const MyTruckSelector = ({ makes: makesProp = null }) => {
     pushTruckParams(id, makeId);
   };
 
-  const handleClear = () => {
+  const clearTruck = useCallback(() => {
     clearStoredTruck();
     setMakeId("");
     setModelId("");
@@ -179,7 +228,43 @@ const MyTruckSelector = ({ makes: makesProp = null }) => {
     setModelName("");
     setModels([]);
     pushTruckParams(null, null);
+  }, [pushTruckParams]);
+
+  const hasTruck = hydrated && Boolean(modelId && makeName && modelName);
+
+  return {
+    makes,
+    models,
+    makeId,
+    modelId,
+    makeName,
+    modelName,
+    hydrated,
+    hasTruck,
+    handleMakeChange,
+    handleModelChange,
+    clearTruck,
   };
+}
+
+/**
+ * Legacy inline renderer over useTruckSelection — compact Make/Model cascade
+ * with an inline label and clear button. Kept for non-dropdown surfaces
+ * (e.g. a future home-page fitment module).
+ */
+const MyTruckSelector = ({ makes: makesProp = null }) => {
+  const {
+    makes,
+    models,
+    makeId,
+    modelId,
+    makeName,
+    modelName,
+    hydrated,
+    handleMakeChange,
+    handleModelChange,
+    clearTruck,
+  } = useTruckSelection({ makes: makesProp });
 
   const label =
     hydrated && modelId && makeName && modelName
@@ -227,7 +312,7 @@ const MyTruckSelector = ({ makes: makesProp = null }) => {
       {hydrated && modelId ? (
         <button
           type='button'
-          onClick={handleClear}
+          onClick={clearTruck}
           className='btn btn-sm text-gray-500 hover-text-main-600 p-0 flex-align gap-4'
           aria-label='Clear my truck'
           title='Clear my truck'

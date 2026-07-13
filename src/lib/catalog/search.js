@@ -22,6 +22,7 @@ export async function searchProducts({
   priceMax = null,
   sort = "relevance",
   page = 1,
+  area = null,
 } = {}) {
   const supabase = await createClient();
   const { data, error } = await supabase.rpc("search_products", {
@@ -33,6 +34,7 @@ export async function searchProducts({
     p_sort: sort,
     p_limit: PAGE_SIZE,
     p_offset: (page - 1) * PAGE_SIZE,
+    p_area: area,
   });
   if (error) throw error;
 

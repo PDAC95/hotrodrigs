@@ -13,6 +13,10 @@ export const metadata = {
   },
   description:
     "Shop aftermarket truck parts and accessories — bumpers, mirrors, lighting, grilles and more for all major truck makes. Find the right part for your rig and check out fast.",
+  icons: {
+    icon: "/assets/images/logo/favicon.png",
+    apple: "/assets/images/logo/favicon.png",
+  },
 };
 
 export default function RootLayout({ children }) {

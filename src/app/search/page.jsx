@@ -9,6 +9,7 @@ import Pagination from "@/components/catalog/Pagination";
 import FilterSidebar from "@/components/catalog/FilterSidebar";
 import SortSelect from "@/components/catalog/SortSelect";
 import { searchProducts } from "@/lib/catalog/search";
+import { areaName } from "@/lib/catalog/areas";
 import { getCategoryTree } from "@/lib/catalog/categories";
 import { getMakes } from "@/lib/catalog/fitment";
 
@@ -34,6 +35,7 @@ const SearchPage = async ({ searchParams }) => {
   const priceMax = sp.price_max ?? null;
   const sort = sp.sort ?? "relevance";
   const page = Math.max(1, Number(sp.page ?? 1) || 1);
+  const area = sp.area ?? null;
 
   const [{ items, total, pageSize }, tree, makes] = await Promise.all([
     searchProducts({
@@ -44,6 +46,7 @@ const SearchPage = async ({ searchParams }) => {
       priceMax,
       sort,
       page,
+      area,
     }),
     getCategoryTree(),
     getMakes(),
@@ -121,7 +124,11 @@ const SearchPage = async ({ searchParams }) => {
               <div className='flex-between gap-16 flex-wrap mb-40'>
                 <div>
                   <h4 className='mb-4'>
-                    {q ? `Results for "${q}"` : "Results"}
+                    {q
+                      ? `Results for "${q}"`
+                      : areaName(area)
+                      ? `${areaName(area)} Parts`
+                      : "Results"}
                   </h4>
                   <span className='text-gray-900 text-sm'>
                     {total} result{total === 1 ? "" : "s"}
