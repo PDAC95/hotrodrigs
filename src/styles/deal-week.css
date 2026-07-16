@@ -1,0 +1,149 @@
+/* ---------------------------------------------------------------------------
+ * Deal of the Week — brand banner (graphite surface, orange = state).
+ * Real product, real countdown (ends_at from the deals table). Display-only:
+ * no fake discounts, no invented urgency.
+ * ------------------------------------------------------------------------- */
+
+.dow-box {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 24px 28px;
+  background: linear-gradient(180deg, #26262a 0%, #1e1e21 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.dow-well {
+  flex: 0 0 176px;
+  width: 176px;
+  height: 176px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #2a2a2e, #1e1e21);
+  border: 1px solid #38383d;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.dow-well img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 14px;
+}
+
+.dow-info {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.dow-caption {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #fa6400;
+}
+
+.dow-caption__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fa6400;
+}
+
+.dow-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 8px 0 6px;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #fff;
+}
+
+.dow-price {
+  font-size: 15px;
+  color: #a8a8b0;
+}
+
+.dow-price strong {
+  color: #fff;
+  font-weight: 700;
+}
+
+.dow-right {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.dow-count {
+  display: flex;
+  gap: 10px;
+}
+
+.dow-chip {
+  width: 64px;
+  padding: 12px 0 9px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.dow-chip__n {
+  display: block;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.dow-chip__l {
+  display: block;
+  margin-top: 5px;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8f8f97;
+}
+
+.dow-ends {
+  font-size: 12.5px;
+  color: #8f8f97;
+}
+
+@media (max-width: 991px) {
+  .dow-box {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .dow-well {
+    flex-basis: 128px;
+    width: 128px;
+    height: 128px;
+  }
+
+  .dow-right {
+    align-items: flex-start;
+    width: 100%;
+  }
+}

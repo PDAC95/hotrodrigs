@@ -46,10 +46,6 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
 
   // Mobile menu support
   const [menuActive, setMenuActive] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(null);
-  const handleMenuClick = (index) => {
-    setActiveIndex(activeIndex === index ? null : index);
-  };
   const handleMenuToggle = () => {
     setMenuActive(!menuActive);
   };
@@ -107,15 +103,25 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
   const handleCategoryToggle = () => {
     setActiveCategory(!activeCategory);
   };
-  const [activeIndexCat, setActiveIndexCat] = useState(null);
-  const handleCatClick = (index) => {
-    setActiveIndexCat(activeIndexCat === index ? null : index);
+  // Any open drawer closes on outside click (overlay) or Escape.
+  const closeDrawers = () => {
+    setMenuActive(false);
+    setActiveCategory(false);
   };
+  useEffect(() => {
+    if (!menuActive && !activeCategory) return;
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") closeDrawers();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [menuActive, activeCategory]);
 
   return (
     <>
       <div className='overlay' />
       <div
+        onClick={closeDrawers}
         className={`side-overlay ${(menuActive || activeCategory) && "show"}`}
       />
       {/* ==================== Search Box Start Here ==================== */}
@@ -158,93 +164,45 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
         }`}
       >
         <button
-          onClick={() => {
-            handleMenuToggle();
-            setActiveIndex(null);
-          }}
+          onClick={handleMenuToggle}
           type='button'
           className='close-button'
         >
           <i className='ph ph-x' />{" "}
         </button>
         <div className='mobile-menu__inner'>
-          <Link href='/' className='mobile-menu__logo'>
+          <Link
+            href='/'
+            className='mobile-menu__logo'
+            onClick={() => setMenuActive(false)}
+          >
             <img src='/assets/images/logo/logo.png' alt='Logo' />
           </Link>
-          <div className='mobile-menu__menu'>
-            {/* Nav Menu Start */}
-            {/* Truck areas — same list as the desktop nav bar */}
-            <ul className='nav-menu flex-align nav-menu--mobile'>
-              {TRUCK_AREAS.map((area) => (
-                <li key={area.slug} className='nav-menu__item'>
-                  <Link
-                    onClick={() => setActiveIndex(null)}
-                    href={`/search?area=${area.slug}`}
-                    className='nav-menu__link'
-                  >
-                    {area.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            {/* Categories — full L1/L2 tree (accordion) */}
-            <ul className='nav-menu flex-align nav-menu--mobile border-top border-gray-100 mt-16 pt-16'>
-              {categoryTree.map((section, i) =>
-                section.children?.length > 0 ? (
-                  <li
-                    key={section.id}
-                    onClick={() => handleMenuClick(i)}
-                    className={`on-hover-item nav-menu__item has-submenu ${
-                      activeIndex === i ? "d-block" : ""
-                    }`}
-                  >
-                    <Link href='#' className='nav-menu__link'>
-                      {section.name}
-                    </Link>
-                    <ul
-                      className={`on-hover-dropdown common-dropdown nav-submenu scroll-sm ${
-                        activeIndex === i ? "open" : ""
-                      }`}
-                    >
-                      <li className='common-dropdown__item nav-submenu__item'>
-                        <Link
-                          onClick={() => setActiveIndex(null)}
-                          href={`/c/${section.slug}`}
-                          className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
-                        >
-                          All {section.name}
-                        </Link>
-                      </li>
-                      {section.children.map((child) => (
-                        <li
-                          key={child.id}
-                          className='common-dropdown__item nav-submenu__item'
-                        >
-                          <Link
-                            onClick={() => setActiveIndex(null)}
-                            href={`/c/${section.slug}/${child.slug}`}
-                            className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
-                          >
-                            {child.name}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </li>
-                ) : (
-                  <li key={section.id} className='nav-menu__item'>
-                    <Link
-                      onClick={() => setActiveIndex(null)}
-                      href={`/c/${section.slug}`}
-                      className='nav-menu__link'
-                    >
-                      {section.name}
-                    </Link>
-                  </li>
-                )
-              )}
-            </ul>
-            {/* Nav Menu End */}
+          {/* Truck + account + search — navigation lives in the left drawer. */}
+          <div className='hrr-mmenu'>
+            <Suspense fallback={null}>
+              <MyTruckMenu inline />
+            </Suspense>
+            <div className='hrr-mmenu__tiles'>
+              <Link
+                href='/account'
+                className='hrr-mmenu__tile'
+                onClick={() => setMenuActive(false)}
+              >
+                <span className='hrr-mmenu__tile-icon'>
+                  <i className='ph ph-user' />
+                </span>
+                <span>Profile</span>
+              </Link>
+            </div>
+            <Link
+              href='/search'
+              className='hrr-mmenu__all'
+              onClick={() => setMenuActive(false)}
+            >
+              Shop all parts
+              <i className='ph ph-arrow-right' />
+            </Link>
           </div>
         </div>
       </div>
@@ -369,12 +327,14 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                 <button
                   onClick={handleCategoryToggle}
                   type='button'
+                  aria-label='Browse parts'
+                  aria-expanded={activeCategory}
                   className='category__button flex-align gap-8 fw-medium bg-main-two-600 p-16 text-white'
                 >
                   <span className='icon text-2xl d-xs-flex d-none'>
                     <i className='ph ph-dots-nine' />
                   </span>
-                  <span className='d-sm-flex d-none'>All</span> Categories
+                  <span className='category__button-text'>All Categories</span>
                   <span className='arrow-icon text-xl d-flex'>
                     <i className='ph ph-caret-down' />
                   </span>
@@ -385,10 +345,7 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                   }`}
                 >
                   <button
-                    onClick={() => {
-                      handleCategoryToggle();
-                      setActiveIndexCat(null);
-                    }}
+                    onClick={handleCategoryToggle}
                     type='button'
                     className='close-responsive-dropdown rounded-circle text-xl position-absolute inset-inline-end-0 inset-block-start-0 mt-4 me-8 d-lg-none d-flex'
                   >
@@ -399,9 +356,10 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                       <img src='/assets/images/logo/logo.png' alt='Logo' />
                     </Link>
                   </div>
-                  {/* Two-level sliding list — hover flyouts can't work in an
-                      off-canvas drawer. */}
+                  {/* In-place view navigator (area/category choice). Keyed by
+                      open state so every open starts back at the root. */}
                   <MobileCategoryList
+                    key={activeCategory ? "open" : "closed"}
                     tree={categoryTree}
                     onNavigate={() => setActiveCategory(false)}
                   />
@@ -443,6 +401,17 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
                 </div>
               </div>
               {/* Category Dropdown End  */}
+              {/* Mobile search — in the bar, next to the categories trigger */}
+              <button
+                onClick={handleSearchToggle}
+                type='button'
+                className='hrr-msearch flex-align d-lg-none d-flex'
+                aria-label='Search'
+              >
+                <span className='text-2xl text-white d-flex'>
+                  <i className='ph ph-magnifying-glass' />
+                </span>
+              </button>
               {/* Menu Start  */}
               <div className='header-menu d-lg-block d-none'>
                 {/* Nav Menu Start */}
@@ -517,26 +486,6 @@ const HeaderTwo = ({ category, categoryTree = [] }) => {
               ) : null}
               <div className='me-8 d-lg-none d-block'>
                 <div className='header-two-activities flex-align flex-wrap gap-32'>
-                  <button
-                    onClick={handleSearchToggle}
-                    type='button'
-                    className='flex-align search-icon d-lg-none d-flex gap-4 item-hover-two'
-                  >
-                    <span className='text-2xl text-white d-flex position-relative item-hover__text'>
-                      <i className='ph ph-magnifying-glass' />
-                    </span>
-                  </button>
-                  <Link
-                    href='/account'
-                    className='flex-align flex-column gap-8 item-hover-two'
-                  >
-                    <span className='text-2xl text-white d-flex position-relative item-hover__text'>
-                      <i className='ph ph-user' />
-                    </span>
-                    <span className='text-md text-white item-hover__text d-none d-lg-flex'>
-                      Profile
-                    </span>
-                  </Link>
                   <Link
                     href='/cart'
                     className='flex-align flex-column gap-8 item-hover-two'

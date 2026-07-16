@@ -21,11 +21,14 @@ const FooterTwo = () => {
             </p>
             <div className='flex-align gap-16 mb-16'>
               <span className='w-32 h-32 flex-center rounded-circle border border-gray-100 text-main-two-600 text-md flex-shrink-0'>
-                <i className='ph-fill ph-map-pin' />
+                <i className='ph-fill ph-envelope-simple' />
               </span>
-              <span className='text-md text-gray-900 '>
-                789 Inner Lane, California, USA
-              </span>
+              <Link
+                href='mailto:support@hotrodrigs.com'
+                className='text-md text-gray-900 hover-text-main-two-600'
+              >
+                support@hotrodrigs.com
+              </Link>
             </div>
           </div>
           <div className='footer-item'>

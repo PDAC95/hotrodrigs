@@ -76,20 +76,25 @@ const TopSellingOne = () => {
           </div>
           <div className='row g-12'>
             <div className='col-md-4'>
-              <div className='position-relative rounded-16 overflow-hidden p-28 z-1 text-center'>
-                <img
-                  src='/assets/images/bg/deal-bg.png'
-                  alt=''
-                  className='position-absolute inset-block-start-0 inset-inline-start-0 z-n1 w-100 h-100'
-                />
+              <div
+                className='position-relative rounded-16 overflow-hidden p-28 z-1 text-center h-100'
+                style={{
+                  background:
+                    "linear-gradient(180deg, #2a2a2e 0%, #1b1b1e 100%)",
+                  border: "1px solid rgba(250, 100, 0, 0.45)",
+                  boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.06)",
+                }}
+              >
                 <div className='py-xl-4'>
                   <h6 className='mb-4 fw-semibold'>
-                    Polaroid Now+ Gen 2 - White
+                    LED Cab Marker Light Kit - Amber
                   </h6>
-                  <h5 className='mb-40 fw-semibold'>Fresh Vegetables</h5>
+                  <h5 className='mb-40 fw-semibold' style={{ color: "#fa6400" }}>
+                    Chrome & Stainless
+                  </h5>
                   <Link
                     href='/cart'
-                    className='btn text-heading border-neutral-600 hover-bg-neutral-600 hover-text-white py-16 px-24 flex-center d-inline-flex rounded-pill gap-8 fw-medium'
+                    className='btn bg-main-two-600 hover-bg-main-two-700 text-white py-16 px-24 flex-center d-inline-flex rounded-pill gap-8 fw-medium'
                     tabIndex={0}
                   >
                     Shop Now{" "}
@@ -130,7 +135,7 @@ const TopSellingOne = () => {
                         </div>
                         <h6 className='title text-lg fw-semibold mt-12 mb-8'>
                           <span className='link text-line-2'>
-                            Taylor Farms Broccoli Florets Vegetables
+                            ProBeam LED Headlight For Kenworth W900
                           </span>
                         </h6>
                         <div className='flex-align gap-4'>
@@ -138,7 +143,7 @@ const TopSellingOne = () => {
                             <i className='ph-fill ph-storefront' />
                           </span>
                           <span className='text-gray-500 text-xs'>
-                            By Lucky Supermarket
+                            By Hot Rod Rigs
                           </span>
                         </div>
                         <div className='mt-8'>
@@ -206,7 +211,7 @@ const TopSellingOne = () => {
                         </div>
                         <h6 className='title text-lg fw-semibold mt-12 mb-8'>
                           <span className='link text-line-2'>
-                            Taylor Farms Broccoli Florets Vegetables
+                            ProBeam LED Headlight For Kenworth W900
                           </span>
                         </h6>
                         <div className='flex-align gap-4'>
@@ -214,7 +219,7 @@ const TopSellingOne = () => {
                             <i className='ph-fill ph-storefront' />
                           </span>
                           <span className='text-gray-500 text-xs'>
-                            By Lucky Supermarket
+                            By Hot Rod Rigs
                           </span>
                         </div>
                         <div className='mt-8'>
@@ -282,7 +287,7 @@ const TopSellingOne = () => {
                         </div>
                         <h6 className='title text-lg fw-semibold mt-12 mb-8'>
                           <span className='link text-line-2'>
-                            Taylor Farms Broccoli Florets Vegetables
+                            ProBeam LED Headlight For Kenworth W900
                           </span>
                         </h6>
                         <div className='flex-align gap-4'>
@@ -290,7 +295,7 @@ const TopSellingOne = () => {
                             <i className='ph-fill ph-storefront' />
                           </span>
                           <span className='text-gray-500 text-xs'>
-                            By Lucky Supermarket
+                            By Hot Rod Rigs
                           </span>
                         </div>
                         <div className='mt-8'>
@@ -358,7 +363,7 @@ const TopSellingOne = () => {
                         </div>
                         <h6 className='title text-lg fw-semibold mt-12 mb-8'>
                           <span className='link text-line-2'>
-                            Taylor Farms Broccoli Florets Vegetables
+                            ProBeam LED Headlight For Kenworth W900
                           </span>
                         </h6>
                         <div className='flex-align gap-4'>
@@ -366,7 +371,7 @@ const TopSellingOne = () => {
                             <i className='ph-fill ph-storefront' />
                           </span>
                           <span className='text-gray-500 text-xs'>
-                            By Lucky Supermarket
+                            By Hot Rod Rigs
                           </span>
                         </div>
                         <div className='mt-8'>
@@ -434,7 +439,7 @@ const TopSellingOne = () => {
                         </div>
                         <h6 className='title text-lg fw-semibold mt-12 mb-8'>
                           <span className='link text-line-2'>
-                            Taylor Farms Broccoli Florets Vegetables
+                            ProBeam LED Headlight For Kenworth W900
                           </span>
                         </h6>
                         <div className='flex-align gap-4'>
@@ -442,7 +447,7 @@ const TopSellingOne = () => {
                             <i className='ph-fill ph-storefront' />
                           </span>
                           <span className='text-gray-500 text-xs'>
-                            By Lucky Supermarket
+                            By Hot Rod Rigs
                           </span>
                         </div>
                         <div className='mt-8'>

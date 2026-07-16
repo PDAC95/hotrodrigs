@@ -2,7 +2,7 @@ import BannerTwo from "@/components/BannerTwo";
 import BigDealOne from "@/components/BigDealOne";
 import BottomFooter from "@/components/BottomFooter";
 import DaySaleOne from "@/components/DaySaleOne";
-import DealsOne from "@/components/DealsOne";
+import DealOfTheWeek from "@/components/DealOfTheWeek";
 import DiscountOne from "@/components/DiscountOne";
 import FeaturedOne from "@/components/FeaturedOne";
 import FooterTwo from "@/components/FooterTwo";
@@ -21,13 +21,17 @@ import ColorInit from "@/helper/ColorInit";
 import Preloader from "@/helper/Preloader";
 import ScrollToTopInit from "@/helper/ScrollToTopInit";
 import { getCategoryTree } from "@/lib/catalog/categories";
+import { getCurrentDeal } from "@/lib/catalog/deals";
 
 // No page-level metadata: the home page inherits the site-wide default from
 // layout.jsx ("Hot Rod Rigs — Truck Parts & Accessories") so it never
 // double-brands under the "%s | Hot Rod Rigs" title template.
 
 const page = async () => {
-  const categoryTree = await getCategoryTree();
+  const [categoryTree, deal] = await Promise.all([
+    getCategoryTree(),
+    getCurrentDeal(),
+  ]);
   return (
     <>
       {/* ColorInit */}
@@ -47,13 +51,14 @@ const page = async () => {
         <BannerTwo categoryTree={categoryTree} />
       </Suspense>
 
-      {/* Shop by My Truck — Make/Model/Year picker cards (was PromotionalTwo) */}
+      {/* Shop by My Truck — Make/Model/Year picker cards */}
       <Suspense fallback={null}>
         <TruckPickerCards />
       </Suspense>
 
-      {/* DealsOne */}
-      <DealsOne />
+      {/* Deal of the Week — real product + real countdown; hides itself when
+          no deal is scheduled (redesigned from DealsOne's demo banner) */}
+      <DealOfTheWeek deal={deal} />
 
       {/* TopSellingOne */}
       <TopSellingOne />
@@ -85,7 +90,7 @@ const page = async () => {
       {/* RecentlyViewedOne */}
       <RecentlyViewedOne />
 
-      {/* ShippingTwo */}
+      {/* ShippingTwo — trust strip, true claims only */}
       <ShippingTwo />
 
       {/* NewsletterTwo */}

@@ -64,8 +64,11 @@ const OrderSummary = ({
               key={line.variant_id}
               className="flex-between gap-24 mb-32"
             >
-              <div className="flex-align gap-12">
-                <span className="text-gray-900 fw-normal text-md font-heading-two w-144">
+              <div
+                className="flex-align gap-12 flex-grow-1"
+                style={{ minWidth: 0 }}
+              >
+                <span className="text-gray-900 fw-normal text-md font-heading-two text-line-2 flex-grow-1">
                   {line.product?.name ?? "Item"}
                 </span>
                 <span className="text-gray-900 fw-normal text-md font-heading-two">
@@ -75,7 +78,7 @@ const OrderSummary = ({
                   {line.quantity}
                 </span>
               </div>
-              <span className="text-gray-900 fw-bold text-md font-heading-two">
+              <span className="text-gray-900 fw-bold text-md font-heading-two text-nowrap">
                 {formatPrice(line.line_subtotal)}
               </span>
             </div>

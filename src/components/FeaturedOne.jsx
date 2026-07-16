@@ -76,14 +76,14 @@ const FeaturedOne = () => {
                             </span>
                             <img
                               src='/assets/images/thumbs/product-two-img2.png'
-                              alt='marketpro'
+                              alt='Hot Rod Rigs'
                               className='w-auto max-w-unset'
                             />
                           </span>
                           <div className='product-card__content my-20 flex-grow-1'>
                             <h6 className='title text-lg fw-semibold mb-12'>
                               <span className='link text-line-2'>
-                                iPhone 15 Pro Warp Charge 30W Power Adapter
+                                304 Stainless Grille Guard Bracket Kit
                               </span>
                             </h6>
                             <div className='flex-align gap-6 mb-12'>
@@ -102,7 +102,7 @@ const FeaturedOne = () => {
                                 <i className='ph-fill ph-storefront' />
                               </span>
                               <span className='text-gray-500 text-xs'>
-                                By Lucky Supermarket
+                                By Hot Rod Rigs
                               </span>
                             </div>
                             <div className='product-card__price my-20'>
@@ -134,14 +134,14 @@ const FeaturedOne = () => {
                             </span>
                             <img
                               src='/assets/images/thumbs/product-two-img3.png'
-                              alt='marketpro'
+                              alt='Hot Rod Rigs'
                               className='w-auto max-w-unset'
                             />
                           </span>
                           <div className='product-card__content my-20 flex-grow-1'>
                             <h6 className='title text-lg fw-semibold mb-12'>
                               <span className='link text-line-2'>
-                                iPhone 15 Pro Warp Charge 30W Power Adapter
+                                304 Stainless Grille Guard Bracket Kit
                               </span>
                             </h6>
                             <div className='flex-align gap-6 mb-12'>
@@ -160,7 +160,7 @@ const FeaturedOne = () => {
                                 <i className='ph-fill ph-storefront' />
                               </span>
                               <span className='text-gray-500 text-xs'>
-                                By Lucky Supermarket
+                                By Hot Rod Rigs
                               </span>
                             </div>
                             <div className='product-card__price my-20'>
@@ -196,14 +196,14 @@ const FeaturedOne = () => {
                             </span>
                             <img
                               src='/assets/images/thumbs/product-two-img4.png'
-                              alt='marketpro'
+                              alt='Hot Rod Rigs'
                               className='w-auto max-w-unset'
                             />
                           </span>
                           <div className='product-card__content my-20 flex-grow-1'>
                             <h6 className='title text-lg fw-semibold mb-12'>
                               <span className='link text-line-2'>
-                                iPhone 15 Pro Warp Charge 30W Power Adapter
+                                304 Stainless Grille Guard Bracket Kit
                               </span>
                             </h6>
                             <div className='flex-align gap-6 mb-12'>
@@ -222,7 +222,7 @@ const FeaturedOne = () => {
                                 <i className='ph-fill ph-storefront' />
                               </span>
                               <span className='text-gray-500 text-xs'>
-                                By Lucky Supermarket
+                                By Hot Rod Rigs
                               </span>
                             </div>
                             <div className='product-card__price my-20'>
@@ -254,14 +254,14 @@ const FeaturedOne = () => {
                             </span>
                             <img
                               src='/assets/images/thumbs/product-two-img4.png'
-                              alt='marketpro'
+                              alt='Hot Rod Rigs'
                               className='w-auto max-w-unset'
                             />
                           </span>
                           <div className='product-card__content my-20 flex-grow-1'>
                             <h6 className='title text-lg fw-semibold mb-12'>
                               <span className='link text-line-2'>
-                                iPhone 15 Pro Warp Charge 30W Power Adapter
+                                304 Stainless Grille Guard Bracket Kit
                               </span>
                             </h6>
                             <div className='flex-align gap-6 mb-12'>
@@ -280,7 +280,7 @@ const FeaturedOne = () => {
                                 <i className='ph-fill ph-storefront' />
                               </span>
                               <span className='text-gray-500 text-xs'>
-                                By Lucky Supermarket
+                                By Hot Rod Rigs
                               </span>
                             </div>
                             <div className='product-card__price my-20'>
@@ -316,14 +316,14 @@ const FeaturedOne = () => {
                             </span>
                             <img
                               src='/assets/images/thumbs/product-two-img2.png'
-                              alt='marketpro'
+                              alt='Hot Rod Rigs'
                               className='w-auto max-w-unset'
                             />
                           </span>
                           <div className='product-card__content my-20 flex-grow-1'>
                             <h6 className='title text-lg fw-semibold mb-12'>
                               <span className='link text-line-2'>
-                                iPhone 15 Pro Warp Charge 30W Power Adapter
+                                304 Stainless Grille Guard Bracket Kit
                               </span>
                             </h6>
                             <div className='flex-align gap-6 mb-12'>
@@ -342,7 +342,7 @@ const FeaturedOne = () => {
                                 <i className='ph-fill ph-storefront' />
                               </span>
                               <span className='text-gray-500 text-xs'>
-                                By Lucky Supermarket
+                                By Hot Rod Rigs
                               </span>
                             </div>
                             <div className='product-card__price my-20'>
@@ -374,14 +374,14 @@ const FeaturedOne = () => {
                             </span>
                             <img
                               src='/assets/images/thumbs/product-two-img3.png'
-                              alt='marketpro'
+                              alt='Hot Rod Rigs'
                               className='w-auto max-w-unset'
                             />
                           </span>
                           <div className='product-card__content my-20 flex-grow-1'>
                             <h6 className='title text-lg fw-semibold mb-12'>
                               <span className='link text-line-2'>
-                                iPhone 15 Pro Warp Charge 30W Power Adapter
+                                304 Stainless Grille Guard Bracket Kit
                               </span>
                             </h6>
                             <div className='flex-align gap-6 mb-12'>
@@ -400,7 +400,7 @@ const FeaturedOne = () => {
                                 <i className='ph-fill ph-storefront' />
                               </span>
                               <span className='text-gray-500 text-xs'>
-                                By Lucky Supermarket
+                                By Hot Rod Rigs
                               </span>
                             </div>
                             <div className='product-card__price my-20'>
@@ -434,12 +434,12 @@ const FeaturedOne = () => {
             <div className='position-relative rounded-16 bg-light-purple overflow-hidden p-28 pb-0 z-1 text-center h-100'>
               <img
                 src='/assets/images/bg/featured-product-bg.png'
-                alt='marketpro'
+                alt='Hot Rod Rigs'
                 className='position-absolute inset-block-start-0 inset-inline-start-0 z-n1 w-100 h-100 cover-img'
               />
               <div className='py-xl-4 text-center'>
                 <span className='h6 mb-20 text-white'>
-                  iPhone Smart Phone - Red
+                  Chrome Air Cleaner Kit - 15 Inch
                 </span>
                 <div className='flex-center gap-12 text-white'>
                   <span className=''>FROM</span>
@@ -451,7 +451,7 @@ const FeaturedOne = () => {
               </div>
               <img
                 src='/assets/images/thumbs/featured-product-img.png'
-                alt='marketpro'
+                alt='Hot Rod Rigs'
                 className='d-xxl-inline-flex d-none'
               />
             </div>

@@ -60,7 +60,7 @@ const StickyCategoryMenu = ({ tree = [] }) => {
         <span className='icon text-2xl d-xs-flex d-none'>
           <i className='ph ph-dots-nine' />
         </span>
-        <span className='d-sm-flex d-none'>All</span> Categories
+        <span className='category__button-text'>All Categories</span>
         <span className='arrow-icon text-xl d-flex'>
           <i className={`ph ${open ? "ph-caret-up" : "ph-caret-down"}`} />
         </span>

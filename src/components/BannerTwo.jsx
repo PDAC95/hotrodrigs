@@ -1,11 +1,39 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import Link from "next/link";
 import Slider from "react-slick";
 import { useTruckSelection } from "@/components/fitment/MyTruckSelector";
 import { getStoredTruck } from "@/lib/fitment/truck-storage";
 import { slugify } from "@/lib/slugify";
+
+/* Hero slider arrows — real chevrons on the shared glass-puck styling
+   (the default slick buttons render as empty ghosts over the photo). */
+const HeroNextArrow = memo(function HeroNextArrow({ className, onClick }) {
+  return (
+    <button
+      type='button'
+      onClick={onClick}
+      aria-label='Next slide'
+      className={`${className} slick-next slick-arrow flex-center rounded-circle border border-gray-100 text-xl w-48 h-48 transition-1`}
+    >
+      <i className='ph ph-caret-right' />
+    </button>
+  );
+});
+
+const HeroPrevArrow = memo(function HeroPrevArrow({ className, onClick }) {
+  return (
+    <button
+      type='button'
+      onClick={onClick}
+      aria-label='Previous slide'
+      className={`${className} slick-prev slick-arrow flex-center rounded-circle border border-gray-100 text-xl w-48 h-48 transition-1`}
+    >
+      <i className='ph ph-caret-left' />
+    </button>
+  );
+});
 
 /**
  * Full-bleed hero photo for a personalized slide, with a left scrim so the
@@ -48,6 +76,8 @@ const BannerTwo = ({ categoryTree = [] }) => {
     slidesToShow: 1,
     slidesToScroll: 1,
     initialSlide: 0,
+    nextArrow: <HeroNextArrow />,
+    prevArrow: <HeroPrevArrow />,
   };
 
   // Personalized hero: when a truck is active (same persistent fitment
@@ -167,17 +197,18 @@ const BannerTwo = ({ categoryTree = [] }) => {
                   <div className='banner-item-two'>
                     <div className='banner-item-two__content'>
                       <span className='text-white mb-8 h6'>
-                        Starting at only $250
+                        Truck parts &amp; accessories
                       </span>
                       <h2 className='banner-item-two__title bounce text-white'>
-                        Get The Sound You Love For Less
+                        Built for the long haul
                       </h2>
-                    </div>
-                    <div className='banner-item-two__thumb position-absolute bottom-0'>
-                      <img
-                        src='/assets/images/thumbs/banner-two-img.png'
-                        alt=''
-                      />
+                      <Link
+                        href='/search'
+                        className='btn bg-main-two-600 hover-bg-main-two-700 text-white py-14 px-32 rounded-pill mt-32 d-inline-flex align-items-center gap-8'
+                      >
+                        Shop all parts
+                        <i className='ph ph-arrow-right' />
+                      </Link>
                     </div>
                   </div>
                 )}
@@ -207,17 +238,18 @@ const BannerTwo = ({ categoryTree = [] }) => {
                   <div className='banner-item-two'>
                     <div className='banner-item-two__content'>
                       <span className='text-white mb-8 h6'>
-                        Starting at only $250
+                        Find parts that fit
                       </span>
                       <h2 className='banner-item-two__title bounce text-white'>
-                        Get The Sound You Love For Less
+                        Pick your truck, see what fits
                       </h2>
-                    </div>
-                    <div className='banner-item-two__thumb position-absolute bottom-0'>
-                      <img
-                        src='/assets/images/thumbs/banner-two-img2.png'
-                        alt=''
-                      />
+                      <Link
+                        href='#shop-by-truck'
+                        className='btn bg-main-two-600 hover-bg-main-two-700 text-white py-14 px-32 rounded-pill mt-32 d-inline-flex align-items-center gap-8'
+                      >
+                        Set up my truck
+                        <i className='ph ph-arrow-right' />
+                      </Link>
                     </div>
                   </div>
                 )}

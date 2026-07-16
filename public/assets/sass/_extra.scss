@@ -6,7 +6,7 @@
 
 .slick-arrow {
   .ph {
-    color: #333;
+    color: #d6d6da; /* dark theme: icons must read on graphite */
   }
 
   &:hover {
@@ -707,7 +707,7 @@
   color: hsl(var(--main));
 }
 
-.category-two {
+.category-two:not(.d-none) {
   @include md-screen {
     display: block !important;
   }
@@ -872,6 +872,19 @@ body {
    already flipped to white). */
 .bg-white {
   background-color: #232326 !important;
+}
+
+/* The header icon bar matches the logo band above it exactly — one tone,
+   no visible seam. (The fixed-header glass rule still outranks this.) */
+.header.bg-white {
+  background-color: #1d1d1f !important;
+}
+
+/* Mobile bar activity icons (profile/cart) inherit the template's navy
+   heading color inside .header — invisible on the dark bar. Force white. */
+.header .header-two-activities .item-hover__text,
+.header .header-two-activities .item-hover__text i {
+  color: #fff !important;
 }
 
 .preloader {
@@ -1061,4 +1074,620 @@ body {
    photo's edge exactly. */
 .banner-two .banner-item-two-wrapper {
   margin-inline-start: 0 !important;
+}
+
+/* Demo-section promo banners: the template's pastel/navy art becomes the
+   brand surface (graphite gradient + orange hairline), consistent with the
+   Top Selling banner and the picker cards. Their background art images are
+   hidden via CSS — markup untouched. */
+.trending-products-box,
+.popular-products-box,
+.day-sale-box,
+.big-deal-box,
+.discount-item,
+.recommended .bg-light-purple,
+.featured-products .bg-light-purple,
+.vendor-card {
+  background: linear-gradient(180deg, #2a2a2e 0%, #1b1b1e 100%) !important;
+  border: 1px solid rgba(250, 100, 0, 0.45);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.popular-products-box > img.z-n1,
+.day-sale-box > img.z-n1,
+.big-deal-box > img.z-n1,
+.discount-item > img.z-n1,
+.recommended .bg-light-purple > img.z-n1,
+.featured-products .bg-light-purple > img.z-n1 {
+  display: none;
+}
+
+/* Countdown circles inside those banners: graphite chips, orange rim. */
+.popular-products-box .countdown-list__item {
+  background: #151515 !important;
+  border: 1px solid rgba(250, 100, 0, 0.45);
+}
+
+/* Slider arrows: uniform brand hover (the template mixes navy hover
+   utilities that vanish into the dark theme). */
+.slick-arrow:hover {
+  background-color: #fa6400 !important;
+  border-color: #fa6400 !important;
+}
+
+/* Tab pills: the style-two variant colors text with --neutral-600 (navy),
+   invisible on graphite — lift to light ink. Active/hover stay orange. */
+.common-tab .nav-item .nav-link,
+.common-tab.style-two .nav-link {
+  color: #c9c9c9;
+  border-color: #3a3a3f;
+}
+
+/* ==================== HRR Elevation & Motion System ====================
+   Senior polish layer: a consistent depth scale (ambient shadows + inner
+   highlights), purposeful glassmorphism (floating surfaces only: sticky bar,
+   menus, chips), unified button/pill/arrow behavior, and 150-250ms ease-out
+   motion everywhere. Brand palette only — orange is state & glow, never
+   decoration. */
+
+:root {
+  --hrr-ease: cubic-bezier(0.2, 0.9, 0.25, 1);
+  --hrr-shadow-1: 0 2px 10px rgba(0, 0, 0, 0.35);
+  --hrr-shadow-2: 0 12px 32px rgba(0, 0, 0, 0.45), 0 3px 8px rgba(0, 0, 0, 0.3);
+  --hrr-glow: 0 6px 22px rgba(250, 100, 0, 0.28);
+  --hrr-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+/* --- Page scrollbar: the stock white bar breaks the dark shell ------------- */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #1d1d1f;
+}
+::-webkit-scrollbar-thumb {
+  background: #3a3a3f;
+  border-radius: 8px;
+  border: 3px solid #1d1d1f;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #4b4b52;
+}
+html {
+  scrollbar-color: #3a3a3f #1d1d1f;
+}
+
+/* --- Section panels: lift off the page --------------------------------------
+   The p-24 + rounded-16 + border combo is the home/search section wrapper. */
+.border.p-24.rounded-16 {
+  background: linear-gradient(180deg, #212124 0%, #1c1c1e 100%);
+  box-shadow: var(--hrr-shadow-1), var(--hrr-highlight);
+}
+
+/* --- Product cards: raised surface, hover elevation ------------------------ */
+.product-card {
+  background: linear-gradient(180deg, #232326 0%, #1e1e21 100%);
+  box-shadow: var(--hrr-shadow-1), var(--hrr-highlight);
+  transition: transform 200ms var(--hrr-ease), box-shadow 200ms var(--hrr-ease),
+    border-color 200ms var(--hrr-ease);
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--hrr-shadow-2), var(--hrr-highlight);
+  border-color: rgba(250, 100, 0, 0.75) !important;
+}
+
+.product-card .product-card__thumb img {
+  transition: transform 300ms var(--hrr-ease);
+}
+
+.product-card:hover .product-card__thumb img {
+  transform: scale(1.045);
+}
+
+/* --- Buttons: one physical language ---------------------------------------- */
+.btn {
+  transition: transform 180ms var(--hrr-ease), box-shadow 200ms var(--hrr-ease),
+    background-color 200ms ease-out, border-color 200ms ease-out,
+    color 200ms ease-out;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(250, 100, 0, 0.35);
+}
+
+/* Orange CTAs: machined gradient + inner bevel + glow on hover. The gradient
+   rides background-image, so the bg-main-two-600 utility keeps its color. */
+.btn.bg-main-two-600,
+.btn-main-two {
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.16) 0%,
+    rgba(255, 255, 255, 0) 45%,
+    rgba(0, 0, 0, 0.14) 100%
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 2px 10px rgba(250, 100, 0, 0.22);
+}
+
+.btn.bg-main-two-600:hover,
+.btn-main-two:hover {
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), var(--hrr-glow);
+}
+
+.btn.bg-main-two-600:active,
+.btn-main-two:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* --- Slider arrows: glass pucks --------------------------------------------- */
+.slick-arrow {
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-color: #3a3a3f !important;
+  box-shadow: var(--hrr-shadow-1);
+  transition: background-color 200ms ease-out, border-color 200ms ease-out,
+    scale 180ms var(--hrr-ease), box-shadow 200ms var(--hrr-ease);
+}
+
+/* scale as an independent property: it must NOT overwrite the template's
+   translateY(-50%) centering transform, or the arrow jumps on hover. */
+.slick-arrow:hover {
+  scale: 1.08;
+  box-shadow: var(--hrr-glow);
+}
+
+.slick-arrow:active {
+  scale: 0.96;
+}
+
+/* --- Tab pills: glass chips, orange active ---------------------------------- */
+.common-tab .nav-item .nav-link,
+.common-tab.style-two .nav-link {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: color 200ms ease-out, border-color 200ms ease-out,
+    background-color 200ms ease-out, box-shadow 200ms var(--hrr-ease);
+}
+
+.common-tab .nav-item .nav-link:hover,
+.common-tab.style-two .nav-link:hover {
+  border-color: rgba(250, 100, 0, 0.6);
+  color: #fff;
+}
+
+.common-tab .nav-link.active {
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.16) 0%,
+    rgba(255, 255, 255, 0) 45%,
+    rgba(0, 0, 0, 0.14) 100%
+  ) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 2px 12px rgba(250, 100, 0, 0.3);
+}
+
+/* --- Sticky bar: true glass over the page ----------------------------------- */
+.header.fixed-header,
+.header.fixed-header.bg-white {
+  background-color: rgba(29, 29, 31, 0.78) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+}
+
+/* --- Trust strip: raised chips with breathing icons -------------------------- */
+.shipping-item {
+  box-shadow: var(--hrr-shadow-1), var(--hrr-highlight);
+  transition: transform 200ms var(--hrr-ease), box-shadow 200ms var(--hrr-ease);
+}
+
+.shipping-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--hrr-shadow-2), var(--hrr-highlight);
+}
+
+.shipping-item > span {
+  box-shadow: 0 4px 14px rgba(250, 100, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* --- Promo banners join the depth scale -------------------------------------- */
+.trending-products-box,
+.popular-products-box,
+.day-sale-box,
+.big-deal-box,
+.discount-item,
+.recommended .bg-light-purple,
+.featured-products .bg-light-purple,
+.vendor-card {
+  box-shadow: var(--hrr-shadow-1), var(--hrr-highlight);
+}
+
+/* --- Motion discipline --------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* Header activities (My Truck / Profile / Cart): every trigger gets an
+   identical 28px icon slot, so glyph centers, the make logo, and the labels
+   land on exactly the same lines. Kills the cart's mt-6 offset and lets the
+   44px logo canvas overflow the slot symmetrically. */
+.header-two-activities > a > span:first-child,
+.header-two-activities > button > span:first-child,
+.header-two-activities > div > button > span:first-child {
+  height: 28px;
+  margin: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==================== HRR Neumorphism layer ====================
+   Soft-UI pass over the elevation system: every major rectangle reads as
+   machined from the graphite itself — dual shadows (key light top-left,
+   depth bottom-right), pressed insets for wells and active states. Brand
+   hairlines stay; orange stays state-only. */
+
+:root {
+  --neo-raise: -6px -6px 14px rgba(255, 255, 255, 0.045),
+    8px 8px 20px rgba(0, 0, 0, 0.55);
+  --neo-raise-sm: -3px -3px 8px rgba(255, 255, 255, 0.04),
+    4px 4px 12px rgba(0, 0, 0, 0.5);
+  --neo-inset: inset 4px 4px 10px rgba(0, 0, 0, 0.5),
+    inset -3px -3px 8px rgba(255, 255, 255, 0.04);
+  --neo-inset-sm: inset 2px 2px 6px rgba(0, 0, 0, 0.45),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.035);
+}
+
+/* Section panels: extruded slabs. */
+.border.p-24.rounded-16 {
+  box-shadow: var(--neo-raise), var(--hrr-highlight);
+}
+
+/* Product cards: raised chips; thumbs pressed into them. */
+.product-card {
+  box-shadow: var(--neo-raise-sm), var(--hrr-highlight);
+}
+
+.product-card:hover {
+  box-shadow: var(--neo-raise), var(--hrr-highlight);
+}
+
+.product-card .product-card__thumb {
+  box-shadow: var(--neo-inset-sm);
+}
+
+/* Card buttons: extruded at rest, physically pressed on click. */
+.product-card .btn {
+  box-shadow: var(--neo-raise-sm);
+}
+
+.product-card .btn:active {
+  box-shadow: var(--neo-inset-sm);
+  transform: none;
+}
+
+/* Promo banners + deal + picker cards join the soft depth. */
+.trending-products-box,
+.popular-products-box,
+.day-sale-box,
+.big-deal-box,
+.discount-item,
+.recommended .bg-light-purple,
+.featured-products .bg-light-purple,
+.vendor-card,
+.dow-box {
+  box-shadow: var(--neo-raise), var(--hrr-highlight);
+}
+
+/* Wells: pressed into their panels. */
+.dow-well {
+  box-shadow: var(--neo-inset);
+}
+
+/* Countdown circles: pressed dials. */
+.popular-products-box .countdown-list__item {
+  box-shadow: var(--neo-inset-sm);
+}
+
+/* Trust strip chips. */
+.shipping-item {
+  box-shadow: var(--neo-raise-sm), var(--hrr-highlight);
+}
+
+.shipping-item:hover {
+  box-shadow: var(--neo-raise), var(--hrr-highlight);
+}
+
+/* Tab pills: soft extrude at rest; the active one keeps its orange glow. */
+.common-tab .nav-item .nav-link:not(.active),
+.common-tab.style-two .nav-link:not(.active) {
+  box-shadow: var(--neo-raise-sm);
+}
+
+/* Slider arrows: soft pucks, pressed on click. */
+.slick-arrow {
+  box-shadow: var(--neo-raise-sm);
+}
+
+.slick-arrow:active {
+  box-shadow: var(--neo-inset-sm);
+}
+
+/* Trust strip: breathing room from the section above, and equal-height cards
+   at every viewport (text wraps differently per width; the column stretch
+   equalizes each row). */
+section.shipping {
+  margin-top: 80px;
+}
+
+.shipping-item {
+  height: 100%;
+}
+
+/* Mobile drawers: one per side. The hamburger lives on the RIGHT edge, so
+   its menu slides in from the right; the Categories drawer keeps the left.
+   Dark surface to match the theme (template default was white). */
+.mobile-menu {
+  left: auto;
+  right: 0;
+  background-color: #232326 !important;
+  transform: translateX(105%);
+  box-shadow: -12px 0 32px rgba(0, 0, 0, 0.45);
+}
+
+.mobile-menu.active {
+  transform: translateX(0) !important;
+}
+
+.responsive-dropdown.cat.active {
+  transform: translateX(0) !important;
+}
+
+/* Hero arrows collide with the headline on phones — swipe + dots take over. */
+@media (max-width: 767px) {
+  .banner-item-two__slider .slick-arrow {
+    display: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Cart / checkout tables — dark theme + responsive
+ * The vendor table ships white cells (--bs-table-bg:#fff) and refuses to
+ * shrink (min-width:max-content). Flip it to the graphite system and let it
+ * compress; below md the rows restack as cards.
+ * ------------------------------------------------------------------------- */
+
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-color: #e6e6e9;
+  color: #e6e6e9;
+  min-width: 0;
+  width: 100%;
+}
+
+.table > :not(caption) > * > * {
+  background-color: transparent;
+  color: inherit;
+}
+
+.table thead th {
+  color: #fff;
+}
+
+.table.style-three tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cart-table .quantity__input {
+  background: transparent;
+  color: #fff;
+}
+
+.cart-table .quantity__minus,
+.cart-table .quantity__plus {
+  color: #d6d6da !important;
+}
+
+.cart-table .remove-tr-btn {
+  color: #a6a6a6;
+  white-space: nowrap;
+}
+
+/* Numeric columns and headers never wrap mid-word ("$258. 89", "Pric e"). */
+.cart-table thead th,
+.cart-table tbody td:nth-child(3),
+.cart-table tbody td:nth-child(5) {
+  white-space: nowrap;
+}
+
+/* --- Product thumbs on dark surfaces (cart, mini-cart) ----------------------
+   A fixed square white well: the catalog photos are white-background JPEGs,
+   so the tile frames them deliberately instead of bleeding into the graphite.
+   flex: 0 0 auto so the flex row can never squeeze it out of square. */
+
+.hrr-prod-thumb {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 88px;
+  height: 88px;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.hrr-prod-thumb img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.hrr-prod-thumb--sm {
+  width: 56px;
+  height: 56px;
+  padding: 5px;
+  border-radius: 8px;
+}
+
+@media (max-width: 767px) {
+  .hrr-prod-thumb:not(.hrr-prod-thumb--sm) {
+    width: 64px;
+    height: 64px;
+    padding: 6px;
+  }
+}
+
+/* --- Dark form controls (checkout, login, register, contact, account) ------
+   The template's .common-input inherits the navy heading color — invisible
+   on graphite. The header search pill stays white, so it keeps dark ink. */
+.common-input {
+  color: #f2f2f2;
+}
+
+.common-input::placeholder {
+  color: #8f8f97;
+}
+
+select.common-input option {
+  background-color: #232326;
+  color: #f2f2f2;
+}
+
+.search-form__input.common-input {
+  color: #121535;
+}
+
+/* Fullscreen search overlay input sits on the dark scrim. */
+.search-box .form-control {
+  color: #fff;
+}
+
+.search-box .form-control::placeholder {
+  color: #8f8f97;
+}
+
+/* Mobile: each cart line becomes a stacked card — no sideways table scroll. */
+@media (max-width: 767px) {
+  .cart-table {
+    padding: 16px !important;
+  }
+
+  .cart-table table,
+  .cart-table tbody,
+  .cart-table tbody tr,
+  .cart-table tbody td {
+    display: block;
+    width: 100%;
+  }
+
+  .cart-table thead {
+    display: none;
+  }
+
+  .cart-table tbody tr {
+    position: relative;
+    margin-bottom: 16px;
+    padding: 16px 16px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #26262a 0%, #1e1e21 100%);
+  }
+
+  .cart-table tbody tr:last-child {
+    margin-bottom: 0;
+  }
+
+  .cart-table tbody tr td {
+    padding: 8px 0 !important;
+    border: 0 !important;
+    text-align: left !important;
+  }
+
+  /* Delete cell -> icon pinned to the card corner. */
+  .cart-table tbody td:first-child {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: auto;
+    padding: 0 !important;
+    z-index: 1;
+  }
+
+  .cart-table .remove-tr-btn {
+    font-size: 0;
+    gap: 0;
+  }
+
+  .cart-table .remove-tr-btn i {
+    font-size: 22px;
+  }
+
+  /* Product cell leads the card; keep room for the remove icon. */
+  .cart-table tbody td:nth-child(2) {
+    padding-right: 32px !important;
+  }
+
+  .cart-table .table-product {
+    gap: 12px !important;
+  }
+
+  /* Price / Quantity / Subtotal become labeled rows. */
+  .cart-table tbody td:nth-child(3),
+  .cart-table tbody td:nth-child(4),
+  .cart-table tbody td:nth-child(5) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+  }
+
+  .cart-table tbody td:nth-child(3)::before {
+    content: "Price";
+  }
+
+  .cart-table tbody td:nth-child(4)::before {
+    content: "Quantity";
+  }
+
+  .cart-table tbody td:nth-child(5)::before {
+    content: "Subtotal";
+  }
+
+  .cart-table tbody td:nth-child(3)::before,
+  .cart-table tbody td:nth-child(4)::before,
+  .cart-table tbody td:nth-child(5)::before {
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: #8f8f97;
+  }
+
+  .cart-table .quantity__minus,
+  .cart-table .quantity__plus {
+    height: 40px !important;
+    width: 40px !important;
+  }
 }

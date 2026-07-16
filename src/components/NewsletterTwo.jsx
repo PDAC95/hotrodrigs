@@ -2,7 +2,14 @@ import React from 'react'
 
 const NewsletterTwo = () => {
     return (
-        <div className="newsletter-two bg-neutral-600 py-32">
+        <div
+            className="newsletter-two py-32"
+            style={{
+                background: "#232326",
+                borderTop: "1px solid rgba(250, 100, 0, 0.55)",
+                borderBottom: "1px solid rgba(250, 100, 0, 0.55)",
+            }}
+        >
             <div className="container container-lg">
                 <div className="flex-between gap-20 flex-wrap">
                     <div className="flex-align gap-22">
@@ -11,10 +18,10 @@ const NewsletterTwo = () => {
                         </span>
                         <div>
                             <h5 className="text-white mb-12 fw-medium">
-                                Join Our Newsletter, Get 10% Off
+                                Join the Hot Rod Rigs Newsletter
                             </h5>
                             <p className="text-white fw-light">
-                                Get all latest information on events, sales and offer
+                                New parts, deals and fitment updates, straight to your inbox
                             </p>
                         </div>
                     </div>

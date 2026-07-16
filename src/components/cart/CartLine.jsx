@@ -28,7 +28,6 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
-import FitsBadge from "@/components/fitment/FitsBadge";
 import { getStoredTruck } from "@/lib/fitment/truck-storage";
 import {
   maxQty,
@@ -95,15 +94,10 @@ const CartLine = ({
     // Drawer variant — tight row.
     return (
       <div className='flex-align gap-12 py-12 border-bottom border-gray-100'>
-        <Link
-          href={href}
-          className='border border-gray-100 rounded-8 flex-center flex-shrink-0'
-          style={{ width: 56, height: 56, overflow: "hidden" }}
-        >
+        <Link href={href} className='hrr-prod-thumb hrr-prod-thumb--sm'>
           <img
             src={img}
             alt={product.name || ""}
-            style={{ maxWidth: 56, maxHeight: 56, objectFit: "contain" }}
             onError={(e) => {
               e.currentTarget.src = PLACEHOLDER;
             }}
@@ -166,16 +160,13 @@ const CartLine = ({
       </td>
       <td>
         <div className='table-product d-flex align-items-center gap-24'>
-          <Link
-            href={href}
-            className='table-product__thumb border border-gray-100 rounded-8 flex-center position-relative'
-            style={{ width: 80, height: 80, overflow: "hidden" }}
-          >
-            {showFits && <FitsBadge kind={line.product?.fits_all ? "universal" : "fits"} />}
+          {/* hrr-prod-thumb (not the template's table-product__thumb): a fixed
+              square white well that can't be squeezed by the flex row — the
+              photos are white-background JPEGs, so the tile frames them. */}
+          <Link href={href} className='hrr-prod-thumb'>
             <img
               src={img}
               alt={product.name || ""}
-              style={{ maxWidth: 80, maxHeight: 80, objectFit: "contain" }}
               onError={(e) => {
                 e.currentTarget.src = PLACEHOLDER;
               }}

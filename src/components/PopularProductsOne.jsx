@@ -85,20 +85,20 @@ const PopularProductsOne = () => {
                 <div className='product-card__content flex-grow-1'>
                   <h6 className='title text-lg fw-semibold mb-12'>
                     <span className='link text-line-2'>
-                      Headphone &amp; Earphone
+                      Lighting &amp; Electrical
                     </span>
                   </h6>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Wired Headphones
+                    Exhaust
                   </span>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Over-Ear Headphone
+                    Mirrors
                   </span>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Sports Headphone
+                    Bumpers
                   </span>
                   <span className='text-gray-600 text-sm mb-0'>
-                    Earbud Headphone
+                    Interior
                   </span>
                 </div>
               </div>
@@ -119,16 +119,16 @@ const PopularProductsOne = () => {
                     </span>
                   </h6>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Wired Headphones
+                    Exhaust
                   </span>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Over-Ear Headphone
+                    Mirrors
                   </span>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Sports Headphone
+                    Bumpers
                   </span>
                   <span className='text-gray-600 text-sm mb-0'>
-                    Earbud Headphone
+                    Interior
                   </span>
                 </div>
               </div>
@@ -149,16 +149,16 @@ const PopularProductsOne = () => {
                     </span>
                   </h6>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Wired Headphones
+                    Exhaust
                   </span>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Over-Ear Headphone
+                    Mirrors
                   </span>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Sports Headphone
+                    Bumpers
                   </span>
                   <span className='text-gray-600 text-sm mb-0'>
-                    Earbud Headphone
+                    Interior
                   </span>
                 </div>
               </div>
@@ -179,16 +179,16 @@ const PopularProductsOne = () => {
                     </span>
                   </h6>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Wired Headphones
+                    Exhaust
                   </span>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Over-Ear Headphone
+                    Mirrors
                   </span>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Sports Headphone
+                    Bumpers
                   </span>
                   <span className='text-gray-600 text-sm mb-0'>
-                    Earbud Headphone
+                    Interior
                   </span>
                 </div>
               </div>
@@ -209,16 +209,16 @@ const PopularProductsOne = () => {
                     </span>
                   </h6>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Wired Headphones
+                    Exhaust
                   </span>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Over-Ear Headphone
+                    Mirrors
                   </span>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Sports Headphone
+                    Bumpers
                   </span>
                   <span className='text-gray-600 text-sm mb-0'>
-                    Earbud Headphone
+                    Interior
                   </span>
                 </div>
               </div>
@@ -235,20 +235,20 @@ const PopularProductsOne = () => {
                 <div className='product-card__content flex-grow-1'>
                   <h6 className='title text-lg fw-semibold mb-12'>
                     <span className='link text-line-2'>
-                      Camera &amp; Video
+                      Chrome &amp; Stainless
                     </span>
                   </h6>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Wired Headphones
+                    Exhaust
                   </span>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Over-Ear Headphone
+                    Mirrors
                   </span>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Sports Headphone
+                    Bumpers
                   </span>
                   <span className='text-gray-600 text-sm mb-0'>
-                    Earbud Headphone
+                    Interior
                   </span>
                 </div>
               </div>
@@ -269,16 +269,16 @@ const PopularProductsOne = () => {
                     </span>
                   </h6>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Wired Headphones
+                    Exhaust
                   </span>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Over-Ear Headphone
+                    Mirrors
                   </span>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Sports Headphone
+                    Bumpers
                   </span>
                   <span className='text-gray-600 text-sm mb-0'>
-                    Earbud Headphone
+                    Interior
                   </span>
                 </div>
               </div>
@@ -299,16 +299,16 @@ const PopularProductsOne = () => {
                     </span>
                   </h6>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Wired Headphones
+                    Exhaust
                   </span>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Over-Ear Headphone
+                    Mirrors
                   </span>
                   <span className='text-gray-600 text-sm mb-4'>
-                    Sports Headphone
+                    Bumpers
                   </span>
                   <span className='text-gray-600 text-sm mb-0'>
-                    Earbud Headphone
+                    Interior
                   </span>
                 </div>
               </div>

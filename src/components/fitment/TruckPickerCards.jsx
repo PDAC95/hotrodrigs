@@ -277,7 +277,7 @@ const TruckPickerCards = () => {
   const idleRing = <span className='tpk-ring' />;
 
   return (
-    <section className='truck-picker mt-32'>
+    <section className='truck-picker mt-32' id='shop-by-truck'>
       <div className='container container-lg'>
         <div className='border border-gray-100 p-24 rounded-16'>
           <div className='section-heading mb-24'>

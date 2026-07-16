@@ -23,7 +23,7 @@ const RecentlyViewedOne = () => {
                   </span>
                   <img
                     src='/assets/images/thumbs/product-two-img1.png'
-                    alt='marketpro'
+                    alt='Hot Rod Rigs'
                     className='w-auto max-w-unset'
                   />
                 </span>
@@ -33,7 +33,7 @@ const RecentlyViewedOne = () => {
                   </span>
                   <h6 className='title text-lg fw-semibold my-16'>
                     <span className='link text-line-2'>
-                      Instax Mini 12 Instant Film Camera - Green
+                      Chrome West Coast Mirror Assembly - Stainless
                     </span>
                   </h6>
                   <div className='flex-align gap-6'>
@@ -60,7 +60,7 @@ const RecentlyViewedOne = () => {
                     </span>
                   </div>
                   <span className='py-2 px-8 text-xs rounded-pill text-main-two-600 bg-main-two-50 mt-16'>
-                    Fulfilled by Marketpro
+                    Fulfilled by Hot Rod Rigs
                   </span>
                   <div className='product-card__price mt-16 mb-30'>
                     <span className='text-gray-400 text-md fw-semibold text-decoration-line-through'>
@@ -85,7 +85,7 @@ const RecentlyViewedOne = () => {
                   </span>
                   <img
                     src='/assets/images/thumbs/product-two-img2.png'
-                    alt='marketpro'
+                    alt='Hot Rod Rigs'
                     className='w-auto max-w-unset'
                   />
                 </span>
@@ -95,7 +95,7 @@ const RecentlyViewedOne = () => {
                   </span>
                   <h6 className='title text-lg fw-semibold my-16'>
                     <span className='link text-line-2'>
-                      Instax Mini 12 Instant Film Camera - Green
+                      Chrome West Coast Mirror Assembly - Stainless
                     </span>
                   </h6>
                   <div className='flex-align gap-6'>
@@ -122,7 +122,7 @@ const RecentlyViewedOne = () => {
                     </span>
                   </div>
                   <span className='py-2 px-8 text-xs rounded-pill text-main-two-600 bg-main-two-50 mt-16'>
-                    Fulfilled by Marketpro
+                    Fulfilled by Hot Rod Rigs
                   </span>
                   <div className='product-card__price mt-16 mb-30'>
                     <span className='text-gray-400 text-md fw-semibold text-decoration-line-through'>
@@ -147,7 +147,7 @@ const RecentlyViewedOne = () => {
                   </span>
                   <img
                     src='/assets/images/thumbs/product-two-img3.png'
-                    alt='marketpro'
+                    alt='Hot Rod Rigs'
                     className='w-auto max-w-unset'
                   />
                 </span>
@@ -157,7 +157,7 @@ const RecentlyViewedOne = () => {
                   </span>
                   <h6 className='title text-lg fw-semibold my-16'>
                     <span className='link text-line-2'>
-                      Instax Mini 12 Instant Film Camera - Green
+                      Chrome West Coast Mirror Assembly - Stainless
                     </span>
                   </h6>
                   <div className='flex-align gap-6'>
@@ -184,7 +184,7 @@ const RecentlyViewedOne = () => {
                     </span>
                   </div>
                   <span className='py-2 px-8 text-xs rounded-pill text-main-two-600 bg-main-two-50 mt-16'>
-                    Fulfilled by Marketpro
+                    Fulfilled by Hot Rod Rigs
                   </span>
                   <div className='product-card__price mt-16 mb-30'>
                     <span className='text-gray-400 text-md fw-semibold text-decoration-line-through'>
@@ -209,7 +209,7 @@ const RecentlyViewedOne = () => {
                   </span>
                   <img
                     src='/assets/images/thumbs/product-two-img4.png'
-                    alt='marketpro'
+                    alt='Hot Rod Rigs'
                     className='w-auto max-w-unset'
                   />
                 </span>
@@ -219,7 +219,7 @@ const RecentlyViewedOne = () => {
                   </span>
                   <h6 className='title text-lg fw-semibold my-16'>
                     <span className='link text-line-2'>
-                      Instax Mini 12 Instant Film Camera - Green
+                      Chrome West Coast Mirror Assembly - Stainless
                     </span>
                   </h6>
                   <div className='flex-align gap-6'>
@@ -246,7 +246,7 @@ const RecentlyViewedOne = () => {
                     </span>
                   </div>
                   <span className='py-2 px-8 text-xs rounded-pill text-main-two-600 bg-main-two-50 mt-16'>
-                    Fulfilled by Marketpro
+                    Fulfilled by Hot Rod Rigs
                   </span>
                   <div className='product-card__price mt-16 mb-30'>
                     <span className='text-gray-400 text-md fw-semibold text-decoration-line-through'>
@@ -271,7 +271,7 @@ const RecentlyViewedOne = () => {
                   </span>
                   <img
                     src='/assets/images/thumbs/product-two-img5.png'
-                    alt='marketpro'
+                    alt='Hot Rod Rigs'
                     className='w-auto max-w-unset'
                   />
                 </span>
@@ -281,7 +281,7 @@ const RecentlyViewedOne = () => {
                   </span>
                   <h6 className='title text-lg fw-semibold my-16'>
                     <span className='link text-line-2'>
-                      Instax Mini 12 Instant Film Camera - Green
+                      Chrome West Coast Mirror Assembly - Stainless
                     </span>
                   </h6>
                   <div className='flex-align gap-6'>
@@ -308,7 +308,7 @@ const RecentlyViewedOne = () => {
                     </span>
                   </div>
                   <span className='py-2 px-8 text-xs rounded-pill text-main-two-600 bg-main-two-50 mt-16'>
-                    Fulfilled by Marketpro
+                    Fulfilled by Hot Rod Rigs
                   </span>
                   <div className='product-card__price mt-16 mb-30'>
                     <span className='text-gray-400 text-md fw-semibold text-decoration-line-through'>
@@ -333,7 +333,7 @@ const RecentlyViewedOne = () => {
                   </span>
                   <img
                     src='/assets/images/thumbs/product-two-img6.png'
-                    alt='marketpro'
+                    alt='Hot Rod Rigs'
                     className='w-auto max-w-unset'
                   />
                 </span>
@@ -343,7 +343,7 @@ const RecentlyViewedOne = () => {
                   </span>
                   <h6 className='title text-lg fw-semibold my-16'>
                     <span className='link text-line-2'>
-                      Instax Mini 12 Instant Film Camera - Green
+                      Chrome West Coast Mirror Assembly - Stainless
                     </span>
                   </h6>
                   <div className='flex-align gap-6'>
@@ -370,7 +370,7 @@ const RecentlyViewedOne = () => {
                     </span>
                   </div>
                   <span className='py-2 px-8 text-xs rounded-pill text-main-two-600 bg-main-two-50 mt-16'>
-                    Fulfilled by Marketpro
+                    Fulfilled by Hot Rod Rigs
                   </span>
                   <div className='product-card__price mt-16 mb-30'>
                     <span className='text-gray-400 text-md fw-semibold text-decoration-line-through'>
